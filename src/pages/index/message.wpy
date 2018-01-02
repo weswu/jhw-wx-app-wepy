@@ -1,0 +1,23 @@
+<template lang="wxml">
+  <text class="info">{{text}}</text>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Message extends wepy.page {
+  data = {
+    text: '数据'
+  }
+  methods = {
+    bindViewTap () {
+      console.log('button clicked')
+    }
+  }
+  onLoad() {
+    console.log('data onLoad')
+  }
+}
+</script>
+
+<style lang="less">
+</style>

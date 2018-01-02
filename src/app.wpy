@@ -1,0 +1,87 @@
+<style lang="less">
+@import "./styles/base";
+@import "./styles/icon";
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index/index',
+      'pages/index/data',
+      'pages/index/message',
+      'pages/index/my'
+    ],
+    window: {
+      backgroundTextStyle: 'dark',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black',
+      enablePullDownRefresh: false,
+      backgroundColor: '#efefef'
+    },
+    "tabBar": {
+      "color": "#9b9b9b",
+      "selectedColor": "#ff6214",
+      "backgroundColor": "#fff",
+      "borderStyle": "black",
+      "list": [
+        {
+          "iconPath": "images/tabBar/home.png",
+          "selectedIconPath": "images/tabBar/home_active.png",
+          "pagePath": "pages/index/index",
+          "text": "首页"
+        },
+        {
+          "iconPath": "images/tabBar/data.png",
+          "selectedIconPath": "images/tabBar/data_active.png",
+          "pagePath": "pages/index/data",
+          "text": "数据"
+        },
+        {
+          "iconPath": "images/tabBar/message.png",
+          "selectedIconPath": "images/tabBar/message_active.png",
+          "pagePath": "pages/index/message",
+          "text": "询盘"
+        },
+        {
+          "iconPath": "images/tabBar/my.png",
+          "selectedIconPath": "images/tabBar/my_active.png",
+          "pagePath": "pages/index/my",
+          "text": "我"
+        }
+      ]
+    }
+  }
+
+  globalData = {
+    userInfo: null,
+    user: {},
+    enterprise: {},
+    appid: 'wx5979261410e2ae66',
+    secret: 'adfa3ba0c79f2e9be8df8b1ec7466fd3'
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+    this.use('promisify') // 异步回调
+  }
+
+  onLaunch() {
+    console.log('叽叽--开始启动');
+  }
+
+  async getUserInfo() {
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    let res = await wepy.getUserInfo()
+    this.globalData.userInfo = res.userInfo
+    return res.userInfo
+  }
+}
+</script>
