@@ -1,27 +1,29 @@
 <style lang="less">
 @import "./styles/base";
 @import "./styles/icon";
+@import "./styles/weui-extend";
 </style>
 
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-
+import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index/index',
+      'pages/index/my',
+      'pages/message/message',
+      'pages/user/login',
       'pages/index/data',
-      'pages/index/message',
-      'pages/index/my'
+      'pages/index/index'
     ],
     window: {
+      backgroundColor: '#efefef',
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: '全网营销，网站、手机网站、微网站、微商城、微传单等管理，机汇网',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: false,
-      backgroundColor: '#efefef'
+      enablePullDownRefresh: false
     },
     "tabBar": {
       "color": "#9b9b9b",
@@ -44,14 +46,14 @@ export default class extends wepy.app {
         {
           "iconPath": "images/tabBar/message.png",
           "selectedIconPath": "images/tabBar/message_active.png",
-          "pagePath": "pages/index/message",
+          "pagePath": "pages/message/message",
           "text": "询盘"
         },
         {
           "iconPath": "images/tabBar/my.png",
           "selectedIconPath": "images/tabBar/my_active.png",
           "pagePath": "pages/index/my",
-          "text": "我"
+          "text": "我的"
         }
       ]
     }
@@ -71,8 +73,20 @@ export default class extends wepy.app {
     this.use('promisify') // 异步回调
   }
 
-  onLaunch() {
+  async onLaunch() {
     console.log('叽叽--开始启动');
+    let that = this;
+    //用户信息
+    const res = await wepy.login();
+    if (res.code) {
+      let resp = await wxJsCode2Session({
+        data: {
+          code: res.code
+        },
+        method: 'post'
+      })
+    }
+
   }
 
   async getUserInfo() {

@@ -1,11 +1,6 @@
 
 <template>
   <view class="container">
-    <view class="userinfo" @tap="handleViewTap">
-      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
-      <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
-    </view>
-
       <i class="iconfont">&#xe667;</i>
     <panel>
       <view class="title" slot="title">测试数据绑定</view>
@@ -18,7 +13,6 @@
 
     <panel>
       <view class="title" slot="title">其它测试</view>
-      <button @tap="toast" size="mini">第三方组件</button>
       <button @tap="communicate" size="mini">组件通信</button>
       <button @tap="tap" size="mini">混合TAP事件</button>
     </panel>
@@ -51,44 +45,30 @@
       </repeat>
     </panel>
 
-    <panel>
-      <view class="title" slot="title">测试列表</view>
-      <list></list>
-    </panel>
-
-    <toast />
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import List from '@/components/list'
+  import api from '@/api/api'
+  import tip from '@/utils/tip'
   import Panel from '@/components/panel' // alias example
   import Counter from 'counter' // alias example
   import Group from '@/components/group'
-  import Toast from 'wepy-com-toast'
   import testMixin from '@/mixins/test'
 
   export default class Index extends wepy.page {
-    config = {
-      navigationBarTitleText: 'test'
-    }
     components = {
       panel: Panel,
       counter1: Counter,
       counter2: Counter,
-      list: List,
-      group: Group,
-      toast: Toast
+      group: Group
     }
 
     mixins = [testMixin]
 
     data = {
       mynum: 20,
-      userInfo: {
-        nickName: '加载中...'
-      },
       count: 0,
       netrst: '',
       groupList: [
@@ -147,16 +127,6 @@
       plus () {
         this.mynum++
       },
-      toast () {
-        let promise = this.$invoke('toast', 'show', {
-          title: '自定义标题',
-          img: 'https://raw.githubusercontent.com/kiinlam/wetoast/master/images/star.png'
-        })
-
-        promise.then((d) => {
-          console.log('toast done')
-        })
-      },
       tap () {
         console.log('do noting from ' + this.$name)
       },
@@ -196,30 +166,18 @@
     }
 
     onLoad() {
-      let ctx = this
-      this.$parent.getUserInfo().then(res => {
-        ctx.userInfo = res
-        ctx.$apply()
-      })
+      this.getUser()
+    }
+
+    async getUser() {
+      let that = this;
+      const json = await api.getUser()
+      if (json.success) {
+        this.list = json.attributes.data
+        that.$apply();
+      } else {
+        tip.error(json.msg);
+      }
     }
   }
 </script>
-
-
-<style lang="less">
-  .userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .userinfo-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
-  }
-
-  .userinfo-nickname {
-    color: #aaa;
-  }
-</style>

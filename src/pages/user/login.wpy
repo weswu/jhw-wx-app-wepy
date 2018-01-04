@@ -1,0 +1,129 @@
+<template>
+  <form @submit="formSubmit" class="w_login">
+    <view class="section">
+      <view class="section_title">用户帐号</view>
+      <input name="username" type="text" @input="usernameInput" placeholder="请输入登录帐号" focus="true"/>
+    </view>
+    <view class="section">
+      <view class="section_title">登录密码</view>
+      <input name="password" type="password" @input="passwordInput" @confirm="formSubmit" placeholder="请输入密码"/>
+    </view>
+    <view class="btn_comfire">
+      <button class="button type_yellow" formType="submit">登录</button>
+    </view>
+    <view class="question" @tap="tel">登录遇到问题</view>
+    <view class="copyright">
+      浙江机汇网络科技有限公司版权所有
+      <view>服务热线：<a href="javascript:;" @tap="tel">400-7111-011</a></view>
+    </view>
+  </form>
+</template>
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import tip from '@/utils/tip'
+export default class Login extends wepy.page {
+  config = {
+    navigationBarTitleText: '机汇网会员登录'
+  }
+  data = {
+    username: '',
+    password: ''
+  }
+
+  onLoad () {}
+
+  methods = {
+    usernameInput(e) {
+      this.username = e.detail.value;
+    },
+    passwordInput(e) {
+      this.password = e.detail.value;
+    },
+    formSubmit(e) {
+      let username = e.detail.value.username;
+      let password = e.detail.value.password;
+      if (username == "") {
+        tip.alert("请输入登录帐号");
+        return false;
+      }
+      if (password == "") {
+        tip.alert("请输入密码");
+        return false;
+      }
+      this.loginUser(username, password);
+    }
+  }
+
+  async loginUser (username,password) {
+    let that = this;
+    let accout = wx.getStorageSync('accout') || {};
+    let data = {
+      openId: openId,
+      username: username,
+      password: password
+    }
+    const json = await api.login({
+      data: data,
+      method: 'post'
+    });
+    if (json.success) {
+      wx.setStorage({
+        key: "accout",
+        data: query
+      })
+      let data = json.attributes.data
+      this.$parent.globalData.user = data
+      wepy.navigateBack();
+    } else {
+      tip.error(json.msg)
+    }
+  }
+
+
+  tel () {
+    wx.makePhoneCall({
+      phoneNumber: '4007111011'
+    })
+  }
+}
+</script>
+
+<style lang="less">
+.section {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1px solid #dbdbdb;
+  background: #fff;
+  .section_title {
+    color: #1a1a1a;
+    padding-right: 75rpx;
+  }
+  .btn {
+    padding: 15rpx 10rpx;
+    border: 1px solid #000000;
+    -moz-border-radius: 5rpx;
+    /* Firefox */
+    -webkit-border-radius: 5rpx;
+    /* Safari 和 Chrome */
+    border-radius: 5rpx;
+    /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */
+    color: #000000;
+  }
+  .send_code {
+    margin-left: 40rpx;
+  }
+}
+
+.btn_comfire {
+  margin-top: 64rpx;
+  padding: 0 24rpx;
+}
+.question {
+  float:right;color:#333;padding: 40rpx
+}
+.copyright {
+  text-align: center;clear: both;margin-top: 60px;color: #aaa;line-height: 1.8
+}
+</style>

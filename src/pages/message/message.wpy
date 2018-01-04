@@ -1,0 +1,62 @@
+<template>
+  <List :list="list"></List>
+  <!--加载更多时动画-->
+  <BottomLoadMore :show.sync="showLoading" message="正在加载"></BottomLoadMore>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import tip from '@/utils/tip'
+import List from '@/components/list'
+import BottomLoadMore from "@/components/common/bottomLoadMore"
+export default class Message extends wepy.page {
+  config = {
+    navigationBarTitleText: '网站询盘'
+  }
+  components = {
+    List,
+    BottomLoadMore
+  }
+  data = {
+    list: [],
+    page: 1,
+    pageSize: 10,
+    count: 0,
+    showLoading: true
+  }
+  onLoad() {
+    this.getMessage();
+  }
+  methods = {
+    bindViewTap () {
+      console.log('button clicked')
+    }
+  }
+
+  async getMessage() {
+    let that = this;
+    const json = await api.getMessage({
+      data: {
+        page: this.page,
+        pageSize: this.pageSize
+      }
+    })
+    if (json.success) {
+      this.list = json.attributes.data
+      this.count = json.attributes.count
+      if (json.attributes.count === 0) {
+        //暂无数据
+        that.is_empty = true;
+      }
+      that.$apply();
+    } else {
+      tip.error(json.msg);
+    }
+    that.showLoading = false;
+  }
+}
+</script>
+
+<style lang="less">
+</style>

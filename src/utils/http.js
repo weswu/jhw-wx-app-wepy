@@ -6,9 +6,14 @@ const http = async (params = {}, url) => {
     url: url,
     method: params.method || 'GET',
     data: params.data || {},
-    header: {'Content-type': 'application/json'}
+    header: {'Content-type': 'application/x-www-form-urlencoded'}
   })
-  return res
+  if (res.data.msg === '未登陆1') {
+    wx.navigateTo({
+      url: '/pages/user/login'
+    })
+  }
+  return res.data
 }
 
 module.exports = { http }
