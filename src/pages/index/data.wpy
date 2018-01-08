@@ -1,23 +1,47 @@
-<template lang="wxml">
-  <text class="info">{{text}}</text>
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>产品</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>新闻</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>证书</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>相册</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>友情链接</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+  </view>
 </template>
-
 <script>
-import wepy from 'wepy'
-export default class Data extends wepy.page {
-  data = {
-    text: '数据'
+import wepy from 'wepy';
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '数据',
   }
-  methods = {
-    bindViewTap () {
-      console.log('button clicked')
-    }
-  }
-  onLoad() {
-    console.log('data onLoad')
-  }
+  components = {}
+
+  data = {}
+
+  onLoad() {}
 }
 </script>
-
-<style lang="less">
-</style>

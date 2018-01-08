@@ -1,0 +1,130 @@
+<template>
+  <view class="weui-cells weui-cells_after-title">
+    <WInput>
+      <view slot="title" class="weui-label">公司LOGO</view>
+      <image slot="input" mode="widthFix" src="http://img.jihui88.com/{{input.logo}}" style="width: 300rpx;padding-top: 8px" @tap="chooseImage"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">公司名称*</view>
+      <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">主营产品*</view>
+      <input slot="input" class="weui-input" placeholder="请输入主营产品" @input="input" id="mainBusiness" value="{{input.mainBusiness}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">法人代表*</view>
+      <input slot="input" class="weui-input" placeholder="请输入法人代表" @input="input" id="legalPre" value="{{input.legalPre}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">员工数量*</view>
+      <input slot="input" class="weui-input" placeholder="请输入员工数量" @input="input" id="staffSum" value="{{input.staffSum}}"/>
+    </WInput>
+    <!--单选-->
+    <view class="weui-cell weui-cells_after-title">
+      <view class="weui-cell__hd">
+        <view class="weui-label">经营模式</view>
+      </view>
+      <view class="weui-cell__bd">
+        <radio-group class="radio-group" @change="radio" id="businessType">
+          <label class="radio" wx:for="{{businessTypeSelect}}" wx:key="item.value" style="display: inline-block;margin: 0 10px 5px">
+            <radio value="{{item.value}}" checked="{{input.businessType == item.value}}"/>
+            {{item.text}}
+          </label>
+        </radio-group>
+      </view>
+    </view>
+    <WInput>
+      <view slot="title" class="weui-label">icp备案号</view>
+      <input slot="input" class="weui-input" placeholder="请输入icp备案号" @input="input" id="icp" value="{{input.icp}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">年营业额</view>
+      <input slot="input" class="weui-input" placeholder="请输入年营业额" @input="input" id="annualTurnover" value="{{input.annualTurnover}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">注册资本</view>
+      <input slot="input" class="weui-input" placeholder="请输入注册资本" @input="input" id="registeredCapital" value="{{input.registeredCapital}}"/>
+    </WInput>
+  </view>
+
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" bindtap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import tip from '@/utils/tip'
+import WInput from '@/components/w-input'
+import input from '@/mixins/input'
+export default class Enterprise extends wepy.page {
+  config = {
+    navigationBarTitleText: '企业资料'
+  }
+
+  components = {
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    businessTypeSelect: [
+      {text: '生产加工', value: '00'},
+      {text: '经营批发', value: '01'},
+      {text: '招商代理', value: '02'},
+      {text: '商业服务', value: '03'},
+      {text: '以上都不是', value: '04'}
+    ]
+  }
+
+  async onLoad () {
+    if (!this.$parent.globalData.enterprise.name) {
+      this.getEnterprise()
+    } else {
+      this.input = this.$parent.globalData.enterprise
+      this.$apply()
+    }
+  }
+
+  methods = {
+    chooseImage () {
+      var that = this;
+      wx.chooseImage({
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: function (res) {
+          // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+          that.setData({
+            files: that.data.files.concat(res.tempFilePaths)
+          });
+        }
+      })
+    }
+  }
+
+  async submit () {
+    const json = await api.setUser({
+      data: this.input,
+      method: 'put'
+    })
+    if (json.success) {
+      tip.success("保存成功");
+    } else {
+      tip.error(json.msg)
+    }
+  }
+
+  async getEnterprise () {
+    const json = await api.getUser()
+    if (json.success) {
+      tip.success("保存成功");
+    } else {
+      tip.error(json.msg)
+    }
+  }
+
+}
+</script>

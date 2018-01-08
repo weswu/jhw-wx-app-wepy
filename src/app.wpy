@@ -11,11 +11,14 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index/my',
+      'pages/user/enterprise',
+      'pages/user/map',
+      'pages/user/user',
+      'pages/index/index',
       'pages/message/message',
       'pages/user/login',
       'pages/index/data',
-      'pages/index/index'
+      'pages/index/my'
     ],
     window: {
       backgroundColor: '#efefef',
@@ -61,8 +64,63 @@ export default class extends wepy.app {
 
   globalData = {
     userInfo: null,
-    user: {},
-    enterprise: {},
+    user: {
+      userId: "User_000000000000000000000000082",
+      username: "ggggfj",
+      enterpriseId: "Enterp_0000000000000000000000039",
+      password: "e10adc3949ba59abbe56e057f20f883e",
+      sex: "00",
+      name: "name",
+      position: "it22",
+      cellphone: "13868184604",
+      phone: "86-0571-72204155",
+      fax: "0571-122222",
+      email: "zjut_wyj2@163.com",
+      address: "address",
+      qq: "123445914",
+      msn: "11913",
+      zipcode: "322001",
+      url: "http://www.sohu.com",
+      grade: "02",
+      state: "01",
+      icp: null,
+      userType: "营销版",
+      wcdMember: "01",
+      weibo: null,
+      weixin: null,
+      id: "User_000000000000000000000000082"
+    },
+    enterprise: {
+      enterpriseId: "Enterp_0000000000000000000000039",
+      userId: "User_000000000000000000000000082",
+      name: "455256",
+      mainBusiness: "a",
+      legalPre: "fhffhhhvv",
+      staffSum: "1",
+      businessType: "00",
+      icp: "a",
+      annualTurnover: "123123",
+      registeredCapital: "123123123",
+      logo: "upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png",
+      mobileSite: "14",
+      mapaddress: "",
+      gsbsZym: "2",
+      psr: null,
+      type: "07",
+      address: "402881882ba8753a012ba8d3f4f1008e",
+      dist: "ghhgffggv",
+      email: "604053328@qq.com",
+      phone: null,
+      certType: "00",
+      certPic: "upload//g//g2//ggggfj//picture//2017//06//01/94526c88-cd49-4a3f-a75e-b6a4d29b3378.jpg",
+      certNumber: "554258",
+      legalPersonIdNumber: null,
+      legalPersonPhoto: null,
+      legalPersonBust: null,
+      legalPersonCellphone: null,
+      domainCertPic: null,
+      id: "Enterp_0000000000000000000000039"
+    },
     appid: 'wx5979261410e2ae66',
     secret: 'adfa3ba0c79f2e9be8df8b1ec7466fd3'
   }

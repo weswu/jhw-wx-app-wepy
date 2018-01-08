@@ -1,0 +1,10 @@
+<template>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <slot name="title">标题</slot>
+    </view>
+    <view class="weui-cell__bd">
+      <slot name="input">默认表单</slot>
+    </view>
+  </view>
+</template>

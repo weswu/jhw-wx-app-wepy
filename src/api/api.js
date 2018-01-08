@@ -8,8 +8,12 @@ const user2session = (params) => http(params, apiMall + "/api/wechat/user2sessio
 
 const login = (params) => http(params, host + '/rest/api/user/login')
 const getUser = (params) => http(params, host + '/rest/api/user/detail')
+const setUser = (params) => http(params, host + '/rest/api/user/detail')
+// 公司简介
+const setEnterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
 // 留言
 const getMessage = (params) => http(params, host + '/rest/api/message/list')
+
 
 module.exports = {
   wxJsCode2Session,

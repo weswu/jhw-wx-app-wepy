@@ -1,0 +1,115 @@
+<template>
+  <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" markers="{{markers}}"
+bindregionchange="regionchange" controls="{{controls}}" bindcontroltap="controltap" show-location style="width:{{map_width}}px;height:{{map_height}}px"></map>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import tip from '@/utils/tip'
+export default class User extends wepy.page {
+  config = {
+    navigationBarTitleText: '地图定位'
+  }
+  data = {
+    // 视线中心点,中心经度
+    longitude: 120.22141,
+    latitude: 30.207962,
+    // 公司地址，红点
+    markers: [{
+      iconPath: "/images/location.png",
+      id: 0,
+      latitude: 30.207962,
+      longitude: 120.22141,
+      width: 26,
+      height: 36
+    }]
+  }
+
+  async onLoad () {
+    var ctx = this
+    var mapaddress = this.$parent.globalData.enterprise.mapaddress || ''
+    var longitude = parseFloat(mapaddress.split(',')[0])||120.22141
+    var latitude = parseFloat(mapaddress.split(',')[1])||30.207962
+    this.markers[0].longitude = longitude
+    this.markers[0].latitude = latitude
+    this.setData({
+      longitude: longitude,
+      latitude: latitude,
+      markers: this.markers
+    })
+
+    wx.getSystemInfo({
+      success: function(res) {
+        ctx.setData({
+          map_width: res.windowWidth,
+          map_height: res.windowHeight,
+          controls: [
+            {
+              id: 1,
+              iconPath: '/images/marker.png',
+              position: {
+                left: res.windowWidth/2 - 15,
+                top: res.windowHeight/2 - 30,
+                width: 30,
+                height: 30
+              },
+              clickable: false
+            },
+            {
+              id: 2,
+              iconPath: '/images/submit.png',
+              position: {
+                left: res.windowWidth - 50,
+                top: 15,
+                width: 35,
+                height: 35
+              },
+              clickable: true
+            }
+          ]
+        })
+      }
+    })
+  }
+
+  methods = {
+    regionchange(e) {
+      if(e.type === 'end'){
+        this.getLngLat()
+      }
+    },
+    controltap(e) {
+      this.$parent.globalData.enterprise.mapaddress = this.longitude + ',' + this.latitude
+      this.submit()
+    }
+  }
+
+  async submit () {
+    const json = await api.setEnterprise({
+      data: this.$parent.globalData.enterprise,
+      method: 'put'
+    })
+    if (json.success) {
+      tip.success("保存成功");
+    } else {
+      tip.error(json.msg)
+    }
+  }
+
+  async getLngLat () {
+    var ctx = this
+    this.mapCtx = wx.createMapContext("map")
+    this.mapCtx.getCenterLocation({
+      success: function(res){
+        ctx.markers[0].longitude = res.longitude
+        ctx.markers[0].latitude = res.latitude
+        ctx.setData({
+          markers: ctx.markers
+        })
+      }
+    })
+  }
+
+}
+</script>

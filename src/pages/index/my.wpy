@@ -1,49 +1,55 @@
 <template>
-  <view class="w_my">
-    <view class="weui-panel">
-        <view class="weui-panel__bd">
-            <view class="weui-media-box weui-media-box_small-appmsg">
-                <view class="weui-cells weui-cells_in-small-appmsg">
-                    <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                        <view class="weui-cell__hd"><image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
-                        <view class="weui-cell__bd weui-cell_primary">
-                            <view>文字标题</view>
-                        </view>
-                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-                    </navigator>
-                    <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-                        <view class="weui-cell__hd"><image src="{{icon20}}" style="width: 20px;height: 20px;margin-right: 5px" /></view>
-                        <view class="weui-cell__bd weui-cell_primary">
-                            <view>文字标题</view>
-                        </view>
-                        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-                    </navigator>
-                </view>
-            </view>
-        </view>
-    </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>账号资料</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>企业资料</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>公安备案</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>域名绑定</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd weui-cell_primary">
+              <view>一键发布</view>
+          </view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+  </view>
+
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__ft">
+          <navigator url=""  class="weui-cell weui-cell_access">
+              <view class="weui-cell__bd">设置</view>
+              <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+          </navigator>
+      </view>
   </view>
 </template>
 <script>
 import wepy from 'wepy';
-import api from '@/api/api';
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '我的',
   }
-  components = {
+  components = {}
 
-  }
-
-  data = {
-    userInfo: {
-      nickName: '加载中...'
-    }
-  }
-  async getUserInfo(phone,code) {
-    let that = this;
-    that.showLoading = false;
-  }
+  data = {}
 
   onLoad() {
     let ctx = this
@@ -52,12 +58,5 @@ export default class Index extends wepy.page {
       ctx.$apply()
     })
   }
-  computed = {
-
-  }
-  methods = {
-
-  }
 }
-
 </script>

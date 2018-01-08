@@ -43,3 +43,6 @@ async testAsync () {
   console.log(data)
 }
 ```
+
+### 按钮
+<button @tap="plus('a')" size="mini">  +  </button>
