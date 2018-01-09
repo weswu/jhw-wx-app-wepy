@@ -1,4 +1,4 @@
-import { http } from '@/utils/http'
+import { http } from '@/utils/Http'
 
 const host = 'http://app.jihui88.com'
 
@@ -13,6 +13,9 @@ const setUser = (params) => http(params, host + '/rest/api/user/detail')
 const setEnterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
 // 留言
 const getMessage = (params) => http(params, host + '/rest/api/message/list')
+// 设置
+const password = (params) => http(params, host + '/rest/api/user/detail/password')
+
 
 
 module.exports = {
@@ -20,5 +23,6 @@ module.exports = {
   user2session,
   login,
   getUser,
-  getMessage
+  getMessage,
+  password
 }

@@ -9,6 +9,20 @@
   .muted{
     color:@color-muted;
   }
+  text,view{
+    font-family: 宋体;
+    font-size: @text-form;
+  }
+}
+
+.weui-cells{
+  .weui-cell::before{
+    right: 15px;
+  }
+}
+
+.weui-cell-border-top::before{
+  border-top: none;
 }
 
 .weui-cells-display{
@@ -35,13 +49,6 @@
   border-bottom: @border;
   &::after, &::before {
     content: normal;
-  }
-}
-
-.form {
-  text,view{
-    font-family: 宋体;
-    font-size: @text-form;
   }
 }
 
@@ -72,9 +79,6 @@ button[type="primary"][plain]{
 }
 
 /* update */
-.weui-cell:before{
-  right: 15px
-}
 .weui-label{
   width: 150rpx
 }

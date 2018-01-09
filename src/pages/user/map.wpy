@@ -6,7 +6,7 @@ bindregionchange="regionchange" controls="{{controls}}" bindcontroltap="controlt
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
-import tip from '@/utils/tip'
+import tip from '@/utils/Tips'
 export default class User extends wepy.page {
   config = {
     navigationBarTitleText: '地图定位'

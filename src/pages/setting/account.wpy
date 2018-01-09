@@ -1,0 +1,45 @@
+<template>
+  <view class="weui-cell weui-cell-border-top">
+    <view class="weui-cell__hd">
+      <view class="weui-label">账号</view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <navigator url="/account" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">手机号</view>
+      <view class="weui-cell__ft">{{user.cellphone}}</view>
+    </navigator>
+    <navigator url="" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">邮件地址</view>
+      <view class="weui-cell__ft">{{user.email}}</view>
+    </navigator>
+  </view>
+
+  <view class="weui-cell weui-cell-border-top">
+    <view class="weui-cell__hd">
+      <view class="weui-label">安全</view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <navigator url="password" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">修改密码</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Account extends wepy.page {
+  config = {
+    navigationBarTitleText: '账号与安全',
+  }
+  components = {}
+
+  data = {}
+
+  async onLoad() {
+    this.user = this.$parent.globalData.user
+    this.$apply()
+  }
+}
+</script>

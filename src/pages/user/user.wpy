@@ -76,8 +76,8 @@
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
-import tip from '@/utils/tip'
-import WInput from '@/components/w-input'
+import tip from '@/utils/Tips'
+import WInput from '@/components/wInput'
 import input from '@/mixins/input'
 export default class User extends wepy.page {
   config = {

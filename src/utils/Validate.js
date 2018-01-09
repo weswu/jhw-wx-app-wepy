@@ -3,6 +3,7 @@ export default class Validate {
    * 验证必填元素
    */
   static required(value) {
+    debugger
     if (typeof value === 'number') {
       value = value.toString()
     } else if (typeof value === 'boolean') {

@@ -29,12 +29,14 @@
         if (rule.method != 'noDuplicate' && Lang.isArray(value)) {
           // 数组校验每个值
           for (let innerValue of value) {
+            debugger
             const isValid = this.execCheck(rule, innerValue);
             if (!isValid) {
               return false;
             }
           }
         } else {
+          debugger
           // 单元素直接校验
           const isValid = this.execCheck(rule, value);
           if (!isValid) {

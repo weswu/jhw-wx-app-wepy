@@ -7,7 +7,7 @@
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
-import tip from '@/utils/tip'
+import tip from '@/utils/Tips'
 import List from '@/components/list'
 import BottomLoadMore from "@/components/common/bottomLoadMore"
 export default class Message extends wepy.page {
