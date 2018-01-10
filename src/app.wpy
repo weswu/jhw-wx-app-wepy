@@ -11,8 +11,10 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/setting/password',
       'pages/setting/setting',
+      'pages/setting/about',
+      'pages/setting/appLog',
+      'pages/setting/password',
       'pages/setting/account',
       'pages/user/enterprise',
       'pages/user/map',

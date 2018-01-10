@@ -1,5 +1,5 @@
 <template>
-  <view class="weui-cells weui-cells_after-title">
+  <view class="weui-cells weui-cells_in-small-appmsg">
     <WInput>
       <view slot="title" class="weui-label">公司LOGO</view>
       <image slot="input" mode="widthFix" src="http://img.jihui88.com/{{input.logo}}" style="width: 300rpx;padding-top: 8px" @tap="chooseImage"/>

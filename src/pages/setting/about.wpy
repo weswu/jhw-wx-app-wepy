@@ -1,0 +1,40 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">新版本检测</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">已是最新版</view>
+    </view>
+    <navigator url="app_log" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">更新记录</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+
+  <view class="weui-panel">
+      <view class="weui-panel__hd">分享二维码给好友</view>
+      <view class="weui-panel__bd">
+          <view class="weui-media-box weui-media-box_text" style=" text-align: center;">
+            <image mode="widthFix" style="width: 400rpx;" src="/images/appApk.png" alt="app"/>
+            <view style="padding: 0.5rem 0;display: block;">当前版本号：1.1.0</view>
+            <image mode="widthFix" style="width: 400rpx;" src="http://img.easthardware.com/upload/j/j2/jihui/picture/2015/12/28/caa0bba6-2881-4bf5-8a6f-41533fa8f2dd.jpg" alt="官方微信二维码"/>
+            <view style="padding: 0.5rem 0;display: block;">官方微信二维码</view>
+          </view>
+      </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class About extends wepy.page {
+  config = {
+    navigationBarTitleText: '账号与安全',
+  }
+  components = {}
+
+  data = {}
+
+  async onLoad() {
+    this.user = this.$parent.globalData.user
+    this.$apply()
+  }
+}
+</script>

@@ -3,7 +3,6 @@ export default class Validate {
    * 验证必填元素
    */
   static required(value) {
-    debugger
     if (typeof value === 'number') {
       value = value.toString()
     } else if (typeof value === 'boolean') {
@@ -78,7 +77,7 @@ export default class Validate {
    * 验证两个输入框的内容是否相同
    */
   static equalTo(value, param) {
-    return this.optional(value) || value === that.scope.detail.value[param]
+    return this.optional(value) || value === param
   }
   /**
    * 验证是否包含某个值

@@ -36,7 +36,7 @@
   </view>
 
   <view class="weui-btn-area">
-    <button class="weui-btn" type="primary" bindtap="submit">退出账号</button>
+    <button class="weui-btn" type="primary" @tap="logout">退出账号</button>
   </view>
 </template>
 <script>
@@ -55,6 +55,19 @@ export default class Setting extends wepy.page {
       ctx.userInfo = res
       ctx.$apply()
     })
+  }
+
+  async logout () {
+    const json = await api.logout({
+      data: this.input
+    })
+    if (json.success) {
+      wx.navigateTo({
+        url: '/pages/user/login'
+      })
+    } else {
+      Tips.error(json.msg)
+    }
   }
 }
 </script>

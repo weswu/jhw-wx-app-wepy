@@ -245,7 +245,7 @@
 .WIndex {
   .header {
     position: relative;
-    background: url(http://app.jihui88.com/static/img/user-bg.jpg) no-repeat;
+    background: url(/images/user-bg.jpg) no-repeat;
     background-size: cover;
     overflow: hidden;
     color: #fff;

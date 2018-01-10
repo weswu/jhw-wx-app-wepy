@@ -15,6 +15,7 @@ const setEnterprise = (params) => http(params, host + '/rest/api/enterprise/deta
 const getMessage = (params) => http(params, host + '/rest/api/message/list')
 // 设置
 const password = (params) => http(params, host + '/rest/api/user/detail/password')
+const logout = (params) => http(params, host + '/rest/api/user/logout')
 
 
 
@@ -24,5 +25,7 @@ module.exports = {
   login,
   getUser,
   getMessage,
-  password
+  // 设置
+  password,
+  logout
 }

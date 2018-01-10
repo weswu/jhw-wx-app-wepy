@@ -1,75 +1,73 @@
 <template>
-  <view class="WUser">
-    <!--性别-->
-    <view class="weui-cell weui-cells_after-title">
-      <view class="weui-cell__hd">
-        <view class="weui-label">称呼</view>
-      </view>
-      <view class="weui-cell__bd">
-        <view class="row">
-          <radio-group class="radio-group row" @change="radio" id="sex">
-            <label class="radio row">
-              <radio value="00" checked="{{input.sex == '00'}}"/>
-              先生
-            </label>
-            <label class="radio ml20 row">
-              <radio value="01" checked="{{input.sex == '01'}}"/>
-              女士
-            </label>
-          </radio-group>
-        </view>
+  <!--性别-->
+  <view class="weui-cell weui-cells_in-small-appmsg">
+    <view class="weui-cell__hd">
+      <view class="weui-label">称呼</view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class="row">
+        <radio-group class="radio-group row" @change="radio" id="sex">
+          <label class="radio row">
+            <radio value="00" checked="{{input.sex == '00'}}"/>
+            先生
+          </label>
+          <label class="radio ml20 row">
+            <radio value="01" checked="{{input.sex == '01'}}"/>
+            女士
+          </label>
+        </radio-group>
       </view>
     </view>
-    <view class="weui-cells weui-cells_after-title">
-      <WInput>
-        <view slot="title" class="weui-label">姓名*</view>
-        <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">职务*</view>
-        <input slot="input" class="weui-input" placeholder="请输入职务" @input="input" id="position" value="{{input.position}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">手机</view>
-        <input slot="input" class="weui-input" placeholder="请输入手机" @input="input" id="cellphone" value="{{input.cellphone}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">电话*</view>
-        <input slot="input" class="weui-input" placeholder="请输入电话" @input="input" id="phone" value="{{input.phone}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">传真</view>
-        <input slot="input" class="weui-input" placeholder="请输入传真" @input="input" id="fax" value="{{input.fax}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">地址</view>
-        <input slot="input" class="weui-input" placeholder="请输入详细地址" @input="input" id="address" value="{{input.address}}"/>
-      </WInput>
-    </view>
+  </view>
+  <view class="weui-cells weui-cells_after-title">
+    <WInput>
+      <view slot="title" class="weui-label">姓名*</view>
+      <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">职务*</view>
+      <input slot="input" class="weui-input" placeholder="请输入职务" @input="input" id="position" value="{{input.position}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">手机</view>
+      <input slot="input" class="weui-input" placeholder="请输入手机" @input="input" id="cellphone" value="{{input.cellphone}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">电话*</view>
+      <input slot="input" class="weui-input" placeholder="请输入电话" @input="input" id="phone" value="{{input.phone}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">传真</view>
+      <input slot="input" class="weui-input" placeholder="请输入传真" @input="input" id="fax" value="{{input.fax}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">地址</view>
+      <input slot="input" class="weui-input" placeholder="请输入详细地址" @input="input" id="address" value="{{input.address}}"/>
+    </WInput>
+  </view>
 
-    <view class="weui-btn-area">
-      <button class="weui-btn mini-btn" type="default" size="mini" @tap="goto('map')">地图定位</button>
-    </view>
-    <view class="weui-cells__tips">Email: zjut_wyj2@163.com</view>
-    <view class="weui-cells__title"></view>
-    <view class="weui-cells weui-cells_after-title">
-      <WInput>
-        <view slot="title" class="weui-label">QQ</view>
-        <input slot="input" class="weui-input" placeholder="请输入QQ" @input="input" id="qq" value="{{input.qq}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">邮编</view>
-        <input slot="input" class="weui-input" placeholder="请输入邮编" @input="input" id="zipcode" value="{{input.zipcode}}"/>
-      </WInput>
-      <WInput>
-        <view slot="title" class="weui-label">网址</view>
-        <input slot="input" class="weui-input" placeholder="请输入网址" @input="input" id="url" value="{{input.url}}"/>
-      </WInput>
-    </view>
+  <view class="weui-btn-area">
+    <button class="weui-btn mini-btn" type="default" size="mini" @tap="goto('map')">地图定位</button>
+  </view>
+  <view class="weui-cells__tips">Email: zjut_wyj2@163.com</view>
+  <view class="weui-cells__title"></view>
+  <view class="weui-cells weui-cells_after-title">
+    <WInput>
+      <view slot="title" class="weui-label">QQ</view>
+      <input slot="input" class="weui-input" placeholder="请输入QQ" @input="input" id="qq" value="{{input.qq}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">邮编</view>
+      <input slot="input" class="weui-input" placeholder="请输入邮编" @input="input" id="zipcode" value="{{input.zipcode}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">网址</view>
+      <input slot="input" class="weui-input" placeholder="请输入网址" @input="input" id="url" value="{{input.url}}"/>
+    </WInput>
+  </view>
 
-    <view class="weui-btn-area">
-        <button class="weui-btn" type="primary" bindtap="submit">提交</button>
-    </view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" bindtap="submit">提交</button>
   </view>
 </template>
 

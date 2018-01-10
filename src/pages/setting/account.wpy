@@ -5,14 +5,14 @@
     </view>
   </view>
   <view class="weui-cells weui-cells_in-small-appmsg">
-    <navigator url="/account" class="weui-cell weui-cell_access">
+    <view class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">手机号</view>
       <view class="weui-cell__ft">{{user.cellphone}}</view>
-    </navigator>
-    <navigator url="" class="weui-cell weui-cell_access">
+    </view>
+    <view class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">邮件地址</view>
       <view class="weui-cell__ft">{{user.email}}</view>
-    </navigator>
+    </view>
   </view>
 
   <view class="weui-cell weui-cell-border-top">
@@ -31,7 +31,7 @@
 import wepy from 'wepy';
 export default class Account extends wepy.page {
   config = {
-    navigationBarTitleText: '账号与安全',
+    navigationBarTitleText: '关于机汇网',
   }
   components = {}
 
