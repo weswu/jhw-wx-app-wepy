@@ -1,0 +1,21 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <navigator url="faq1" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">如何启动全网营销系统</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Faq extends wepy.page {
+  config = {
+    navigationBarTitleText: 'FAQ',
+  }
+  components = {}
+
+  data = {}
+
+  onLoad() {}
+}
+</script>

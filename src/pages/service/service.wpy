@@ -1,0 +1,52 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <navigator url="faq" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">常见问题</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <view class="weui-cell weui-cell_access" @tap="tel">
+      <view class="weui-cell__bd">我的客服</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">{{employee.emp_mobile_phone || '400-7111-011'}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">咨询QQ</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">2594969476</view>
+    </view>
+    <navigator url="/pages/setting/serviceFeedback" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">服务反馈</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+export default class Service extends wepy.page {
+  config = {
+    navigationBarTitleText: '服务中心',
+  }
+  components = {}
+
+  data = {
+    employee: {}
+  }
+
+  async onLoad() {
+    this.get()
+  }
+
+  async get() {
+    const json = await api.getEmployee()
+    if (json.success) {
+      this.employee = json.ttributes.data[0] || {}
+      this.$apply();
+    }
+  }
+
+  tel () {
+    wx.makePhoneCall({
+      phoneNumber: this.employee.emp_mobile_phone || '400-7111-011'
+    })
+  }
+}
+</script>

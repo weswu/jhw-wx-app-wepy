@@ -42,7 +42,7 @@
 
     <view class="weui-grids">
         <block wx:for="{{grids}}" wx:key="*this">
-            <navigator url="" class="weui-grid" hover-class="weui-grid_active">
+            <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
                 <i class="iconfont icon-{{item.icon}}" style="color:{{item.color}}"></i>
                 <view class="weui-grid__label">{{item.name}}</view>
             </navigator>
@@ -121,7 +121,7 @@
         {url: '#/distribution/member', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
         {url: '#/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
         {url: '#/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
-        {url: '#/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},
+        {url: '/pages/service/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},
         {url: '#/seo_help', name: 'SEO帮助', icon: 'seo', color: '#5bba19'},
         {url: '#/serivepay/payment', name: '服务缴费', icon: 'jiaofei', color: '#FF6000'},
         {url: '#/serive_progress', name: '服务进度', icon: 'f12', color: '#8da5cb'},
@@ -245,7 +245,7 @@
 .WIndex {
   .header {
     position: relative;
-    background: url(/images/user-bg.jpg) no-repeat;
+    background: url(http://app.jihui88.com/static/img/user-bg.jpg) no-repeat;
     background-size: cover;
     overflow: hidden;
     color: #fff;

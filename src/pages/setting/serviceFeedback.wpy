@@ -1,0 +1,113 @@
+<template>
+  <Tips />
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <WInput>
+      <view slot="title" class="weui-label">主题</view>
+      <input slot="input" class="weui-input" placeholder="请输入主题" @input="input" id="fdbk_subject64" value="{{input.fdbk_subject64}}"/>
+    </WInput>
+    <!--单选-->
+    <view class="weui-cell weui-cells_after-title">
+      <view class="weui-cell__hd">
+        <view class="weui-label">反馈类型</view>
+      </view>
+      <view class="weui-cell__bd">
+        <radio-group class="radio-group" @change="radio" id="fdbk_type">
+          <label class="radio" wx:for="{{list}}" wx:key="item.value">
+            <radio value="{{item.value}}" checked="{{input.fdbk_type == item.value}}"/>
+            {{item.text}}
+          </label>
+        </radio-group>
+      </view>
+    </view>
+    <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="请描述您的反馈内容，并附带上您的手机号码，我们好及时对接您提的反馈内容。"
+                @input="input" id="fdbk_intro1k" value="{{input.fdbk_intro1k}}" style="height: 80px" />
+            </view>
+        </view>
+    </view>
+  </view>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" bindtap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips';
+import WInput from '@/components/weui/input'
+import input from '@/mixins/input'
+export default class ServiceFeedback extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的服务反馈'
+  }
+
+  components = {
+    Tips: FormTips,
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    input: {
+      fdbk_type: '2'
+    },
+    list: [
+      { text: '购买', value: '1' },
+      { text: '服务', value: '2' },
+      { text: '投诉', value: '3' },
+      { text: '表扬', value: '4' },
+      { text: '建议', value: '5' },
+      { text: '其他', value: '6' }
+    ]
+  }
+
+  async onLoad () {}
+
+  methods = {}
+
+  validate() {
+    const rules = [
+      {
+        value: this.input.fdbk_subject64,
+        method: 'required',
+        message: '主题不能为空'
+      },
+      {
+        value: this.input.fdbk_intro1k,
+        method: 'required',
+        message: '反馈内容不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
+  async submit () {
+    if (!this.validate()) {
+      return;
+    }
+    let data = {
+      card_no: this.$parent.globalData.user.username,
+      fdbk_subject64: this.input.fdbk_subject64 + '[小程序]',
+      fdbk_intro1k: this.input.fdbk_intro1k,
+      fdbk_type: this.input.fdbk_type
+    }
+    const json = await api.serviceFeedback({
+      data: data,
+      method: 'post'
+    })
+    this.input.fdbk_subject64 = ''
+    if (json.status !== 'ERROR') {
+      Tips.success("反馈成功");
+    } else {
+      Tips.error(json.err_code)
+    }
+  }
+
+}
+</script>

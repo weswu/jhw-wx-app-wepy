@@ -1,0 +1,44 @@
+<template>
+  <view class="weui-media-box weui-media-box_text">
+      <view class="weui-media-box__title weui-media-box__title_in-text">{{title}}</view>
+      <view class="weui-media-box__desc">{{content}}</view>
+      <view class="weui-media-box__info">
+          <view class="weui-media-box__info__meta">{{time}}</view>
+      </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Item extends wepy.component {
+    params = {
+      id: {},
+      title: {},
+      content: {},
+      pic: {},
+      time: {}
+    }
+    data = {}
+
+    events = {
+      'index-broadcast': (...args) => {
+        let $event = args[args.length - 1]
+        console.log(`${this.$name} receive ${$event.name} from ${$event.source.name}`)
+      }
+    }
+
+    methods = {
+      tap () {
+        // this.num = this.num + 1
+        console.log(this.$name + ' tap')
+      },
+      add () {
+        let len = this.list.length
+        this.list.push({id: len + 1, title: 'title_' + len})
+      }
+    }
+
+    onLoad () {
+    }
+  }
+</script>

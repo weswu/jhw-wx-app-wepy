@@ -1,0 +1,229 @@
+<template>
+  <view class="weui-article sale">
+      <view class="weui-article__section">
+          <view class="weui-article__title">展示版网站：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>1.域名：.com/.com.cn/.net/.net.cn/.cn（任选一种）。</view>
+                <view>2.网站栏目自由选择，没有限制，更支持2级菜单目录。</view>
+                <view>3.设计师量身定制，全原创设计。采用最新div+css 程序。</view>
+                <view>4.独立后台，方便管理。更有手机版后台app随时随地了解网站动态！</view>
+                <view>5.微信公众账号注册，公众号菜单目录开发。</view>
+                <view>6.公众号粉丝管理标签,产品二维码。</view>
+                <view>7.微传单制作账号提供。</view>
+                <view>8.全网营销课程培训。</view>
+                <view>9.三网合一，同一后台、同一数据、无缝对接。</view>
+                <view>10.后台自带seo功能50种，每页设置不同关键词。</view>
+                <view>11.优质云服务器(国内/国外任选）没有容量限制。</view>
+                <view>12.精准的经销商信息200个。</view>
+                <view>13.30000个经销商粉丝的微信朋友圈推送图文信息一条。（6个微信号）</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">案例观赏：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view><text class="primary">http://www.ykxingan.com/</text> 兴安工贸</view>
+                <view><text class="primary">http://hwjdoors.com/</text> 豪万佳</view>
+                <view><text class="primary">http://www.chinahtzy.com/</text> 精武门</view>
+                <view><text class="primary">http://www.ykjldoors.com/</text> 金利门业</view>
+                <view><text class="primary">http://muzhizun.com/</text> 木至尊</view>
+                <view>更多设计，我们为您定制。。。。。</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">手机官网/移动官网：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>1.与pc官网同一域名，同一数据，同一后台，3网合一。</view>
+                <view>2.自动识别各式设备。</view>
+                <view>3.直接拨打电话，发短信，导航。</view>
+                <view>4.生成桌面APP让用户更方便。</view>
+                <view>5.HTML5交互，大图触摸滑动，页面动态交互。</view>
+                <view>6.设计师量身定制，全原创设计。</view>
+                <view>7.手机百度收录，增加品牌曝光渠道。</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">案例观赏：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view><text class="primary">http://m.xolmmc.com</text>  新欧   铝木门窗</view>
+                <view><text class="primary">http://m.hwjdoors.com</text>  豪万佳  门业</view>
+                <view><text class="primary">http://m.cnhanmu.com</text>  韩姆    锅业</view>
+                <view><text class="primary">http://m.meixinchina.com</text>  美信  门业</view>
+                <view><text class="primary">http://m.ykfuchuntang.com</text>  福春堂  药业 </view>
+                <view><text class="primary">http://m.chenpindoors.com</text>  臣品</view>
+                <view>更多设计，我们为您定制。。。。。</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">品牌版网站：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>1.域名：.com/.com.cn/.net/.net.cn/.cn（任选一种）。</view>
+                <view>2.网站栏目自由选择，没有限制，更支持2级菜单目录。</view>
+                <view>3.企业文化拍摄。</view>
+                <view>4.Html5设计，凸显企业形象，产品信息。采用最新div+css 程序。</view>
+                <view>5.独立后台，方便管理。更有手机版后台app随时随地了解网站动态！</view>
+                <view>6.微信公众账号注册，公众号菜单目录开发。</view>
+                <view>7.公众号粉丝管理标签, 产品二维码。</view>
+                <view>8.微传单制作账号提供。</view>
+                <view>9.全网营销课程培训。可上门培训！</view>
+                <view>10.三网合一，同一后台、同一数据、无缝对接。</view>
+                <view> 11.后台自带seo功能50种，每页设置不同关键词。</view>
+                <view>12.优质云服务器(国内/国外任选）没有容量限制。</view>
+                <view>13.精准的经销商信息200个。</view>
+                <view>14.30000个经销商粉丝的微信朋友圈推送图文信息一条。（6个微信号）</view>
+                <view>15.上门网广告抵用券2000元</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">案例观赏：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view><text class="primary">http://guqidoors.com/</text> 古奇木门</view>
+                <view><text class="primary">http://www.zjhuimei.com/</text> 惠美集团</view>
+                <view><text class="primary">http://www.aimdadoors.com/</text> 佳迪</view>
+                <view>更多设计，我们为您定制。。。。。</view>
+              </view>
+          </view>
+      </view>
+
+
+      <view class="weui-flex weui-flex-one">
+          <view><view class="placeholder placeholder_p">展示版</view></view>
+          <view class="weui-flex__item weui-flex__item_bor">
+            <view class="placeholder">
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">时间</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">PC站</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">手机/微站</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">同步站（3网合一）</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">1年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">8800元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">5600元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">8800元</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">2年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">10500元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">6500元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">10500元</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">3年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">11800元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">6600元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">11800元</view></view>
+              </view>
+            </view>
+          </view>
+      </view>
+
+      <view class="weui-flex">
+          <view><view class="placeholder placeholder_p">品牌版</view></view>
+          <view class="weui-flex__item weui-flex__item_bor">
+            <view class="placeholder">
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">时间</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">PC站</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">手机/微站</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">同步站（3网合一）</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">1年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">15800元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">5600元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">15800元</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">2年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">17800元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">6500元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">17900元</view></view>
+              </view>
+              <view class="weui-flex">
+                  <view class="weui-flex__item"><view class="placeholder">3年</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">18800元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">6600元</view></view>
+                  <view class="weui-flex__item"><view class="placeholder">18800元</view></view>
+              </view>
+            </view>
+          </view>
+      </view>
+
+      <view class="weui-article__section">
+          <view class="weui-article__title">备注：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>以上优惠活动以款项到账为准，签单后3日内未打款，活动失效！</view>
+                <view>本活动自2016.11.1---2016.11.30止</view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">公司账号：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>开户：永康市东方五金电子商务有限公司</view>
+                <view>开户银行：中国农业银行永康支行金城分理处</view>
+                <view>银行帐户：1962 5501 0400 0664 7 </view>
+              </view>
+          </view>
+      </view>
+      <view class="weui-article__section">
+          <view class="weui-article__title">私人账号：</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view>开户：中国农业银行</view>
+                <view>卡号：6228 4803 8012 5934 410 </view>
+                <view>姓名：陈春芳</view>
+              </view>
+          </view>
+      </view>
+  </view>
+
+</template>
+<script>
+import wepy from 'wepy';
+export default class Sale extends wepy.page {
+  config = {
+    navigationBarTitleText: '门业客户12月促销',
+  }
+  components = {}
+
+  data = {}
+}
+</script>
+<style>
+  .sale .weui-article__title{
+    color: #000;
+    font-weight: 700;
+  }
+  .sale .weui-article__p{
+    color: #666;line-height: 1.7;font-size: 12px;
+  }
+  .sale .weui-flex .weui-flex .placeholder,.placeholder_p{
+    padding:5rpx 10rpx;
+
+  }
+  .sale .weui-flex  .weui-flex .weui-flex__item {
+    border-left:1px solid #ddd;
+    border-top:1px solid #ddd;
+  }
+  .weui-flex__item_bor{
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+  }
+  .weui-flex-one{
+    margin-bottom: 10px
+  }
+</style>

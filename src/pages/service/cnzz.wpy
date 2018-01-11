@@ -1,0 +1,76 @@
+<template>
+  <Loading :init.sync="init"/>
+  <view class="container">
+    <view class="logo">
+      <image mode="widthFix" src="http://img.easthardware.com/upload/j/j2/jihui/picture/2015/12/10/d3f9136d-9738-46d0-a6dc-59b78dd90d44.png" alt="">
+    </view>
+    <view class="logo_txt">CNZZ</view>
+    <view class="down_btn">
+      <view @tap="goto" class="ios">ios版</view>
+      <view @tap="down" class="android">安卓版</view>
+    </view>
+    <view class="chaxun">
+      <view><i class="iconfont icon-tishi"></i>
+      暂无法接入第三方统计，请下载统计app</view>
+      查询登录帐号请联系：<text @tap="tel">4007111011</text>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '@/utils/Tips'
+import Loading from "@/components/common/loading"
+export default class Cnzz extends wepy.page {
+  config = {
+    navigationBarTitleText: '流量分析'
+  }
+  components = {
+    Loading
+  }
+
+  data = {
+    init: false
+  }
+
+  goto () {
+    wx.navigateTo({
+      url: '/pages/setting/webView?src=https://itunes.apple.com/cn/app/cnzz/id710500922?mt=8'
+    })
+  }
+
+  down () {
+    var ctx = this
+    this.init = true
+    wx.downloadFile({
+      url: 'http://demo.ykit.net/wytx/cnzz.apk', //仅为示例，并非真实的资源
+      success: function(res) {
+        // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+        if (res.statusCode === 200) {
+          ctx.init = false
+          ctx.$apply()
+            wx.saveFile({
+              tempFilePath: res.tempFilePath,
+              success: function(res) {
+                tip.success('保存成功');
+              }
+            })
+        }
+      }
+    })
+  }
+
+  tel () {
+    wx.makePhoneCall({
+      phoneNumber: '400-7111-011'
+    })
+  }
+}
+</script>
+<style>
+.container {background: #fff;height: 100%}
+.container image{display:block;width:100%;}
+.logo{position:relative;overflow:hidden;margin:0 auto;width:5rem;border-radius:1rem;background-color:#fff}
+.down_btn view{display:block;margin:1rem auto;width:8rem;height:2.5rem;border-radius:.5rem;background:#3f3f3f;color:#fff;text-align:center;font-size:1rem;line-height:2.5rem}
+.logo_txt{margin-top:.3rem;text-align:center;font-size:.8rem}
+.chaxun {text-align: center;margin-top: 1rem;color: #999;font-size: .7rem;}
+</style>

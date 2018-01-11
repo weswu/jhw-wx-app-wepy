@@ -11,16 +11,24 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/service/cnzz',
+      'pages/index/index',
+      'pages/service/service',
+      'pages/service/faq',
+      'pages/service/faq1',
       'pages/setting/setting',
+      'pages/setting/sale',
+      'pages/setting/logList',
+      'pages/setting/serviceFeedback',
       'pages/setting/about',
       'pages/setting/appLog',
       'pages/setting/password',
       'pages/setting/account',
+      'pages/setting/webView',
       'pages/user/enterprise',
       'pages/user/map',
       'pages/user/user',
       'pages/user/login',
-      'pages/index/index',
       'pages/message/message',
       'pages/index/data',
       'pages/index/my'
@@ -29,9 +37,9 @@ export default class extends wepy.app {
       backgroundColor: '#efefef',
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '全网营销，网站、手机网站、微网站、微商城、微传单等管理，机汇网',
+      navigationBarTitleText: '全网营销云',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: false
+      enablePullDownRefresh: true
     },
     "tabBar": {
       "color": "#9b9b9b",
