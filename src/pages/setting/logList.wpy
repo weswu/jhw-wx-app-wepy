@@ -8,8 +8,8 @@
 
     </view>
   </view>
-  <!--加载更多时动画-->
-  <BottomLoadMore :show.sync="showLoading" message="正在加载"></BottomLoadMore>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
 </template>
 
 <script>
@@ -17,14 +17,14 @@ import wepy from 'wepy'
 import api from '@/api/api'
 import tip from '@/utils/Tips'
 import Item from '@/components/weui/item'
-import BottomLoadMore from "@/components/common/bottomLoadMore"
+import Loadmore from '@/components/weui/loadmore'
 export default class LogList extends wepy.page {
   config = {
     navigationBarTitleText: '操作记录'
   }
   components = {
     Item,
-    BottomLoadMore
+    Loadmore
   }
   data = {
     list: [

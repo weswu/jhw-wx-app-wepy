@@ -21,6 +21,9 @@ const getLog = (params) => http(params, host + '/rest/api/log/list')
 const serviceFeedback = (params) => http(params, 'http://crmyun.jihui88.com:9500/api/jihuifeedback.php')
 // 服务
 
+// 相册
+const albumList = (params) => http(params, host + '/rest/api/album/attr/list/' + params.id)
+const albumCategory = (params) => http(params, host + '/rest/api/album/list?pageSize=100')
 
 
 module.exports = {
@@ -34,5 +37,8 @@ module.exports = {
   password,
   logout,
   getLog,
-  serviceFeedback
+  serviceFeedback,
+  // 相册
+  albumList,
+  albumCategory
 }

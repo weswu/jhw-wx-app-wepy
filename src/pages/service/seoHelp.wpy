@@ -1,0 +1,54 @@
+<template>
+  <view class="weui-article seo-help">
+      <view class="weui-article__section">
+          <view class="weui-article__title">百度排名是怎样生成的？</view>
+          <view class="weui-article__section">
+              <view class="weui-article__p">
+                <view class="text">百度到底怎么给网站进行排名的？影响网站排名的因素到底有哪些？这些因素的比例是怎么算的？百度又是怎么分配这些因素的？</view>
+                <view class="text">相信对SEO有一定了解的人都知道影响网站排名最重要的几个因素：内容原创度、更新频率、内部链接、外部链接等等，但百度到底怎么给这些因素打分的呢？相信很多站长朋友并不了解这点，下文，我们将用百分比对其进行一个简单的切分。</view>
+                <view class="text">网络营销培训中讲过，如果网站是一块蛋糕，那么这个蛋糕包含的成分有：域名年限、网页布局、访问速度、网站内容、更新频率、内部链接、外部链接、网站流量，如果百度是一把小刀，那么它在切分这块蛋糕时，划分的方法是：域名年限20%、网页布局5%、访问速度5%、内容和更新一起占10%、内链10%、流量10%、外链20%、其他20%。</view>
+                <hr style="background: none;">
+                <view class="title">1、域名年限</view>
+                <view class="text">域名年限对网站非常重要，将两个收录、外链、访问速度等等不相伯仲的网站一起放在百度面前，百度一定会将域名年限更久的网站排在前面。这或许与中国传统的敬老爱幼美德有一种关系，但百度是敬老的，如果你的域名很老，而且没有出现过违规被罚的情况，对你的排名是非常有利的。</view>
+                <view class="title">2、网页布局和访问速度</view>
+                <view class="text">网页布局的好与坏、访问速度的快与慢，对用户体验来说是非常重要的，其实蜘蛛也是普通访客的一员，它初来乍到时，如果享受到了很好的体验，相信它不会吝惜对你的赞誉之情。</view>
+                <view class="title">3、内容更新</view>
+                <view class="text">一个好的网站，需要大量原创内容持续不断的补充，只有这样，蜘蛛才能不辞辛劳的反复来爬，用户也才有回访的理由。保持内容更新，保证更新的质量和数量，以及更新的频率，对网站的排名，以及排名的稳定很有帮助。</view>
+                <view class="title">4、内部链接</view>
+                <view class="text">链接分为三种：导出链接、导入链接、内部链接。内部链接是网站本身的桥梁，对网站非常重要，它决定着用户或搜索引擎能否顺畅的访问您的网站。内链一定要保持通畅，让蜘蛛可以顺利的爬满你的整个网站。</view>
+                <view class="title">5、外部链接</view>
+                <view class="text">内容为王，外链为皇，外链的重要性可见一斑，但外链并非越多越好，质量很重要，不要使用群发链接，也不要购买黑链，使用正规的方法为自己的网站慢慢增加链接。</view>
+                <view class="title">6、网站的流量 </view>
+                <view class="text">流量对网站的重要性不言而喻，没有访客的网站本身也不存在价值，至于怎么将网站的流量做上去，做好网页设计、网站内容、用户体验，然后将网站的排名做上去，相信流量不是问题。</view>
+              </view>
+          </view>
+      </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class SeoHelp extends wepy.page {
+  config = {
+    navigationBarTitleText: 'SEO帮助',
+  }
+  components = {}
+
+  data = {}
+}
+</script>
+<style>
+  .seo-help .weui-article__title{
+    color: #000;
+    font-size: 16px;
+  }
+  .seo-help .weui-article__p{
+    color: #666;line-height: 1.7;font-size: 12px;
+  }
+  .seo-help .weui-article__p .text{
+    text-indent: 1.2rem;
+  }
+  .seo-help .weui-article__p .title{
+    color: #000;
+  }
+</style>

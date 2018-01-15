@@ -1,7 +1,7 @@
 <template>
   <List :list="list"></List>
-  <!--加载更多时动画-->
-  <BottomLoadMore :show.sync="showLoading" message="正在加载"></BottomLoadMore>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
 </template>
 
 <script>
@@ -9,21 +9,21 @@ import wepy from 'wepy'
 import api from '@/api/api'
 import tip from '@/utils/Tips'
 import List from '@/components/list'
-import BottomLoadMore from "@/components/common/bottomLoadMore"
+import Loadmore from '@/components/weui/loadmore'
 export default class Message extends wepy.page {
   config = {
     navigationBarTitleText: '网站询盘'
   }
   components = {
     List,
-    BottomLoadMore
+    Loadmore
   }
   data = {
     list: [],
     page: 1,
     pageSize: 10,
     count: 0,
-    showLoading: true
+    more: { loading: true }
   }
   onLoad() {
     this.getMessage();

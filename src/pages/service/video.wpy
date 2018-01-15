@@ -1,0 +1,40 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">1、后台界面以及网站发布</view>
+      <view class="weui-cell__ft"></view>
+    </view>
+    <video style="width:100%" src="http://ugcbsy.qq.com/flv/103/232/o0177hpsoig.mp4?sdtfrom=v1010&guid=23eae4deb40d454b17acc6b8ecb31e23&vkey=685CAE8A73C7EBBEF0FAEB91F563C79CFCDF5DAAEC449E2B4CDEC9966EAE375A0C599239C87613DDC25219B4306CA1A906B09783E3A9F3EDC8FAE7F0EB6BD5A6E60621E5EE5B94948F01E9FF911C93DD0E3BA52E069ACF025D94DCCA19BF06DA7EE759095974661D1FFA63F8AD43A44D7D86F7EC1AC0542B" controls></video>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">2、图片管理</view>
+      <view class="weui-cell__ft"></view>
+    </view>
+    <video style="width:100%" src="http://ugcsjy.qq.com/flv/194/85/a0177x9hr3g.p702.1.mp4?sdtfrom=v1010&guid=23eae4deb40d454b17acc6b8ecb31e23&vkey=E35678CF0839164BBF5CAB4B76984098595C56587269BC9E2204D30501E2758C1FF758E4A69321B7874775ACC33F761C256BEC5DC76020E0F5F7FAE55E72B68F349107653D4D41822D6466755CE349B608F7D0B8D7525FDC667BB61DA8037873A0CEC8FE00FEF900BC09631367AF33A76607DB8D0A54B2AB" controls></video>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">3、资料管理</view>
+      <view class="weui-cell__ft"></view>
+    </view>
+    <video style="width:100%" src="http://ugcdl.video.gtimg.com/flv/98/146/v0177b72sz5.mp4?sdtfrom=v1010&guid=23eae4deb40d454b17acc6b8ecb31e23&vkey=C00CAB2E836B8BA4810F8479B133420CCE5210BFB38445786C495D3DFBDC12D97A1E8304576C2EA4B4B204BC1EDABD3842D289FC28AA7A245DF4B5539131A45677388991F1B65C4BF14F723696D3435F56DAB82393D4F5EBCE23AFBFD25E35FCE7F8E4ED2F74643C627FAC340E5A75661BC1FD9C058B106D" controls></video>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">4、产品管理</view>
+      <view class="weui-cell__ft"></view>
+    </view>
+    <video style="width:100%" src="http://ugcbsy.qq.com/flv/3/184/z0177tyqxlm.mp4?sdtfrom=v1010&guid=23eae4deb40d454b17acc6b8ecb31e23&vkey=0ABB9B1A1D20AB83718708BF4090A4F907A6F69E113E73F0D243A06DA80DF03E2AF87BC4310B1916B0E6330E30FDF89831134111DC13EFBF0602F716A0ADF696B94881706581E45A47E559BE3CDE7190D3F1E235A8AB3AB1BF311B72805AA3D4FBE11D730946DF8CFB7AB208CE75A56D3A98836261F12850" controls></video>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Video extends wepy.page {
+  config = {
+    navigationBarTitleText: '电脑端后台使用教程',
+  }
+  components = {}
+
+  data = {}
+
+  onLoad () {
+
+  }
+}
+</script>

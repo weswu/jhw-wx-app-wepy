@@ -1,0 +1,508 @@
+<template>
+  <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_select">
+          <view class="weui-cell__hd weui-cell__hd_in-select-after">
+              <view class="weui-label">相册分类：</view>
+          </view>
+          <view class="weui-cell__bd">
+              <picker bindchange="cateChange" value="{{cateIndex}}" range="{{albumCategory}}">
+                  <view class="weui-select weui-select_in-select-after">{{albumCategory[cateIndex]}}</view>
+              </picker>
+          </view>
+      </view>
+  </view>
+  <view class="weui-uploader__files" id="uploaderFiles">
+      <block wx:for="{{list}}" wx:key="*this">
+          <view class="weui-uploader__file" @tap="previewImage" id="{{item.serverPath}}">
+              <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.serverPath}}" mode="aspectFill" />
+          </view>
+      </block>
+  </view>
+
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import tips from '@/utils/Tips'
+import Loadmore from '@/components/weui/loadmore'
+export default class Album extends wepy.page {
+  config = {
+    navigationBarTitleText: '相册',
+  }
+  components = {
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    page: 1,
+    pageSize: 20,
+    more: { loading: true },
+    id: 'all',
+    cate: [],
+    albumCategory: ["中国", "美国", "英国"],
+    cateIndex: 0
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    this.list = [
+      {
+      attId: "Attach_0000000000000000001435029",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "125.120.87.124",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//12//22/04787fc9-b6b2-4708-87a2-16b8641fe5bf.jpg",
+      filename: "路人头像3.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1513937081215,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001435029"
+      },
+      {
+      attId: "Attach_0000000000000000001404771",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "10.30.197.254",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/09/18/b9662d74-54d5-4ebc-873a-0262b0bc4616.png",
+      filename: "内页1.png",
+      filedesc: null,
+      content: null,
+      uploadTime: 1505723416775,
+      technicView: null,
+      sort: "26",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001404771"
+      },
+      {
+      attId: "Attach_0000000000000000001404767",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "10.30.197.254",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/09/18/b933b182-f6e5-4eff-8ad5-7331844c7de4.png",
+      filename: "内页2.png",
+      filedesc: null,
+      content: null,
+      uploadTime: 1505723366712,
+      technicView: null,
+      sort: "25",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001404767"
+      },
+      {
+      attId: "Attach_0000000000000000001403056",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "125.120.86.154",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//09//15/cb9ea426-772f-4667-afc3-18ac954008d1.jpg",
+      filename: "路人超能2.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1505440558943,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001403056"
+      },
+      {
+      attId: "Attach_0000000000000000001392182",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000064618",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "10.30.197.254",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/08/24/65fe9c39-0526-47b3-99aa-9bf60df9fd9c.jpg",
+      filename: "11215847_980x1200_0.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1503566725463,
+      technicView: null,
+      sort: "24",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001392182"
+      },
+      {
+      attId: "Attach_0000000000000000001391538",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "183.159.177.57",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/28/1dd2e74e-fab8-4a04-8773-559ad5824fe3.jpg",
+      filename: "路人头像3.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1503382354821,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001391538"
+      },
+      {
+      attId: "Attach_0000000000000000001384336",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "36.24.223.42",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//08//04/69521af9-edbf-4c83-b615-03d53f64c252.png",
+      filename: "9e4246d9-7150-49f0-af69-237598418759.png",
+      filedesc: null,
+      content: null,
+      uploadTime: 1501815560527,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001384336"
+      },
+      {
+      attId: "Attach_0000000000000000001353022",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "125.120.83.147",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//06//01/94526c88-cd49-4a3f-a75e-b6a4d29b3378.jpg",
+      filename: "大逃杀.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1496300661556,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001353022"
+      },
+      {
+      attId: "Attach_0000000000000000001353018",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "125.120.83.147",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//06//01/2be1866b-8f23-42a3-b34e-2cc5cfcbe2f9.jpg",
+      filename: "timg.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1496296124960,
+      technicView: null,
+      sort: null,
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001353018"
+      },
+      {
+      attId: "Attach_0000000000000000001315661",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "10.30.197.254",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/03/15/75f37c3a-4081-4bf8-8c36-1dd83113fe50.jpg",
+      filename: "营业执照.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1489584749280,
+      technicView: null,
+      sort: "20",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001315661"
+      },
+      {
+      attId: "Attach_0000000000000000001315498",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "10.30.197.254",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/03/14/e8d2d692-b029-4b0d-aa6c-6dbf75276acb.jpg",
+      filename: "anchong.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1489453922482,
+      technicView: null,
+      sort: "18",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001315498"
+      },
+      {
+      attId: "Attach_0000000000000000001314391",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2017/03/07/0bf79a90-654f-4e5a-87f4-712d127f66a7.jpg",
+      filename: "certification.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1488847633068,
+      technicView: null,
+      sort: "15",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001314391"
+      },
+      {
+      attId: "Attach_0000000000000000001303966",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "183.159.178.166",
+      serverPath: "upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png",
+      filename: "mmexport1481012517871.png",
+      filedesc: null,
+      content: null,
+      uploadTime: 1483514373118,
+      technicView: null,
+      sort: "19",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001303966"
+      },
+      {
+      attId: "Attach_0000000000000000001292948",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/29/f0a83431-d266-492b-ae9a-230542065dc4.jpg",
+      filename: "示例图片_03.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1480383399862,
+      technicView: null,
+      sort: "14",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001292948"
+      },
+      {
+      attId: "Attach_0000000000000000001292944",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/29/2c6cf7a1-bda3-49f4-9a66-362208ffc51e.jpg",
+      filename: "2",
+      filedesc: null,
+      content: null,
+      uploadTime: 1480381969945,
+      technicView: null,
+      sort: "13",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001292944"
+      },
+      {
+      attId: "Attach_0000000000000000001292939",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/29/0f32da2e-d939-4d9d-830f-39702697ccb3.jpg",
+      filename: "a7e7a122-e58c-4089-bfd5-d838461b2b48.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1480381365564,
+      technicView: null,
+      sort: "12",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001292939"
+      },
+      {
+      attId: "Attach_0000000000000000001292922",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: null,
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/28/5cf7ab6b-847e-4cb7-a355-a32179778614.jpg",
+      filename: "02.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1480324821277,
+      technicView: null,
+      sort: "8",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001292922"
+      },
+      {
+      attId: "Attach_0000000000000000001292921",
+      userId: "User_000000000000000000000000082",
+      belongType: "AD",
+      belongId: "Album_00000000000000000000056104",
+      type: "01",
+      state: "01",
+      storeType: null,
+      serverIp: "127.0.1.1",
+      serverPath: "upload/g/g2/ggggfj/picture/2016/11/28/51505b2c-793b-48bc-9a64-72880ba83c09.jpg",
+      filename: "02.jpg",
+      filedesc: null,
+      content: null,
+      uploadTime: 1480324430622,
+      technicView: null,
+      sort: "7",
+      addTime: null,
+      updateTime: null,
+      id: "Attach_0000000000000000001292921"
+      }
+    ]
+
+    this.cate = [
+      {
+        albumId: "Album_00000000000000000000056104",
+        belongId: "Enterp_0000000000000000000000039",
+        enterpriseId: null,
+        blongType: null,
+        name: "产品批量上传",
+        adesc: null,
+        tag: null,
+        addTime: null,
+        userId: "User_000000000000000000000000082",
+        state: "01",
+        type: "05",
+        updateTime: null,
+        parentId: null,
+        id: "Album_00000000000000000000056104"
+      },
+      {
+        albumId: "Album_00000000000000000000074262",
+        belongId: "Enterp_0000000000000000000000039",
+        enterpriseId: null,
+        blongType: null,
+        name: "[系统]微信小程序Banner相册",
+        adesc: null,
+        tag: null,
+        addTime: 1502171403945,
+        userId: "User_000000000000000000000000082",
+        state: "01",
+        type: "11",
+        updateTime: null,
+        parentId: null,
+        id: "Album_00000000000000000000074262"
+      }
+    ]
+
+      const data = await api.albumList({
+        data: {
+          page: this.page,
+          pageSize: this.pageSize,
+          sort: 'att_id'
+        },
+        id: this.id
+      })
+      if (data.success) {
+        this.list = data.attributes.data
+        wx.setNavigationBarTitle({
+          title: '相册' + data.attributes.count
+        })
+      }
+
+      const json = await api.albumCategory()
+      if (json.success) {
+        this.cate = json.attributes.data
+      }
+
+  }
+
+  cateChange (e) {
+    this.cateIndex = e.detail.value
+  }
+
+  // 展示图片
+  previewImage (e) {
+    const src = 'http://img.jihui88.com/' + e.currentTarget.id
+    let urls = []
+    urls.push(src)
+    wx.previewImage({
+      current: src, // 当前显示图片的http链接
+      urls: urls // 需要预览的图片http链接列表
+    })
+  }
+
+}
+</script>
+
+<style lang="less">
+.weui-uploader__files{
+  width:748rpx;
+  margin: 0 auto;
+  padding: 10rpx 10rpx 0 10rpx;
+  overflow: hidden;
+  .weui-uploader__file{
+    margin: 0 6rpx 10rpx 6rpx;
+  }
+  .weui-uploader__img{
+    width: 170rpx;
+    height: 170rpx
+  }
+}
+
+</style>
