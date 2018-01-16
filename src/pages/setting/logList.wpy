@@ -72,7 +72,7 @@ export default class LogList extends wepy.page {
   }
 
   async get() {
-    const json = await api.getLog({
+    const json = await api.log({
       data: {
         page: this.page,
         pageSize: this.pageSize

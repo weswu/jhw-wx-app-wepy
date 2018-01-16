@@ -6,6 +6,9 @@
     <view class="weui-cell__bd">
       <slot name="input">默认表单</slot>
     </view>
+    <view class="weui-cell__ft">
+      <slot name="footer"></slot>
+    </view>
   </view>
 </template>
 <script>

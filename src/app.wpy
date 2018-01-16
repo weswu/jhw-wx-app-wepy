@@ -11,6 +11,8 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/product/productDetail',
+      'pages/product/product',
       'pages/album/album',
       'pages/service/video',
       'pages/index/index',
@@ -37,7 +39,7 @@ export default class extends wepy.app {
       'pages/index/my'
     ],
     window: {
-      backgroundColor: '#efefef',
+      backgroundColor: '#ffffff',
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '全网营销云',

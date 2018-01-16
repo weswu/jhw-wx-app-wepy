@@ -450,7 +450,7 @@ export default class Album extends wepy.page {
       }
     ]
 
-      const data = await api.albumList({
+      const data = await api.album({
         data: {
           page: this.page,
           pageSize: this.pageSize,

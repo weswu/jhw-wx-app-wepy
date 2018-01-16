@@ -1,0 +1,46 @@
+<template>
+  <view class="weui-navbar">
+      <block wx:for="{{tabs}}" wx:key="*this">
+          <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" @tap="tabClick">
+              <view class="weui-navbar__title">{{item}}</view>
+          </view>
+      </block>
+      <view class="weui-navbar__slider" style="left: {{sliderLeft}}px; transform: translateX({{sliderOffset}}px); -webkit-transform: translateX({{sliderOffset}}px);"></view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  export default class Tab extends wepy.component {
+    props = {
+      tabs: {},
+      activeIndex: {
+        default: 0
+      }
+    };
+
+    data = {
+      sliderOffset: 0,
+      sliderLeft: 0
+    };
+
+    onLoad () {
+      let ctx = this
+      wx.getSystemInfo({
+        success: function(res) {
+          ctx.sliderLeft = (res.windowWidth / ctx.tabs.length - 72) / 2
+          ctx.sliderOffset = res.windowWidth / ctx.tabs.length * ctx.activeIndex
+        }
+      });
+    }
+
+    methods = {
+      tabClick(e) {
+        this.sliderOffset = e.currentTarget.offsetLeft
+        this.activeIndex = e.currentTarget.id
+        // 发射事件
+        this.$emit('change', this.activeIndex);
+      }
+    }
+  }
+</script>

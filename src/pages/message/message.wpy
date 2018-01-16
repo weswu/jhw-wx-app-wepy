@@ -36,7 +36,7 @@ export default class Message extends wepy.page {
 
   async getMessage() {
     let that = this;
-    const json = await api.getMessage({
+    const json = await api.message({
       data: {
         page: this.page,
         pageSize: this.pageSize

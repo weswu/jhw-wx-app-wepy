@@ -1,0 +1,373 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+        <view class="weui-cells weui-cells_after-title">
+          <WInput>
+            <view slot="title" class="weui-label">产品名称：</view>
+            <input slot="input" class="weui-input" placeholder="请输入产品名称" @input="input" id="name" value="{{input.name}}"/>
+          </WInput>
+
+          <WInput>
+            <view slot="title" class="weui-label">产品分类：</view>
+            <picker slot="input" @change="categoryPicker" id="category" value="{{categoryIndex}}" range-key="cdesc" range="{{category}}">
+                <view class="weui-select weui-select_in-select-after">{{category[categoryIndex].cdesc}}</view>
+            </picker>
+          </WInput>
+          <WInput>
+            <view slot="title" class="weui-label">产品型号：</view>
+            <input slot="input" class="weui-input" placeholder="请输入产品型号" @input="input" id="prodtype" value="{{input.prodtype}}"/>
+          </WInput>
+          <WInput>
+            <view slot="title" class="weui-label">基本设置：</view>
+            <checkbox-group slot="input" @change="checkboxChange" id="loginView">
+                <label class="weui-cell weui-check__label" wx:key="value">
+                    <checkbox class="weui-check" value="{{input.loginView}}" checked="{{input.loginView === '1'}}"/>
+                    <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                        <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.loginView !== '1'}}"></icon>
+                        <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.loginView === '1'}}"></icon>
+                    </view>
+                    <view class="weui-cell__bd">登录后可见</view>
+                </label>
+            </checkbox-group>
+            <checkbox-group slot="input" @change="checkboxChange" id="ads">
+                <label class="weui-cell weui-check__label" wx:key="value">
+                    <checkbox class="weui-check" value="{{input.ads}}" checked="{{input.ads === '1'}}"/>
+                    <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                        <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.ads !== '1'}}"></icon>
+                        <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.ads === '1'}}"></icon>
+                    </view>
+                    <view class="weui-cell__bd">广告产品</view>
+                </label>
+            </checkbox-group>
+          </WInput>
+
+          <WInput>
+            <view slot="title" class="weui-label">产品图片：</view>
+            <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
+                <block wx:for="{{imgArr}}" wx:key="*this">
+                    <view class="weui-uploader__file" @tap="previewImage" id="{{item.id}}">
+                        <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.sourceProductImagePath}}" mode="aspectFill" />
+                    </view>
+                </block>
+                <view class="weui-uploader__input-box">
+                    <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                </view>
+            </view>
+          </WInput>
+        </view>
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="submit">提交</button>
+        </view>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 1}}" style="padding: 10px">
+        <rich-text nodes="{{input.proddesc}}" @tap="editorTip"/>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
+        <WInput>
+          <view slot="title" class="weui-label">商品价格：</view>
+          <input slot="input" class="weui-input" placeholder="请输入商品价格" @input="input" id="price" value="{{input.price}}"/>
+          <view slot="footer">元</view>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">市场价格：</view>
+          <input slot="input" class="weui-input" placeholder="请输入市场价格" @input="input" id="marketprice" value="{{input.marketprice}}"/>
+          <view slot="footer">元</view>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">商品重量：</view>
+          <input slot="input" class="weui-input" placeholder="请输入商品重量" @input="input" id="weight" value="{{input.weight}}"/>
+          <picker slot="footer" @change="categoryPicker" id="weightunit" value="{{weightunitIndex}}" range-key="name" range="{{weightunits}}">
+              <view class="weui-select weui-select_in-select-after">{{weightunits[weightunitIndex].name}}</view>
+          </picker>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">商品库存：</view>
+          <input slot="input" class="weui-input" placeholder="请输入商品库存" @input="input" id="store" value="{{input.store}}"/>
+          <view slot="footer">件</view>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">商品积分：</view>
+          <input slot="input" class="weui-input" placeholder="请输入商品积分" @input="input" id="point" value="{{input.point}}"/>
+        </WInput>
+
+        <WInput>
+          <view slot="title" class="weui-label">商城设置：</view>
+          <checkbox-group slot="input" @change="checkboxChange" id="isMarketable">
+              <label class="weui-cell weui-check__label" wx:key="value">
+                  <checkbox class="weui-check" value="{{input.isMarketable}}" checked="{{input.isMarketable === '1'}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.isMarketable !== '1'}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.isMarketable === '1'}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">上架</view>
+              </label>
+          </checkbox-group>
+          <checkbox-group slot="input" @change="checkboxChange" id="isNew">
+              <label class="weui-cell weui-check__label" wx:key="value">
+                  <checkbox class="weui-check" value="{{input.isNew}}" checked="{{input.isNew === '1'}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.isNew !== '1'}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.isNew === '1'}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">新品</view>
+              </label>
+          </checkbox-group>
+          <checkbox-group slot="input" @change="checkboxChange" id="isBest">
+              <label class="weui-cell weui-check__label" wx:key="value">
+                  <checkbox class="weui-check" value="{{input.isBest}}" checked="{{input.isBest === '1'}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.isBest !== '1'}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.isBest === '1'}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">精品</view>
+              </label>
+          </checkbox-group>
+          <checkbox-group slot="input" @change="checkboxChange" id="isHot">
+              <label class="weui-cell weui-check__label" wx:key="value">
+                  <checkbox class="weui-check" value="{{input.isHot}}" checked="{{input.isHot === '1'}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.isHot !== '1'}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.isHot === '1'}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">热销</view>
+              </label>
+          </checkbox-group>
+          <checkbox-group slot="input" @change="checkboxChange" id="isAgent">
+              <label class="weui-cell weui-check__label" wx:key="value">
+                  <checkbox class="weui-check" value="{{input.isAgent}}" checked="{{input.isAgent === '1'}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{input.isAgent !== '1'}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{input.isAgent === '1'}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">加入分销</view>
+              </label>
+          </checkbox-group>
+        </WInput>
+
+        <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="submit">提交</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import input from '@/mixins/input'
+  import WInput from '@/components/weui/input'
+  import Tab from '@/components/weui/tab';
+
+  export default class ProductDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '产品修改'
+    }
+    components = {
+      Tab,
+      WInput
+    }
+    data = {
+      tabs: ["基本信息", "产品内容", "商城属性"],
+      activeIndex: 2,
+      id:'',
+      input: {},
+      categoryIndex: 0,
+      category: [
+        {
+        categoryId: "Category_00000000000000000087651",
+        enterpriseId: null,
+        type: null,
+        adduserId: null,
+        belongId: "Category_00000000000000000255577",
+        name: "高档圆形塑料花盆",
+        cdesc: "-----高档圆形塑料花盆",
+        grade: "01",
+        isroot: "01",
+        addTime: null,
+        isdisplay: null,
+        state: "01",
+        sort: 0,
+        image: null,
+        key: null,
+        hunkdisplay: null,
+        alias: null,
+        updateTime: null,
+        sonCate: [ ],
+        id: "Category_00000000000000000087651"
+        },
+        {
+        categoryId: "Category_00000000000000000087652",
+        enterpriseId: null,
+        type: null,
+        adduserId: null,
+        belongId: null,
+        name: "壁挂花盆",
+        cdesc: "壁挂花盆",
+        grade: "00",
+        isroot: "01",
+        addTime: null,
+        isdisplay: null,
+        state: "01",
+        sort: 0,
+        image: null,
+        key: null,
+        hunkdisplay: null,
+        alias: null,
+        updateTime: null,
+        sonCate: [ ],
+        id: "Category_00000000000000000087652"
+        },
+        {
+        categoryId: "Category_00000000000000000087648",
+        enterpriseId: null,
+        type: null,
+        adduserId: null,
+        belongId: null,
+        name: "高档迷你花盆",
+        cdesc: "高档迷你花盆",
+        grade: "00",
+        isroot: "01",
+        addTime: null,
+        isdisplay: null,
+        state: "01",
+        sort: 0,
+        image: null,
+        key: null,
+        hunkdisplay: null,
+        alias: null,
+        updateTime: null,
+        sonCate: [ ],
+        id: "Category_00000000000000000087648"
+        }
+      ],
+      imgArr: [],
+      weightunits: [
+        {id: 'g', name: '克'},
+        {id: 'kg', name: '千克'},
+        {id: 't', name: '吨'}
+      ],
+      weightunitIndex: 0
+    }
+    mixins = [input]
+
+    onLoad ({id}) {
+      this.id = id
+      this.get()
+    }
+
+    async get () {
+      const json = await api.productDetail({
+        id: this.id
+      })
+      if (json.success) {
+        this.input = json.attributes.data
+        this.imgArr = JSON.parse(this.input.productimageliststore) || []
+      } else {
+        Tips.error(json.msg)
+        this.input = {
+          productId: "Product_000000000000000000581124",
+          enterpriseId: null,
+          adduserId: null,
+          name: "aa商量",
+          prodtype: "与你",
+          pkey: "22",
+          state: "01",
+          category: "Category_00000000000000000087652",
+          addTime: null,
+          endTime: null,
+          price: "1",
+          unit: null,
+          proddesc: "<p>a</p>",
+          brandId: null,
+          entType: null,
+          tag: null,
+          contactId: null,
+          folder: null,
+          publish: null,
+          publishTime: null,
+          unpublishTime: null,
+          viewsum: "0",
+          activity: null,
+          type: null,
+          sort: 0,
+          isdisplay: "1",
+          loginView: "0",
+          domain: null,
+          broadcast: null,
+          pModel: null,
+          ads: "0",
+          detailTitle1: null,
+          detailTitle2: null,
+          detailTitle3: null,
+          detail1: null,
+          detail2: null,
+          detail3: null,
+          seoTitle: "11",
+          seoDescription: "33",
+          adminBroadcast: null,
+          auditTime: null,
+          picPath: "upload/g/g2/ggggfj/picture/2016/11/29/f0a83431-d266-492b-ae9a-230542065dc4.jpg",
+          productimageliststore: '[{"id":"Attach_0000000000000000001292948","sourceProductImagePath":"upload/g/g2/ggggfj/picture/2016/11/29/f0a83431-d266-492b-ae9a-230542065dc4.jpg","type":"main_pic"},{"id":"Attach_0000000000000000001391525","sourceProductImagePath":"upload//g//g2//ggggfj//picture//2017//08//22/1ac85e6c-4949-49ac-8d1a-484b8de69d9a.jpg","type":"pertain_pic"}]',
+          url: null,
+          updateTime: null,
+          marketprice: 0,
+          point: 0,
+          productsn: null,
+          store: 1998,
+          weight: 0,
+          weightunit: "kg",
+          freezestore: 0,
+          producttypeId: null,
+          isMarketable: "01",
+          isNew: "00",
+          isBest: "00",
+          isHot: "00",
+          isAgent: "01",
+          sell: 0,
+          mobiledesc: null,
+          lanId: 1,
+          id: "Product_000000000000000000581124"
+        }
+        this.imgArr = JSON.parse(this.input.productimageliststore) || []
+        this.$apply()
+      }
+    }
+
+    methods = {
+      switchTab (e) {
+        this.activeIndex = e
+      },
+      categoryPicker (e) {
+        var index = e.detail.value
+        this[e.currentTarget.id+'Index'] = index
+        this.input[e.currentTarget.id] = this.category[index].id
+      },
+      checkboxChange (e) {
+        this.input[e.currentTarget.id] = this.input[e.currentTarget.id] === '1' ? '0' : '1'
+      },
+      editorTip () {
+        Tips.success('暂不支持修改')
+      },
+      async confirm() {
+        const data = this.scores.map(item => {
+          return {
+            sku: item.sku,
+            star: item.star,
+            goodsId: item.goodsId,
+            orderId: this.orderId
+          }
+        });
+        await Tips.confirm('确认评价？');
+        Tips.loading();
+        await comment.add(data);
+        await Tips.success('评价成功');
+        Event.emit(Event.ORDER_LIST_UPDATE);
+      }
+    };
+  }
+</script>
