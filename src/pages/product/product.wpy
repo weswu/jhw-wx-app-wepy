@@ -18,7 +18,7 @@ import tips from '@/utils/Tips'
 import SearchBar from '@/components/weui/search_bar'
 import Item from '@/components/weui/item'
 import Loadmore from '@/components/weui/loadmore'
-export default class Album extends wepy.page {
+export default class Product extends wepy.page {
   config = {
     navigationBarTitleText: '产品管理',
   }
@@ -1093,22 +1093,23 @@ id: "Product_000000000000000000473567"
       }
     ]
 
-      const data = await api.albumList({
+      const data = await api.product({
         data: {
           page: this.page,
-          pageSize: this.pageSize,
-          sort: 'att_id'
+          pageSize: this.pageSize
         },
         id: this.id
       })
       if (data.success) {
         this.list = data.attributes.data
         wx.setNavigationBarTitle({
-          title: '相册' + data.attributes.count
+          title: '产品管理' + data.attributes.count
         })
       }
 
-      const json = await api.albumCategory()
+      const json = await api.category({
+        type: 'product'
+      })
       if (json.success) {
         this.cate = json.attributes.data
       }
@@ -1117,17 +1118,6 @@ id: "Product_000000000000000000473567"
 
   cateChange (e) {
     this.cateIndex = e.detail.value
-  }
-
-  // 展示图片
-  previewImage (e) {
-    const src = 'http://img.jihui88.com/' + e.currentTarget.id
-    let urls = []
-    urls.push(src)
-    wx.previewImage({
-      current: src, // 当前显示图片的http链接
-      urls: urls // 需要预览的图片http链接列表
-    })
   }
 
 }

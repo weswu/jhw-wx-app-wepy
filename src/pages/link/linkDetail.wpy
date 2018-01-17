@@ -1,0 +1,116 @@
+<template>
+  <Tips />
+  <view class="weui-cells weui-cells_after-title">
+    <WInput>
+      <view slot="title" class="weui-label">链接名称：</view>
+      <input slot="input" class="weui-input" placeholder="请输入证链接名称" @input="input" id="name" value="{{input.name}}"/>
+    </WInput>
+
+    <WInput>
+      <view slot="title" class="weui-label">链接地址：</view>
+      <input slot="input" class="weui-input" placeholder="请输入链接地址" @input="input" id="url" value="{{input.url}}"/>
+    </WInput>
+
+  </view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import input from '@/mixins/input'
+  import FormTips from '@/components/weui/tips'
+  import WInput from '@/components/weui/input'
+
+  export default class LinkDetail extends wepy.page {
+    config = {}
+    components = {
+      Tips: FormTips,
+      WInput
+    }
+    data = {
+      id:'',
+      input: {}
+    }
+    mixins = [input]
+
+    onLoad ({id}) {
+      if (id) {
+        this.id = id
+        this.get()
+        wx.setNavigationBarTitle({ title: '链接修改'})
+      } else {
+        wx.setNavigationBarTitle({ title: '链接添加'})
+      }
+
+    }
+
+    async get () {
+      const json = await api.linkDetail({
+        id: this.id
+      })
+      if (json.success) {
+        this.input = json.attributes.data
+      }
+      this.input = {
+linkId: "Link_000000000000000000000052278",
+enterpriseId: null,
+name: "机汇网",
+url: "http://www.jihui88.com",
+state: null,
+lorder: null,
+userId: null,
+addTime: null,
+updateTime: null,
+id: "Link_000000000000000000000052278"
+}
+      this.$apply()
+    }
+
+    methods = {}
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.name,
+          method: 'required',
+          message: '链接名称为空'
+        },
+        {
+          value: this.input.url,
+          method: 'required',
+          message: '链接地址不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      let data = {
+        data: {
+          name: this.input.name,
+          url: this.input.url
+        },
+        method: 'post'
+      }
+      if (this.id) {
+        data.method = 'put'
+        data.id = this.id
+      }
+      Tips.loading()
+      const json = await api.linkDetail(data)
+      Tips.loaded()
+      if (json.success) {
+        Tips.success(this.id ? '修改成功' : '添加成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+  }
+</script>

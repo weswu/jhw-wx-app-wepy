@@ -14,11 +14,14 @@
     font-size: @text-form;
   }
 }
-
+// 列表去右边15px
 .weui-cell::before,.weui-media-box::before{
   right: 15px;
 }
-
+// 列表顶部去top边框
+.weui-media-box:nth-child(0)::before{
+  border-top: none
+}
 .weui-cell-border-top::before{
   border-top: none;
 }

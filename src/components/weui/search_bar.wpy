@@ -56,12 +56,12 @@
         } else {
           this.inputVal = '';
           this.inputShowed = false;
-          this.$emit('input', null);
+          this.$emit('input', '');
         }
       },
       clearInput: function () {
         this.inputVal = '';
-        this.$emit('input', null);
+        this.$emit('input', '');
       },
       inputTyping: function (e) {
         const input = e.detail.value;
@@ -69,7 +69,6 @@
         this.$emit('input', input);
       }
     };
-    events = {}
   }
 </script>
 

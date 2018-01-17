@@ -1,0 +1,200 @@
+<template>
+  <!--搜索-->
+  <SearchBar placeholder="请输入新闻标题" @input.user="input" />
+
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item" >
+    <Item :title="item.title" :content="'发布时间：' + item.addTime + '人气：'+item.viewsum" :url="'newsDetail?id='+item.id"/>
+  </repeat>
+
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import tips from '@/utils/Tips'
+import SearchBar from '@/components/weui/search_bar'
+import Item from '@/components/weui/item'
+import Loadmore from '@/components/weui/loadmore'
+export default class News extends wepy.page {
+  config = {
+    navigationBarTitleText: '新闻管理',
+  }
+  components = {
+    SearchBar,
+    Item,
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    page: 1,
+    pageSize: 20,
+    more: { loading: true }
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    this.list = [
+      {
+      newsId: "News_000000000000000000000110652",
+      enterpriseId: null,
+      newsType: null,
+      adduserId: null,
+      category: "Category_00000000000000000249970",
+      title: "111",
+      content: null,
+      nkey: null,
+      addTime: "2017-09-18",
+      state: "01",
+      auditId: null,
+      auditTime: null,
+      imagenews: "00",
+      rollingnews: null,
+      topnews: "00",
+      staticed: null,
+      staticpath: null,
+      display: "01",
+      sort: 0,
+      author: null,
+      origin: null,
+      domain: null,
+      seoTitle: null,
+      seoDescription: null,
+      viewsum: 0,
+      picPath: null,
+      tarurl: null,
+      updateTime: null,
+      id: "News_000000000000000000000110652"
+      },
+      {
+      newsId: "News_000000000000000000000110653",
+      enterpriseId: null,
+      newsType: null,
+      adduserId: null,
+      category: "Category_00000000000000000249970",
+      title: "111",
+
+      addTime: "2017-09-18",
+      state: "01",
+      auditId: null,
+      auditTime: null,
+      imagenews: "00",
+      rollingnews: null,
+      topnews: "00",
+      staticed: null,
+      staticpath: null,
+      display: "01",
+      sort: 0,
+      author: null,
+      origin: null,
+      domain: null,
+      seoTitle: null,
+      seoDescription: null,
+      viewsum: 0,
+      picPath: null,
+      tarurl: null,
+      updateTime: null,
+      id: "News_000000000000000000000110653"
+      },
+      {
+      newsId: "News_000000000000000000000109030",
+      enterpriseId: null,
+      newsType: null,
+      adduserId: null,
+      category: "Category_00000000000000000335347",
+      title: "a中客户",
+      nkey: "12",
+      addTime: "2017-08-03",
+      state: "01",
+      auditId: null,
+      auditTime: null,
+      imagenews: "01",
+      rollingnews: null,
+      topnews: "01",
+      staticed: null,
+      staticpath: null,
+      display: "01",
+      sort: 0,
+      author: "a客户",
+      origin: "a客户",
+      domain: null,
+      seoTitle: "1",
+      seoDescription: "122",
+      viewsum: 0,
+      picPath: "",
+      tarurl: null,
+      updateTime: null,
+      id: "News_000000000000000000000109030"
+      }
+    ]
+
+    this.cate = [
+      {
+        albumId: "Album_00000000000000000000056104",
+        belongId: "Enterp_0000000000000000000000039",
+        enterpriseId: null,
+        blongType: null,
+        name: "产品批量上传",
+        adesc: null,
+        tag: null,
+        addTime: null,
+        userId: "User_000000000000000000000000082",
+        state: "01",
+        type: "05",
+        updateTime: null,
+        parentId: null,
+        id: "Album_00000000000000000000056104"
+      },
+      {
+        albumId: "Album_00000000000000000000074262",
+        belongId: "Enterp_0000000000000000000000039",
+        enterpriseId: null,
+        blongType: null,
+        name: "[系统]微信小程序Banner相册",
+        adesc: null,
+        tag: null,
+        addTime: 1502171403945,
+        userId: "User_000000000000000000000000082",
+        state: "01",
+        type: "11",
+        updateTime: null,
+        parentId: null,
+        id: "Album_00000000000000000000074262"
+      }
+    ]
+
+      const data = await api.news({
+        data: {
+          page: this.page,
+          pageSize: this.pageSize
+        },
+        id: this.id
+      })
+      if (data.success) {
+        this.list = data.attributes.data
+        wx.setNavigationBarTitle({
+          title: '新闻管理' + data.attributes.count
+        })
+      }
+
+      const json = await api.category({
+        type: 'news'
+      })
+      if (json.success) {
+        this.cate = json.attributes.data
+      }
+
+  }
+
+  cateChange (e) {
+    this.cateIndex = e.detail.value
+  }
+
+}
+</script>

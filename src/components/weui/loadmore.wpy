@@ -5,14 +5,14 @@
     <view class="weui-loadmore__tips">正在加载</view>
   </view>
 
+  <!--无数据提示-->
+  <view class="weui-loadmore weui-loadmore_line" wx:if="{{!more.loading && more.empty}}">
+    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{more.text || '暂无数据'}}</view>
+  </view>
+
   <!--触底提示-->
   <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot" wx:if="{{!more.empty && more.reachBottom}}">
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
-  </view>
-
-  <!--无数据提示-->
-  <view class="weui-loadmore weui-loadmore_line" wx:if="{{!more.loading && more.empty}}">
-    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">{{text || '暂无数据'}}</view>
   </view>
 
 </template>
@@ -21,7 +21,6 @@
   import wepy from 'wepy'
   export default class Loadmore extends wepy.component {
     props = {
-      text: {},
       more: {}
     }
   }

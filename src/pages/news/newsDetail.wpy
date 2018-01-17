@@ -163,7 +163,7 @@
   import WInput from '@/components/weui/input'
   import Tab from '@/components/weui/tab';
 
-  export default class ProductDetail extends wepy.page {
+  export default class newsDetail extends wepy.page {
     config = {
       navigationBarTitleText: '产品修改'
     }
