@@ -118,7 +118,7 @@ export default class User extends wepy.page {
   }
 
   async getUser () {
-    const json = await api.getUser()
+    const json = await api.user()
     if (json.success) {
       Tips.success("保存成功");
     } else {

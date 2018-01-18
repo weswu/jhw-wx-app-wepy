@@ -1,0 +1,115 @@
+<template>
+  <Tips />
+  <view class="weui-cell weui-cells_in-small-appmsg">
+    <view class="weui-cell__hd">
+      <view class="weui-label">地址类型:</view>
+    </view>
+    <view class="weui-cell__bd">
+      <view class="row">
+        <radio-group class="radio-group row" @change="radio" id="type">
+          <label class="radio row" wx:for="{{typeList}}" wx:key="index">
+            <radio value="{{item.value}}" checked="{{input.type == item.value}}"/>
+            {{item.text}}
+          </label>
+        </radio-group>
+      </view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_after-title">
+    <WInput>
+      <view slot="title" class="weui-label">域名：</view>
+      <input slot="input" class="weui-input" placeholder="请输入域名，不用填http://" @input="input" id="address" value="{{input.address}}"/>
+    </WInput>
+
+    <WInput>
+      <view slot="title" class="weui-label">icp备案号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入icp备案号" @input="input" id="icp" value="{{input.icp}}"/>
+    </WInput>
+
+  </view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import input from '@/mixins/input'
+  import FormTips from '@/components/weui/tips'
+  import WInput from '@/components/weui/input'
+
+  export default class BindDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '域名添加'
+    }
+    components = {
+      Tips: FormTips,
+      WInput
+    }
+    data = {
+      typeList: [
+        {text: '域名', value: 'D'},
+        {text: '地址', value: 'A'},
+        {text: '图片', value: 'I'},
+        {text: '手机', value: 'M'}
+      ],
+      input: {
+        type: 'D'
+      }
+    }
+    mixins = [input]
+
+    onLoad () {}
+
+    methods = {}
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.address,
+          method: 'required',
+          message: '域名名称为空'
+        },
+        {
+          value: this.input.address,
+          method: 'domain',
+          message: '域名格式不正确'
+        },
+        {
+          value: this.input.icp,
+          method: 'required',
+          message: 'icp备案号不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      Tips.loading()
+      const json = await api.bindDetail({
+        data: {
+          address: this.input.address,
+          icp: this.input.icp,
+          type: this.input.type
+        },
+        method: 'post'
+      })
+      Tips.loaded()
+      if (json.success) {
+        Tips.success('添加成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+  }
+</script>
+<style>
+.radio-group .radio {
+  display:flex;
+}
+</style>

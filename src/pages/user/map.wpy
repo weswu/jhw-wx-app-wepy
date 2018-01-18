@@ -86,7 +86,7 @@ export default class User extends wepy.page {
   }
 
   async submit () {
-    const json = await api.setEnterprise({
+    const json = await api.enterprise({
       data: this.$parent.globalData.enterprise,
       method: 'put'
     })

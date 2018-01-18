@@ -8,11 +8,11 @@
       <view class="weui-cell__bd">企业资料</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-    <navigator url="" class="weui-cell weui-cell_access">
+    <navigator url="/pages/bind/bind" class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">域名绑定</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-    <navigator url="" class="weui-cell weui-cell_access">
+    <navigator url="/pages/user/publish" class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">一键发布</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>

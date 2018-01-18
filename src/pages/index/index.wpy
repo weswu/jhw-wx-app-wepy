@@ -1,53 +1,50 @@
-
 <template>
-  <view class="WIndex">
-    <view class="header">
-      <navigator url="" class="weui-media-box weui-media-box_appmsg">
-          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png" />
-          </view>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view>{{user.username}},您好！</view>
-              <view wx:if='userInfo.versions'>当前版本：{{userInfo.versions}}</view>
-              <view wx:if="userInfo.endTime === '1'">已到期,请续费</view>
-              <view wx:elif="userInfo.endTime && userInfo.endTime !== '0'">到期时间：{{userInfo.endTime}}</view>
-              <view>服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
-          </view>
-      </navigator>
-      <navigator url="" style='position: absolute;top: 15px;right: 15px;color:#fff'>
-          <i class="iconfont icon-circularset" style="color:#fff;font-size:40rpx"></i>
-      </navigator>
-    </view>
-
-    <view class='status'>
-      <view class="ul">
-        <view @tap="page('/order/buyerPayment')" class='li'>
-          <view class='status_num'>{{userInfo.unpaid || 0}}</view><view class='status_txt'>待付款</view>
-        </view>
-        <view @tap="page('/order/awaitS')" class='li' >
-          <view class='status_num op'>{{userInfo.unshipped || 0}}</view> <view class='status_txt'>待发货</view>
-        </view>
-        <view @tap="page('/order/delivery')" class='li' >
-          <view class='status_num'> {{userInfo.shipped || 0}}</view><view class='status_txt'>待收货</view>
-        </view>
-        <view @tap="page('/messageList/00')" class='li'>
-          <view class='status_num'>{{userInfo.unread || 0}}</view><view class='status_txt'>未读询盘</view>
-         </view>
+  <view class="header">
+    <navigator url="" class="weui-media-box weui-media-box_appmsg">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+        <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png" />
       </view>
-      <navigator url=""  class="weui-cell weui-cell_access weui-cells_in-small-appmsg">
-          <view class="weui-cell__bd">已卖出的货品</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">全部订单</view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view>{{user.username}},您好！</view>
+        <view wx:if='userInfo.versions'>当前版本：{{userInfo.versions}}</view>
+        <view wx:if="userInfo.endTime === '1'">已到期,请续费</view>
+        <view wx:elif="userInfo.endTime && userInfo.endTime !== '0'">到期时间：{{userInfo.endTime}}</view>
+        <view>服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
+      </view>
+    </navigator>
+    <navigator url="/pages/setting/setting" style='position: absolute;top: 15px;right: 15px;color:#fff'>
+      <i class="iconfont icon-circularset" style="color:#fff;font-size:40rpx"></i>
+    </navigator>
+  </view>
+
+  <view class='status'>
+    <view class="ul">
+      <navigator url="/pages/order/buyerPayment" class='li'>
+        <view class='status_num'>{{userInfo.unpaid || 0}}</view><view class='status_txt'>待付款</view>
+      </navigator>
+      <navigator url="/pages/order/awaitS" class='li' >
+        <view class='status_num op'>{{userInfo.unshipped || 0}}</view> <view class='status_txt'>待发货</view>
+      </navigator>
+      <navigator url="/pages/order/delivery" class='li' >
+        <view class='status_num'> {{userInfo.shipped || 0}}</view><view class='status_txt'>待收货</view>
+      </navigator>
+      <navigator url="/pages/message/message?state=00" class='li'>
+        <view class='status_num'>{{userInfo.unread || 0}}</view><view class='status_txt'>未读询盘</view>
       </navigator>
     </view>
+    <navigator url="/pages/order/order" class="weui-cell weui-cell_access weui-cells_in-small-appmsg">
+      <view class="weui-cell__bd">已卖出的货品</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">全部订单</view>
+    </navigator>
+  </view>
 
-    <view class="weui-grids">
-        <block wx:for="{{grids}}" wx:key="*this">
-            <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
-                <i class="iconfont icon-{{item.icon}}" style="color:{{item.color}}"></i>
-                <view class="weui-grid__label">{{item.name}}</view>
-            </navigator>
-        </block>
-    </view>
+  <view class="weui-grids">
+    <block wx:for="{{grids}}" wx:key="*this">
+      <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
+        <i class="iconfont icon-{{item.icon}}" style="color:{{item.color}}"></i>
+        <view class="weui-grid__label">{{item.name}}</view>
+      </navigator>
+    </block>
   </view>
 
 
@@ -90,14 +87,13 @@
         <group :grouplist="item" :indexa="index"></group>
       </repeat>
     </panel>
-
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import api from '@/api/api'
-  import tip from '@/utils/Tips'
+  import Tips from '@/utils/Tips'
   import Panel from '@/components/panel' // alias example
   import Counter from 'counter' // alias example
   import Group from '@/components/group'
@@ -114,21 +110,24 @@
     mixins = [testMixin]
 
     data = {
+      user: {},
+      userInfo: {},
+      enterprise: {},
+      employee: {},
       grids: [
         {url: '#/shopData', name: '商城数据', icon: 'tongji', color: '#5bba19'},
         {url: '#/mobile/me', name: '微网站', icon: 'weiwangzhan', color: '#8da5cb'},
         {url: '#/wcd/me', name: '微传单', icon: 'weizhan', color: '#FF6000'},
         {url: '#/distribution/member', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
-        {url: '#/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
-        {url: '#/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
+        {url: '/pages/member/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
+        {url: '/pages/service/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
         {url: '/pages/service/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},
-        {url: '#/seoHelp', name: 'SEO帮助', icon: 'seo', color: '#5bba19'},
+        {url: '/pages/service/seoHelp', name: 'SEO帮助', icon: 'seo', color: '#5bba19'},
         {url: '#/serivepay/payment', name: '服务缴费', icon: 'jiaofei', color: '#FF6000'},
         {url: '#/serive_progress', name: '服务进度', icon: 'f12', color: '#8da5cb'},
         {url: '#/point', name: '我的积分', icon: 'xinwen', color: '#5bba19'},
         {url: '#/spread', name: '参与推广', icon: 'pengyou', color: '#f69215'}
       ],
-      userInfo: {},
       mynum: 20,
       count: 0,
       netrst: '',
@@ -226,36 +225,63 @@
     }
 
     onLoad() {
-      this.getUser()
+      this.get()
     }
 
-    async getUser() {
-      let that = this;
-      const json = await api.getUser()
+    async get() {
+      const json = await api.user()
       if (json.success) {
-        this.list = json.attributes.data
-        that.$apply();
+        this.user = json.attributes.data
       } else {
-        tip.error(json.msg);
+        this.user = this.$parent.globalData.user
       }
+
+      const userInfo = await api.userInfo()
+      if (userInfo.success) {
+        this.userInfo = userInfo.attributes.data
+      } else {
+        this.userInfo = {
+          unshipped: 0,
+          shipped: 0,
+          unread: 0,
+          versions: "营销版",
+          name: "ggggfj",
+          logo: "upload//g//g2//ggggfj//picture//2018//01//15/709ca1ef-a0d9-476b-b265-c899636fcb89.jpg",
+          endTime: "1",
+          unpaid: 0
+        }
+      }
+
+      const enterprise = await api.enterprise()
+      if (enterprise.success) {
+        this.enterprise = enterprise.attributes.data
+      } else {
+        this.enterprise = this.$parent.globalData.enterprise
+      }
+
+      const employee = await api.employee()
+      if (employee.success) {
+        this.employee = employee.attributes.data
+      }
+
+      this.$apply()
     }
+
   }
 </script>
 <style lang="less">
-.WIndex {
-  .header {
-    position: relative;
-    background: url(http://app.jihui88.com/static/img/user-bg.jpg) no-repeat;
-    background-size: cover;
-    overflow: hidden;
-    color: #fff;
-  }
-  .weui-grid {
-    width:25%;text-align:center;
-    background: #fff;
-    i {
-      font-size: 50rpx;
-    }
+.header {
+  position: relative;
+  background: url(http://app.jihui88.com/static/img/user-bg.jpg) no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  color: #fff;
+}
+.weui-grid {
+  width:25%;text-align:center;
+  background: #fff;
+  i {
+    font-size: 50rpx;
   }
 }
 .status{background: #fff;margin-bottom: 30rpx}

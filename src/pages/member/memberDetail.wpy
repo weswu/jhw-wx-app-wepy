@@ -1,0 +1,232 @@
+<template>
+  <Tips />
+  <view class="weui-panel__hd" wx:if="{{id}}">账号 {{input.username}}</view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <WInput wx:if="{{!id}}">
+      <view slot="title" class="weui-label">账号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入账号" @input="input" id="username" value="{{input.username}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">昵称：</view>
+      <input slot="input" class="weui-input" placeholder="请输入昵称" @input="input" id="name" value="{{input.name}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">密码：</view>
+      <input slot="input" class="weui-input" placeholder="{{passwordPH}}" @input="input" id="password" value="{{input.password}}" type="password"/>
+    </WInput>
+
+    <WInput>
+      <view slot="title" class="weui-label">会员分类：</view>
+      <picker slot="input" @change="categoryPicker" id="memberrankId" value="{{memberrankIdIndex}}" range-key="name" range="{{category}}">
+          <view class="weui-select weui-select_in-select-after">{{category[memberrankIdIndex].name}}</view>
+      </picker>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">是否启用：</view>
+      <view class="row" slot="input" style="padding-top: 8px">
+        <radio-group class="radio-group row" @change="radio" id="isaccountEnabled">
+          <label class="radio row">
+            <radio value="00" checked="{{input.isaccountEnabled == '00'}}"/>
+            启用
+          </label>
+          <label class="radio ml20 row">
+            <radio value="01" checked="{{input.isaccountEnabled == '01'}}"/>
+            关闭
+          </label>
+        </radio-group>
+      </view>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">E-mail：</view>
+      <input slot="input" class="weui-input" placeholder="请输入E-mail" @input="input" id="email" value="{{input.email}}" type="email"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">积分：</view>
+      <input slot="input" class="weui-input" placeholder="请输入积分" @input="input" id="point" value="{{input.point}}" type="number"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">预存款：</view>
+      <input slot="input" class="weui-input" placeholder="请输入预存款" @input="input" id="deposit" value="{{input.deposit}}" type="number"/>
+    </WInput>
+  </view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import input from '@/mixins/input'
+  import FormTips from '@/components/weui/tips'
+  import WInput from '@/components/weui/input'
+
+  export default class MemberDetail extends wepy.page {
+    config = {}
+    components = {
+      Tips: FormTips,
+      WInput
+    }
+    data = {
+      id:'',
+      input: {
+        isaccountEnabled: '00'
+      },
+      passwordPH: '请输入密码',
+      memberrankIdIndex: 0,
+      category: []
+    }
+    mixins = [input]
+
+    async onLoad ({id}) {
+      if (id) {
+        this.id = id
+        wx.setNavigationBarTitle({ title: '会员修改'})
+        this.passwordPH = '修改密码'
+        await this.get()
+      } else {
+        wx.setNavigationBarTitle({ title: '会员添加'})
+      }
+      await this.getCate()
+    }
+
+    async get () {
+      const json = await api.memberDetail({
+        id: this.id
+      })
+      if (json.success) {
+        this.input = json.attributes.data
+      }
+      this.input = {
+        memberId: "ff808181596ed2a001598b1645cb041f",
+        addTime: "2017-01-11 09:13:29",
+        updateTime: null,
+        deposit: 0,
+        email: "1@qq.com",
+        lockedDate: null,
+        loginDate: null,
+        loginFailureCount: 0,
+        loginIp: null,
+        password: "e10adc3949ba59abbe56e057f20f883e",
+        passwordRecoverKey: null,
+        point: 0,
+        registerIp: null,
+        safeAnswer: null,
+        safeQuestion: null,
+        username: "???? ??.????",
+        memberrankId: "ff8081814b56f84d014b572385030002",
+        enterpriseId: null,
+        isaccountEnabled: "00",
+        isaccountLocked: null,
+        name: "???? ??.????",
+        img: null,
+        fxstate: null,
+        belongId: null,
+        mobile: null,
+        id: "ff808181596ed2a001598b1645cb041f"
+      }
+      this.input.password = ''
+      this.$apply()
+    }
+
+    async getCate () {
+      const json = await api.memberRank()
+      if (json.success) {
+        this.category = json.attributes.data
+      }
+      this.category = [
+        {
+        name: "jingxiaoshang",
+        preferentialScale: 80,
+        point: 100,
+        isDefault: "00",
+        rdesc: null,
+        rankId: "ff8081814e1ef727014e1efeb5b30002",
+        addTime: null,
+        updateTime: null,
+        enterpriseId: null,
+        id: "ff8081814e1ef727014e1efeb5b30002"
+        },
+        {
+        name: "普通会员",
+        preferentialScale: 100,
+        point: 0,
+        isDefault: "01",
+        rdesc: null,
+        rankId: "ff8081814b56f84d014b572385030002",
+        addTime: null,
+        updateTime: null,
+        enterpriseId: null,
+        id: "ff8081814b56f84d014b572385030002"
+        }
+      ]
+      this.category.forEach((item, index) => {
+        if (item.id === this.input.memberrankId) {
+          this.memberrankIdIndex = index
+        }
+      })
+      this.$apply()
+    }
+
+    methods = {
+      categoryPicker (e) {
+        var index = e.detail.value
+        this[e.currentTarget.id+'Index'] = index
+        this.input[e.currentTarget.id] = this.category[index].id
+      }
+    }
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.name,
+          method: 'required',
+          message: '昵称不能为空'
+        },
+        {
+          value: this.input.email,
+          method: 'required',
+          message: '发证机构不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      let data = {
+        data: {
+          name: this.input.name,
+          password: this.input.password,
+          email: this.input.email,
+          point: this.input.point,
+          deposit: this.input.deposit,
+          memberrankId: this.input.memberrankId,
+          isaccountEnabled: this.input.isaccountEnabled
+        },
+        method: 'post'
+      }
+      if (this.id) {
+        data.method = 'put'
+        data.id = this.id
+      } else {
+        if (!this.input.username) { return Tips.alert('账号不能为空') }
+        if (!this.input.password) { return Tips.alert('密码不能为空') }
+        if (!this.input.point) { data.data.point = 0 }
+        if (!this.input.deposit) { data.data.deposit = 0 }
+        data.data.username = this.input.username
+      }
+      Tips.loading()
+      const json = await api.memberDetail(data)
+      Tips.loaded()
+      if (json.success) {
+        Tips.success(this.id ? '修改成功' : '添加成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+  }
+</script>

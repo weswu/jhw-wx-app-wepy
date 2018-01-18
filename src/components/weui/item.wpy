@@ -3,10 +3,13 @@
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{pic}}">
           <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}" />
       </view>
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
+          {{dx}}
+      </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">{{title}}</view>
           <view class="weui-media-box__desc">{{content}}</view>
-          <view class="weui-media-box__info">{{time}}</view>
+          <view class="weui-media-box__info" wx:if="{{time}}">{{time}}</view>
       </view>
       <view class="weui-media-box__ft" wx:if="{{operation}}" @tap.stop="del({{id}})">
           <i class="iconfont icon-lajixiang"></i>
@@ -19,6 +22,7 @@
   export default class Item extends wepy.component {
     params = {
       id: {},
+      dx: {},
       url: {},
       title: {},
       content: {},

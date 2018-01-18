@@ -5,22 +5,23 @@ const host = 'http://app.jihui88.com'
 //微信的code换取sessionKey
 const wxJsCode2Session = (params) => http(params, "https://wx.jihui88.net/rest/api/shop/member/wxapplogin");
 const user2session = (params) => http(params, apiMall + "/api/wechat/user2session?jsoncallback=?");
-
+// 登录
 const login = (params) => http(params, host + '/rest/api/user/login')
-const getUser = (params) => http(params, host + '/rest/api/user/detail')
-const setUser = (params) => http(params, host + '/rest/api/user/detail')
-const getEmployee = (params) => http(params, host + '/rest/api/crm/friend_emp')
-// 公司简介
-const setEnterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
+const logout = (params) => http(params, host + '/rest/api/user/logout')
+// 基本数据
+const user = (params) => http(params, host + '/rest/api/user/detail')
+const userInfo = (params) => http(params, host + '/rest/api/order/home/list')
+const enterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
+const employee = (params) => http(params, host + '/rest/api/crm/friend_emp')
+// 静态化
+const publish = (params) => http(params, 'https://wx.jihui88.net/rest/static1/' + params.username + '/publish?type=' + params.type)
+const publishMobile = (params) => http(params, 'https://wx.jihui88.net/rest/mobileStatic/' + params.username + '/publish?type=page')
 // 留言
 const message = (params) => http(params, host + '/rest/api/message/list')
 // 设置
 const password = (params) => http(params, host + '/rest/api/user/detail/password')
-const logout = (params) => http(params, host + '/rest/api/user/logout')
 const log = (params) => http(params, host + '/rest/api/log/list')
 const serviceFeedback = (params) => http(params, 'http://crmyun.jihui88.com:9500/api/jihuifeedback.php')
-// 服务
-
 // 相册
 const album = (params) => http(params, host + '/rest/api/album/attr/list/' + params.id)
 const albumCategory = (params) => http(params, host + '/rest/api/album/list?pageSize=100')
@@ -38,19 +39,31 @@ const certDetail = (params) => http(params, host + '/rest/api/cert/detail' + (pa
 // 友情链接
 const link = (params) => http(params, host + '/rest/api/link/list')
 const linkDetail = (params) => http(params, host + '/rest/api/' + (params.method ? 'updateList' + params.id : 'link') + '/detail' + (params.id ? '/' + params.id : ''))
-
-
+// 域名绑定
+const bind = (params) => http(params, host + '/rest/api/bind/list')
+const bindDetail = (params) => http(params, host + '/rest/api/bind/detail' + (params.id ? '/' + params.id : ''))
+// 会员
+const member = (params) => http(params, host + '/rest/api/member/list')
+const memberDetail = (params) => http(params, host + '/rest/api/member/detail' + (params.id ? '/' + params.id : ''))
+const memberRank = (params) => http(params, host + '/rest/api/member/rank/list')
 
 module.exports = {
   wxJsCode2Session,
   user2session,
   login,
-  getUser,
-  getEmployee,
+  logout,
+  // 基本数据
+  user,
+  userInfo,
+  enterprise,
+  employee,
+  // 静态化
+  publish,
+  publishMobile,
+  // 留言
   message,
   // 设置
   password,
-  logout,
   log,
   serviceFeedback,
   // 相册
@@ -68,5 +81,12 @@ module.exports = {
   certDetail,
   // 友情链接
   link,
-  linkDetail
+  linkDetail,
+  // 域名绑定
+  bind,
+  bindDetail,
+  // 会员
+  member,
+  memberDetail,
+  memberRank
 }

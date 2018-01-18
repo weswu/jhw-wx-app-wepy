@@ -18,10 +18,8 @@ import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Item from '@/components/weui/item'
 import Loadmore from '@/components/weui/loadmore'
-export default class link extends wepy.page {
-  config = {
-    navigationBarTitleText: '友情链接',
-  }
+export default class Link extends wepy.page {
+  config = {}
   components = {
     Item,
     Loadmore
@@ -30,7 +28,6 @@ export default class link extends wepy.page {
   data = {
     list: [],
     page: 1,
-    name: '',
     count: 0,
     more: { loading: true },
     operation: true
@@ -51,7 +48,7 @@ export default class link extends wepy.page {
       })
       Tips.loaded()
       if (json.success) {
-        await Utils.del(this, e, '证书管理')
+        await Utils.del(this, e, '友情链接')
         Tips.success('删除成功')
       }
     }
@@ -60,8 +57,7 @@ export default class link extends wepy.page {
   async get () {
     const json = await api.link({
       data: {
-        page: this.page,
-        name: this.name
+        page: this.page
       },
       id: this.id
     })
@@ -89,7 +85,7 @@ count: 1,
 page: 1
 }
 }
-    await Utils.scrollList(this, json2, '证书管理')
+    await Utils.scrollList(this, json2, '友情链接')
 
   }
 

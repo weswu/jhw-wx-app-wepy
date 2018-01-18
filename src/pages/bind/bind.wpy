@@ -1,0 +1,160 @@
+<template>
+  <!-- 添加 -->
+  <navigator url="bindDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
+
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <Item :id="item.id" :title="item.address" :content="item.type + '     ' + item.state" :operation="operation" @del.user="del"/>
+  </repeat>
+
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Item from '@/components/weui/item'
+import Loadmore from '@/components/weui/loadmore'
+export default class Bind extends wepy.page {
+  config = {
+    navigationBarTitleText: '域名绑定'
+  }
+  components = {
+    Item,
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    page: 1,
+    count: 0,
+    more: { loading: true },
+    operation: true
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  methods = {
+    // 删除
+    async del (e) {
+      await Tips.confirm('确认删除吗？')
+      Tips.loading()
+      const json = await api.bindDetail({
+        method: 'detele',
+        id: e
+      })
+      Tips.loaded()
+      if (json.success) {
+        await Utils.del(this, e)
+        Tips.success('删除成功')
+      }
+    }
+  }
+
+  async get () {
+    const json = await api.bind({
+      data: {
+        page: this.page
+      },
+      id: this.id
+    })
+    const json2 = {
+success: true,
+msg: "操作成功",
+obj: null,
+attributes: {
+per_page: 16,
+data: [
+  {
+  bindId: "Bind_000000000000000000000000224",
+  username: "ggggfj",
+  address: "tttt.cn",
+  icp: null,
+  applyTime: 1333084010179,
+  approveTime: null,
+  denyReason: null,
+  fileName: "ggggfj.conf",
+  state: "00",
+  type: "D",
+  addTime: null,
+  updateTime: null,
+  ip: null,
+  id: "Bind_000000000000000000000000224"
+  },
+  {
+  bindId: "Bind_000000000000000000000000221",
+  username: "ggggfj",
+  address: "google.com",
+  icp: null,
+  applyTime: 1333073572474,
+  approveTime: 1333082211299,
+  denyReason: "555",
+  fileName: "ggggfj.conf",
+  state: "02",
+  type: "D",
+  addTime: null,
+  updateTime: null,
+  ip: null,
+  id: "Bind_000000000000000000000000221"
+  },
+  {
+  bindId: "Bind_000000000000000000000000223",
+  username: "ggggfj",
+  address: "qqw.com",
+  icp: null,
+  applyTime: 1333074437359,
+  approveTime: 1333078113521,
+  denyReason: null,
+  fileName: "ggggfj.conf",
+  state: "02",
+  type: "A",
+  addTime: null,
+  updateTime: null,
+  ip: null,
+  id: "Bind_000000000000000000000000223"
+  }
+],
+count: 1,
+page: 1
+}
+}
+    json2.attributes.data.forEach(item => {
+      if(item.state === '00'){
+        item.state = '未审核'
+      } else if(item.state === '02'){
+        item.state = '审核不通过'
+      } else {
+        item.state = ''
+      }
+      if(item.type === 'D'){ item.type = '域名'}
+      if(item.type === 'A'){ item.type = '地址'}
+      if(item.type === 'I'){ item.type = '图片'}
+      if(item.type === 'M'){ item.type = '手机'}
+    })
+    await Utils.scrollList(this, json2)
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.page = 1
+    this.list = []
+    this.more.loading = true
+    await this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.page += 1
+    this.get()
+  }
+
+}
+</script>
