@@ -1,0 +1,38 @@
+<template>
+<view class="d-member">
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="dis">
+    <view class="item {{index%2 === 1 ? ' item-bg' : ''}}">
+      <view class="fl" style="width:70%">
+        <view class="fl">
+           <image src="{{dis.headimgurl}}"/>
+        </view>
+        <view class="fl">
+          <view>No.{{dis.dealer_id}}</view>
+          <view><text>昵称：</text>{{dis.nickname}}</view>
+          <view><text>地区：</text>{{dis.location}}</view>
+          <view><text>推荐：</text>{{dis.p_nickname || ''}}</view>
+        </view>
+        <view class="clr"><text>关注：</text>{{dis.join_time}}</view>
+      </view>
+      <view class="fr" style="width:30%">
+        <view><text>{{dis.dealer_arr[0].dealer_name}}：</text>{{dis.dealer_arr[0].all}}人</view>
+        <view><text>{{dis.dealer_arr[1].dealer_name}}：</text>{{dis.dealer_arr[1].all}}人</view>
+        <view><text>{{dis.dealer_arr[2].dealer_name}}：</text>{{dis.dealer_arr[2].all}}人</view>
+        <view><text>订单数：</text>{{dis.sales_count}}</view>
+        <view><text>销售额：</text>￥{{dis.sales_sum}}</view>
+        <view><text>总佣金：</text>￥{{dis.bouns_sum}}</view>
+      </view>
+    </view>
+  </repeat>
+</view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class DMember extends wepy.component {
+  props = {
+    list: {}
+  }
+}
+</script>

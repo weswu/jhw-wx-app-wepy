@@ -161,7 +161,7 @@
   import Tips from '@/utils/Tips'
   import input from '@/mixins/input'
   import WInput from '@/components/weui/input'
-  import Tab from '@/components/weui/tab';
+  import Tab from '@/components/weui/tab'
 
   export default class newsDetail extends wepy.page {
     config = {

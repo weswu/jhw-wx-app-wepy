@@ -118,7 +118,7 @@
         {url: '#/shopData', name: '商城数据', icon: 'tongji', color: '#5bba19'},
         {url: '#/mobile/me', name: '微网站', icon: 'weiwangzhan', color: '#8da5cb'},
         {url: '#/wcd/me', name: '微传单', icon: 'weizhan', color: '#FF6000'},
-        {url: '#/distribution/member', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
+        {url: '/pages/distribution/distribution', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
         {url: '/pages/member/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
         {url: '/pages/service/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
         {url: '/pages/service/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},

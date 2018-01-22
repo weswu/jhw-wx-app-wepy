@@ -2,8 +2,10 @@ import { http } from '@/utils/Http'
 
 const host = 'http://app.jihui88.com'
 
+const wxHost = 'https://wx.jihui88.net'
+
 //微信的code换取sessionKey
-const wxJsCode2Session = (params) => http(params, "https://wx.jihui88.net/rest/api/shop/member/wxapplogin");
+const wxJsCode2Session = (params) => http(params, wxHost + "/rest/api/shop/member/wxapplogin");
 const user2session = (params) => http(params, apiMall + "/api/wechat/user2session?jsoncallback=?");
 // 登录
 const login = (params) => http(params, host + '/rest/api/user/login')
@@ -14,8 +16,8 @@ const userInfo = (params) => http(params, host + '/rest/api/order/home/list')
 const enterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
 const employee = (params) => http(params, host + '/rest/api/crm/friend_emp')
 // 静态化
-const publish = (params) => http(params, 'https://wx.jihui88.net/rest/static1/' + params.username + '/publish?type=' + params.type)
-const publishMobile = (params) => http(params, 'https://wx.jihui88.net/rest/mobileStatic/' + params.username + '/publish?type=page')
+const publish = (params) => http(params, wxHost + '/rest/static1/' + params.username + '/publish?type=' + params.type)
+const publishMobile = (params) => http(params, wxHost + '/rest/mobileStatic/' + params.username + '/publish?type=page')
 // 留言
 const message = (params) => http(params, host + '/rest/api/message/list')
 // 设置
@@ -46,20 +48,21 @@ const bindDetail = (params) => http(params, host + '/rest/api/bind/detail' + (pa
 const member = (params) => http(params, host + '/rest/api/member/list')
 const memberDetail = (params) => http(params, host + '/rest/api/member/detail' + (params.id ? '/' + params.id : ''))
 const memberRank = (params) => http(params, host + '/rest/api/member/rank/list')
+// 分销
+const dMember = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/members/' + params.id + '/' + params.page + '/5' + (params.name ? '/' + params.name : ''))
+const dData = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/ranking/' + params.id + '/' + params.index)
+const dBouns = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/bouns/' + params.id + '/' + params.page + '/4')
 
 module.exports = {
   wxJsCode2Session,
   user2session,
-  login,
-  logout,
+  login, logout,
   // 基本数据
-  user,
-  userInfo,
+  user, userInfo,
   enterprise,
   employee,
   // 静态化
-  publish,
-  publishMobile,
+  publish, publishMobile,
   // 留言
   message,
   // 设置
@@ -67,26 +70,20 @@ module.exports = {
   log,
   serviceFeedback,
   // 相册
-  album,
-  albumCategory,
+  album, albumCategory,
   category,
   // 产品
-  product,
-  productDetail,
+  product, productDetail,
   // 新闻
-  news,
-  newsDetail,
+  news, newsDetail,
   // 证书
-  cert,
-  certDetail,
+  cert, certDetail,
   // 友情链接
-  link,
-  linkDetail,
+  link, linkDetail,
   // 域名绑定
-  bind,
-  bindDetail,
+  bind, bindDetail,
   // 会员
-  member,
-  memberDetail,
-  memberRank
+  member, memberDetail, memberRank,
+  // 分销
+  dMember, dData, dBouns
 }

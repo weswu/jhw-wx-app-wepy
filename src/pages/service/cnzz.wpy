@@ -72,5 +72,4 @@ export default class Cnzz extends wepy.page {
 .logo{position:relative;overflow:hidden;margin:0 auto;width:5rem;border-radius:1rem;background-color:#fff}
 .down_btn view{display:block;margin:1rem auto;width:8rem;height:2.5rem;border-radius:.5rem;background:#3f3f3f;color:#fff;text-align:center;font-size:1rem;line-height:2.5rem}
 .logo_txt{margin-top:.3rem;text-align:center;font-size:.8rem}
-.chaxun {text-align: center;margin-top: 1rem;color: #999;font-size: .7rem;}
 </style>

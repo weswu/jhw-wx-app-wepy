@@ -1,5 +1,5 @@
 <template>
-  <view class="weui-navbar">
+  <view class="weui-navbar" style="background:#fff">
       <block wx:for="{{tabs}}" wx:key="*this">
           <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" @tap="tabClick">
               <view class="weui-navbar__title">{{item}}</view>
