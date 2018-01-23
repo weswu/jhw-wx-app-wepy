@@ -1,0 +1,30 @@
+<template>
+  <navigator url="orderDetail?id={{item.id}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic[index]}}" />
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">订单号：{{item.orderSn}}</view>
+          <view class="weui-media-box__desc">总金额：￥{{item.totalAmount}}   ({{item.orderStatusTxt}})</view>
+          <view class="weui-media-box__info">下单时间：{{item.addTime}}</view>
+      </view>
+  </navigator>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class OrderItem extends wepy.component {
+    props = {
+      item: {},
+      pic: {},
+      index: {}
+    }
+
+    data = {}
+
+    onLoad () {
+    }
+
+    methods = {}
+  }
+</script>

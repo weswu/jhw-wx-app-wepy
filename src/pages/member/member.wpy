@@ -1,13 +1,21 @@
 <template>
-  <!--搜索-->
-  <SearchBar placeholder="请输入用户名" @input.user="input" />
-  <!-- 添加 -->
-  <navigator url="memberDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
+  <view wx:if="{{grade === '07' || $store.state.enterprise.mobileSite === '14'}}">
+    <!--搜索-->
+    <SearchBar placeholder="请输入用户名" @input.user="input" />
+    <!-- 添加 -->
+    <navigator url="memberDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
-  <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item" >
-    <Item :id="item.id" :dx="index+1" :title="item.name" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
-  </repeat>
+    <!--列表-->
+    <repeat for="{{list}}" key="index" index="index" item="item">
+      <Item :id="item.id" :dx="index+1" :title="item.name" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
+    </repeat>
+  </view>
+
+  <view class="chaxun" wx:else>
+    <view><i class="iconfont icon-tishi"></i>
+    您还未开通商城，无法查看商城客户</view>
+    咨询请联系：<text @tap="tel">4007111011</text>
+  </view>
 
   <!-- 加载提示 -->
   <Loadmore :more.sync="more"/>
@@ -129,6 +137,12 @@ page: 1
 }
     await Utils.scrollList(this, json2, '会员管理')
 
+  }
+
+  tel () {
+    wx.makePhoneCall({
+      phoneNumber: '400-7111-011'
+    })
   }
 
   // 下拉刷新

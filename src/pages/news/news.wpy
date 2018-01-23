@@ -3,7 +3,7 @@
   <SearchBar placeholder="请输入新闻标题" @input.user="input" />
 
   <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item" >
+  <repeat for="{{list}}" key="index" index="index" item="item">
     <Item :title="item.title" :content="'发布时间：' + item.addTime + '人气：'+item.viewsum" :url="'newsDetail?id='+item.id"/>
   </repeat>
 

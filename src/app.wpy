@@ -11,8 +11,12 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/distribution/distribution',
+      'pages/order/order',
       'pages/index/index',
+      'pages/message/message',
+      'pages/message/messageDetail',
+      'pages/message/messageBind',
+      'pages/distribution/distribution',
       'pages/member/member',
       'pages/member/memberDetail',
       'pages/bind/bind',
@@ -46,7 +50,6 @@ export default class extends wepy.app {
       'pages/user/user',
       'pages/user/login',
       'pages/user/publish',
-      'pages/message/message',
       'pages/index/data',
       'pages/index/my'
     ],
@@ -152,7 +155,8 @@ export default class extends wepy.app {
       id: "Enterp_0000000000000000000000039"
     },
     appid: 'wx5979261410e2ae66',
-    secret: 'adfa3ba0c79f2e9be8df8b1ec7466fd3'
+    secret: 'adfa3ba0c79f2e9be8df8b1ec7466fd3',
+    recvState: ''
   }
 
   constructor () {

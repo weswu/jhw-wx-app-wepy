@@ -3,7 +3,7 @@
   <SearchBar placeholder="请输入产品标题" @input.user="input" />
 
   <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item" >
+  <repeat for="{{list}}" key="index" index="index" item="item">
     <Item :title="item.name" :content="'人气：'+item.viewsum" :pic="item.picPath" :url="'productDetail?id='+item.id"/>
   </repeat>
 

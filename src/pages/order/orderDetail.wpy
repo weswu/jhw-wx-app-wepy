@@ -1,0 +1,70 @@
+<template>
+  <view class="weui-panel">
+      <view class="weui-panel__hd">{{input.title}}</view>
+      <view class="weui-panel__bd">
+          <view class="weui-media-box weui-media-box_text">
+              <view class="weui-media-box__title weui-media-box__title_in-text">{{input.fromName}}</view>
+              <text class="weui-media-box__desc" style="-webkit-line-clamp:20;">{{input.content}}</text>
+              <view class="weui-media-box__info">
+                  <view class="weui-media-box__info__meta">{{input.addTime}}</view>
+                  <view class="weui-media-box__info__meta">{{input.fromPhone||''}}</view>
+                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{input.fromEmail||''}}</view>
+              </view>
+          </view>
+      </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+
+  export default class MessageDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '询盘查看'
+    }
+
+    data = {
+      id:'',
+      input: {
+        title: '标题'
+      }
+    }
+
+    onLoad ({id}) {
+      this.id = id
+      this.get()
+    }
+
+    async get () {
+      const json = await api.messageDetail({
+        id: this.id
+      })
+      if (json.success) {
+        var data = json.attributes.data
+        if (data.content.indexOf('[{"value":"') > -1) {
+          var cList = JSON.parse(data.content)
+          data.content = ''
+          for (var item of cList) {
+            if (cList.length === 1 && item.type === 'textarea') { // 单一选项
+              data.content = item.value
+            } else {
+              if (item.label === '姓名') {
+                data.fromName = item.wxNick || item.value
+              } else {
+                if (data.content === '') {
+                  data.content = item.label + ':' + item.value
+                } else {
+                  data.content = data.content + '\n' + item.label + ':' + item.value
+                }
+              }
+            }
+          }
+        }
+        this.input = data
+      }
+      this.$apply()
+    }
+
+  }
+</script>

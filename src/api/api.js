@@ -20,6 +20,8 @@ const publish = (params) => http(params, wxHost + '/rest/static1/' + params.user
 const publishMobile = (params) => http(params, wxHost + '/rest/mobileStatic/' + params.username + '/publish?type=page')
 // 留言
 const message = (params) => http(params, host + '/rest/api/message/list')
+const messageDetail = (params) => http(params, host + '/rest/api/message/detail' + (params.id ? '/' + params.id : ''))
+const messageBind = (params) => http(params, host + '/rest/api/message/bind/detail' + (params.data.id ? '/' + params.data.id : ''))
 // 设置
 const password = (params) => http(params, host + '/rest/api/user/detail/password')
 const log = (params) => http(params, host + '/rest/api/log/list')
@@ -52,6 +54,9 @@ const memberRank = (params) => http(params, host + '/rest/api/member/rank/list')
 const dMember = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/members/' + params.id + '/' + params.page + '/5' + (params.name ? '/' + params.name : ''))
 const dData = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/ranking/' + params.id + '/' + params.index)
 const dBouns = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/bouns/' + params.id + '/' + params.page + '/4')
+// 订单
+const order = (params) => http(params, host + '/rest/api/order/list')
+const orderDetail = (params) => http(params, host + '/rest/api/order/listDetail/' + params.id)
 
 module.exports = {
   wxJsCode2Session,
@@ -64,7 +69,7 @@ module.exports = {
   // 静态化
   publish, publishMobile,
   // 留言
-  message,
+  message, messageDetail, messageBind,
   // 设置
   password,
   log,
@@ -85,5 +90,7 @@ module.exports = {
   // 会员
   member, memberDetail, memberRank,
   // 分销
-  dMember, dData, dBouns
+  dMember, dData, dBouns,
+  // 订单
+  order, orderDetail
 }

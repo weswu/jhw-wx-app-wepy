@@ -20,7 +20,7 @@
 <script>
   import wepy from 'wepy'
   export default class Item extends wepy.component {
-    params = {
+    props = {
       id: {},
       dx: {},
       url: {},

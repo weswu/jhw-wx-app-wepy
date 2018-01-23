@@ -3,7 +3,7 @@
   <navigator url="linkDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
   <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item" >
+  <repeat for="{{list}}" key="index" index="index" item="item">
     <Item :id="item.id" :title="item.name" :content="item.url" :url="'linkDetail?id='+item.id" :operation="operation" @del.user="del"/>
   </repeat>
 
