@@ -56,7 +56,14 @@ const dData = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api
 const dBouns = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/bouns/' + params.id + '/' + params.page + '/4')
 // 订单
 const order = (params) => http(params, host + '/rest/api/order/list')
-const orderDetail = (params) => http(params, host + '/rest/api/order/listDetail/' + params.id)
+const orderListDetail = (params) => http(params, host + '/rest/api/order/listDetail/' + params.id)
+const orderDetail = (params) => http(params, host + '/rest/api/order/detail/' + params.id)
+const orderExpress = (params) => http(params, host + '/rest/api/order/express')
+const orderPrice = (params) => http(params, host + '/rest/api/order/priceDetail')
+const orderUpdate = (params) => http(params, host + '/rest/api/order/update')
+// 商城数据
+const data = (params) => http(params, host + '/rest/api/order/data')
+const purchase = (params) => http(params, host + '/rest/api/order/data/member_list')
 
 module.exports = {
   wxJsCode2Session,
@@ -92,5 +99,7 @@ module.exports = {
   // 分销
   dMember, dData, dBouns,
   // 订单
-  order, orderDetail
+  order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
+  // 商城数据
+  data, purchase
 }

@@ -58,7 +58,22 @@ const scrollList = (ctx, json, text) => {
   ctx.$apply()
 }
 
+/*
+ * @author: wes
+ * @date: 2018-1-24
+ * @desc: 金额,过滤2位
+*/
+const price = (v) => {
+  var f = parseFloat(v)
+  if (isNaN(f)) {
+    return
+  }
+  f = Math.round(v * 100) / 100
+  return f
+}
+
 module.exports = {
   del,
-  scrollList
+  scrollList,
+  price
 };

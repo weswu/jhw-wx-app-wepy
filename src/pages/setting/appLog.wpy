@@ -31,7 +31,7 @@
 import wepy from 'wepy';
 export default class AppLog extends wepy.page {
   config = {
-    navigationBarTitleText: '更新记录',
+    navigationBarTitleText: '更新记录'
   }
   components = {}
 

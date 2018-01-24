@@ -1,12 +1,18 @@
 <template>
-  <navigator url="orderDetail?id={{item.id}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic[index]}}" />
+  <navigator url="/pages/order/orderDetail?id={{item.id}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg {{item.productTotalQuantity === 1 ? '' : ' order_img_sum'}}">
+          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic[index]}}"/>
+          <text class="order_num">{{item.productTotalQuantity}}件</text>
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
           <view class="weui-media-box__title">订单号：{{item.orderSn}}</view>
           <view class="weui-media-box__desc">总金额：￥{{item.totalAmount}}   ({{item.orderStatusTxt}})</view>
           <view class="weui-media-box__info">下单时间：{{item.addTime}}</view>
+          <button @tap.stop="detail" size="mini">查看详情</button>
+          <button  wx:if="{{item.orderStatus !== 'completed' && item.orderStatus !== 'invalid' && item.paymentStatus === 'paid' && item.shippingStatus === 'unshipped'}}"
+          @tap.stop="send" size="mini" class="orange">去发货</button>
+          <button wx:if="{{(item.orderStatus === 'unprocessed' || item.orderStatus === 'processed') && item.paymentStatus === 'unpaid' && item.orderStatusInt != -1 && item.shippingStatus !== 'unshipped'}}"
+            @tap.stop="price" size="mini" class="orange">修改价格</button>
       </view>
   </navigator>
 </template>
@@ -22,9 +28,18 @@
 
     data = {}
 
-    onLoad () {
-    }
+    onLoad () {}
 
-    methods = {}
+    methods = {
+      detail () {
+        wx.navigateTo({url: '/pages/order/orderDetail?id' + this.item.id})
+      },
+      send () {
+        wx.navigateTo({url: '/pages/order/send?id' + this.item.id})
+      },
+      price () {
+        wx.navigateTo({url: '/pages/order/price?id' + this.item.id})
+      }
+    }
   }
 </script>

@@ -31,7 +31,7 @@
 import wepy from 'wepy';
 export default class Account extends wepy.page {
   config = {
-    navigationBarTitleText: '关于机汇网',
+    navigationBarTitleText: '关于机汇网'
   }
   components = {}
 

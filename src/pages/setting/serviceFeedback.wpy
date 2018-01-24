@@ -2,13 +2,13 @@
   <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
     <WInput>
-      <view slot="title" class="weui-label">主题</view>
+      <view slot="title" class="weui-label">主题：</view>
       <input slot="input" class="weui-input" placeholder="请输入主题" @input="input" id="fdbk_subject64" value="{{input.fdbk_subject64}}"/>
     </WInput>
     <!--单选-->
     <view class="weui-cell weui-cells_after-title">
       <view class="weui-cell__hd">
-        <view class="weui-label">反馈类型</view>
+        <view class="weui-label">反馈类型：</view>
       </view>
       <view class="weui-cell__bd">
         <radio-group class="radio-group" @change="radio" id="fdbk_type">
@@ -23,7 +23,7 @@
         <view class="weui-cell">
             <view class="weui-cell__bd">
                 <textarea class="weui-textarea" placeholder="请描述您的反馈内容，并附带上您的手机号码，我们好及时对接您提的反馈内容。"
-                @input="input" id="fdbk_intro1k" value="{{input.fdbk_intro1k}}" style="height: 80px" />
+                @input="input" id="fdbk_intro1k" value="{{input.fdbk_intro1k}}" style="height: 80px"/>
             </view>
         </view>
     </view>

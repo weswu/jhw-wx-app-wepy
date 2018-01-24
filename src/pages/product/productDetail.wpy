@@ -49,7 +49,7 @@
             <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
                 <block wx:for="{{imgArr}}" wx:key="*this">
                     <view class="weui-uploader__file" @tap="previewImage" id="{{item.id}}">
-                        <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.sourceProductImagePath}}" mode="aspectFill" />
+                        <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.sourceProductImagePath}}" mode="aspectFill"/>
                     </view>
                 </block>
                 <view class="weui-uploader__input-box">

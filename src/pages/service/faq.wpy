@@ -10,7 +10,7 @@
 import wepy from 'wepy';
 export default class Faq extends wepy.page {
   config = {
-    navigationBarTitleText: 'FAQ',
+    navigationBarTitleText: 'FAQ'
   }
   components = {}
 

@@ -1,0 +1,236 @@
+<template>
+  <Tips />
+  <view class="weui-form-preview">
+      <view class="weui-form-preview__hd">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">订单号: {{detail.orderSn}}</view>
+              <view class="weui-form-preview__value_in-hd orange">等待买家付款</view>
+          </view>
+      </view>
+      <view class="weui-cells weui-cells_in-small-appmsg">
+        <WInput>
+          <view slot="title" class="weui-label">物流运费：</view>
+          <input slot="input" class="weui-input" placeholder="请输入物流运费" @input="input" type="number" id="deliveryFee" value="{{input.deliveryFee}}" @change="totalSum"/>
+          <view slot="footer">元</view>
+        </WInput>
+      </view>
+      <view class="weui-form-preview__bd">
+        <repeat for="{{detail.product}}" key="index" index="index" item="item">
+          <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+                  <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{item.com}}"/>
+              </view>
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                  <view class="weui-media-box__title">{{item.name}}</view>
+                  <view class="weui-media-box__desc">{{item.productAttr}}</view>
+                  <view class="weui-media-box__info">×{{item.productQuantity}}
+      							<input type="number" value="{{item.price}}" @input="price" id="{{index}}" @change="totalSum()">
+                  </view>
+              </view>
+          </view>
+        </repeat>
+      </view>
+      <view class="weui-form-preview__ft">
+          <view class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">总计:￥</em>{{input.total}} 元</view>
+      </view>
+  </view>
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" @tap="submit">确定</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import FormTips from '@/components/weui/tips';
+  import WInput from '@/components/weui/input'
+  import input from '@/mixins/input'
+  export default class OrderDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '修改价格'
+    }
+
+    components = {
+      Tips: FormTips,
+      WInput
+    }
+
+    mixins = [input]
+
+    data = {
+      detail: {
+        data: []
+      },
+      input: {
+        list: ''
+      }
+    }
+
+    onLoad ({id}) {
+      this.input.orderId = id
+      this.get()
+    }
+
+    async get () {
+      const json = await api.orderPrice({
+        data: {
+          orderId: this.input.orderId || 'ff8081815156ec210151674174c801b9'
+        }
+      })
+      if (json.success) {}
+      this.detail =  {
+        date: 0,
+        dayHour: -1,
+        totalAmount: 600007.02,
+        product: [
+        {
+        deliverycorpId: "0.00999999978",
+        name: "手机测试",
+        com: "upload/g/g2/ggggfj/picture/2015/03/29/c64b8086-ba12-4f70-ac0f-44362d7cdb82.png",
+        orderId: "ff8081815156ec2101516741752a01ba",
+        productQuantity: 1,
+        productId: "Product_000000000000000000340400",
+        price: 0.01,
+        productAttr: "字母属性: a; 日期属性: 2015-04-15; 单选项属性: 选项1; 多选项项属性: 多选2; 文本属性: 革工; 数字属性: 1",
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        },
+        {
+        deliverycorpId: "0.00999999978",
+        name: "秒杀产品1",
+        com: "upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
+        orderId: "ff8081815156ec2101516741755c01bb",
+        productQuantity: 1,
+        productId: "Product_000000000000000000341045",
+        price: 0.01,
+        productAttr: "日期属性: 2015-05-05; 数字属性: 111; 文本属性: 123; 多选项项属性: 多选1; 单选项属性: 选项1; 字母属性: ass",
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        }
+        ],
+        deliveryFee: 600007,
+        data: [
+        {
+        deliverycorpId: "0.00999999978",
+        name: "手机测试",
+        com: "upload/g/g2/ggggfj/picture/2015/03/29/c64b8086-ba12-4f70-ac0f-44362d7cdb82.png",
+        orderId: "ff8081815156ec2101516741752a01ba",
+        productQuantity: 1,
+        productId: "Product_000000000000000000340400",
+        price: 0.01,
+        productAttr: "字母属性: a; 日期属性: 2015-04-15; 单选项属性: 选项1; 多选项项属性: 多选2; 文本属性: 革工; 数字属性: 1",
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        },
+        {
+        deliverycorpId: "0.00999999978",
+        name: "秒杀产品1",
+        com: "upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
+        orderId: "ff8081815156ec2101516741755c01bb",
+        productQuantity: 1,
+        productId: "Product_000000000000000000341045",
+        price: 0.01,
+        productAttr: "日期属性: 2015-05-05; 数字属性: 111; 文本属性: 123; 多选项项属性: 多选1; 单选项属性: 选项1; 字母属性: ass",
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        }
+        ],
+        orderSn: "102550",
+        oId: "ff8081815156ec210151674174c801b9",
+        shippingTime: "2015-12-03 17:55:37",
+        paymentTime: "2015-12-03 17:52:34"
+        }
+        this.input.deliveryFee = this.detail.deliveryFee
+        this.totalSum()
+      this.$apply()
+    }
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.deliveryFee,
+          method: 'required',
+          message: '物流信息不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    totalSum () {
+      this.input.total = parseInt(this.input.deliveryFee)
+      this.detail.product.forEach(item => {
+        this.input.total +=  item.price * item.productQuantity
+      })
+      this.input.total = parseFloat(this.input.total).toFixed(2)
+    }
+
+    methods = {
+      price (e) {
+        this.detail.product[parseInt(e.currentTarget.id)].price = parseInt(e.detail.value)
+      },
+      async submit () {
+        if (!this.validate()) {
+          return;
+        }
+        this.detail.product.forEach(item => {
+          if (!item.price) {
+            Tips.error('价格不能为空')
+            return
+          }
+          if (this.input.list === '') {
+            this.input.list += 'id=' + item.orderId + ',price=' + item.price
+          } else {
+            this.input.list += ',id=' + item.orderId + ',price=' + item.price
+          }
+        })
+        const json = await api.orderUpdate({
+          data: this.input,
+          method: 'put'
+        })
+        if (json.success) {
+          Tips.success("修改成功");
+        } else {
+          Tips.error(json.msg)
+        }
+      }
+    }
+
+  }
+</script>
+<style>
+  .weui-form-preview__hd .weui-form-preview__label{
+    color: #000;
+    font-size: 14px
+  }
+  .orange{
+    font-size: 12px;
+    color: orange
+  }
+  .weui-media-box__info input{
+    border-bottom:1px solid #ccc;
+    padding: 3px 10px;
+    text-align: left;
+    color: #000
+  }
+</style>

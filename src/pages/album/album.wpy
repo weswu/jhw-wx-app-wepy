@@ -14,7 +14,7 @@
   <view class="weui-uploader__files" id="uploaderFiles">
       <block wx:for="{{list}}" wx:key="*this">
           <view class="weui-uploader__file" @tap="previewImage" id="{{item.serverPath}}">
-              <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.serverPath}}" mode="aspectFill" />
+              <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.serverPath}}" mode="aspectFill"/>
           </view>
       </block>
   </view>
@@ -30,7 +30,7 @@ import tips from '@/utils/Tips'
 import Loadmore from '@/components/weui/loadmore'
 export default class Album extends wepy.page {
   config = {
-    navigationBarTitleText: '相册',
+    navigationBarTitleText: '相册'
   }
   components = {
     Loadmore

@@ -1,7 +1,7 @@
 <template>
   <view wx:if="{{grade === '07' || $store.state.enterprise.mobileSite === '14'}}">
     <!--搜索-->
-    <SearchBar placeholder="请输入用户名" @input.user="input" />
+    <SearchBar placeholder="请输入用户名" @input.user="input"/>
     <!-- 添加 -->
     <navigator url="memberDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
 

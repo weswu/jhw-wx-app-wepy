@@ -19,7 +19,7 @@
 import wepy from 'wepy';
 export default class Faq1 extends wepy.page {
   config = {
-    navigationBarTitleText: '7步启动全网营销系统',
+    navigationBarTitleText: '7步启动全网营销系统'
   }
   components = {}
 

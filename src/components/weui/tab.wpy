@@ -25,13 +25,17 @@
     };
 
     onLoad () {
+      this.init()
+    }
+
+    init (e) {
       let ctx = this
       wx.getSystemInfo({
         success: function(res) {
           ctx.sliderLeft = (res.windowWidth / ctx.tabs.length - 72) / 2
-          ctx.sliderOffset = res.windowWidth / ctx.tabs.length * ctx.activeIndex
+          ctx.sliderOffset = res.windowWidth / ctx.tabs.length * (e ||ctx.activeIndex)
         }
-      });
+      })
     }
 
     methods = {

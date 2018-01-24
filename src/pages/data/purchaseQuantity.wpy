@@ -1,0 +1,126 @@
+<template>
+  <view class="weui-cell">
+      <view class="weui-cell__hd"></view>
+      <view class="weui-cell__bd">客户</view>
+      <view class="weui-cell__ft">数量</view>
+  </view>
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <view class="weui-cell">
+        <view class="weui-cell__hd">{{index+1}}</view>
+        <view class="weui-cell__bd">{{item.name || item.username}}</view>
+        <view class="weui-cell__ft">{{item.quantity}}</view>
+    </view>
+  </repeat>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Utils from '@/utils/Utils'
+import Loadmore from '@/components/weui/loadmore'
+export default class PurchaseAmount extends wepy.page {
+  components = {
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    page: 1,
+    count: 0,
+    more: { loading: true }
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    const json = await api.purchase({
+      data: {
+        pageSize: 5000,
+        sort: 1,
+        page: 1
+      }
+    })
+    if (json.success) {
+    }
+    let json2 = {
+success: true,
+msg: null,
+obj: null,
+attributes: {
+per_page: 5000,
+totalAmount: 0.04,
+data: [
+{
+deliverycorpId: null,
+name: null,
+com: null,
+orderId: null,
+productQuantity: null,
+productId: null,
+price: null,
+productAttr: null,
+time: null,
+username: "wxw",
+quantity: "2",
+amount: "0.02000",
+memberId: null,
+id: null,
+enterpriseId: null
+},
+{
+deliverycorpId: null,
+name: null,
+com: null,
+orderId: null,
+productQuantity: null,
+productId: null,
+price: null,
+productAttr: null,
+time: null,
+username: "shop",
+quantity: "1",
+amount: "0.01000",
+memberId: null,
+id: null,
+enterpriseId: null
+},
+{
+deliverycorpId: null,
+name: null,
+com: null,
+orderId: null,
+productQuantity: null,
+productId: null,
+price: null,
+productAttr: null,
+time: null,
+username: "ofDJ5s36aKkD-wr7yvg3KUUITZRg1",
+quantity: "1",
+amount: "0.01000",
+memberId: null,
+id: null,
+enterpriseId: null
+}
+],
+grade: "",
+count: 3,
+productTotalQuantity: 4,
+pic: [ ],
+page: 1,
+operator: 3
+}
+}
+
+    await Utils.scrollList(this, json2, '客户购买数量排行')
+  }
+
+}
+</script>
+<style media="screen">
+  .weui-cell__hd{
+    margin-right: 5px;vertical-align: middle;width:20px; height: 20px;
+  }
+</style>

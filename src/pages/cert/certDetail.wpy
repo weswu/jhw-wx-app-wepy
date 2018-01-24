@@ -21,7 +21,7 @@
       <view slot="title" class="weui-label">证书图片：</view>
       <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
         <view class="weui-uploader__file">
-            <image class="weui-uploader__img" src="http://img.jihui88.com/{{input.attaPic}}" mode="aspectFill" />
+            <image class="weui-uploader__img" src="http://img.jihui88.com/{{input.attaPic}}" mode="aspectFill"/>
         </view>
       </view>
     </WInput>

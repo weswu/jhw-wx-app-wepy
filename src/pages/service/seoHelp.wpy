@@ -30,7 +30,7 @@
 import wepy from 'wepy';
 export default class SeoHelp extends wepy.page {
   config = {
-    navigationBarTitleText: 'SEO帮助',
+    navigationBarTitleText: 'SEO帮助'
   }
   components = {}
 

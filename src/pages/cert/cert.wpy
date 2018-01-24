@@ -1,6 +1,6 @@
 <template>
   <!--搜索-->
-  <SearchBar placeholder="请输入标题" @input.user="input" />
+  <SearchBar placeholder="请输入标题" @input.user="input"/>
 
   <!-- 添加 -->
   <navigator url="certDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
@@ -24,7 +24,7 @@ import Item from '@/components/weui/item'
 import Loadmore from '@/components/weui/loadmore'
 export default class Cert extends wepy.page {
   config = {
-    navigationBarTitleText: '证书管理',
+    navigationBarTitleText: '证书管理'
   }
   components = {
     SearchBar,

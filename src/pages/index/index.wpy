@@ -2,7 +2,7 @@
   <view class="header">
     <navigator url="" class="weui-media-box weui-media-box_appmsg">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png" />
+        <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png"/>
       </view>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view>{{user.username}},您好！</view>
@@ -19,20 +19,20 @@
 
   <view class='status'>
     <view class="ul">
-      <navigator url="/pages/order/buyerPayment" class='li'>
+      <navigator url="/pages/order/order?active=1" class='li'>
         <view class='status_num'>{{userInfo.unpaid || 0}}</view><view class='status_txt'>待付款</view>
       </navigator>
-      <navigator url="/pages/order/awaitS" class='li' >
+      <navigator url="/pages/order/order?active=2" class='li' >
         <view class='status_num op'>{{userInfo.unshipped || 0}}</view> <view class='status_txt'>待发货</view>
       </navigator>
-      <navigator url="/pages/order/delivery" class='li' >
+      <navigator url="/pages/order/order?active=3" class='li' >
         <view class='status_num'> {{userInfo.shipped || 0}}</view><view class='status_txt'>待收货</view>
       </navigator>
       <view  @tap="goMessage" class='li'>
         <view class='status_num'>{{userInfo.unread || 0}}</view><view class='status_txt'>未读询盘</view>
       </view>
     </view>
-    <navigator url="/pages/order/order" class="weui-cell weui-cell_access weui-cells_in-small-appmsg">
+    <navigator url="/pages/order/order?active=0" class="weui-cell weui-cell_access weui-cells_in-small-appmsg">
       <view class="weui-cell__bd">已卖出的货品</view>
       <view class="weui-cell__ft weui-cell__ft_in-access">全部订单</view>
     </navigator>

@@ -1,0 +1,222 @@
+<template>
+  <Tips />
+  <view class="weui-form-preview">
+      <view class="weui-form-preview__hd">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">收货信息</view>
+          </view>
+      </view>
+      <view class="weui-form-preview__bd">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">收货人</view>
+              <view class="weui-form-preview__value">{{detail.shipName}}</view>
+          </view>
+          <view class="weui-form-preview__item" wx:if="{{detail.shipMobile}}">
+              <view class="weui-form-preview__label">手机</view>
+              <view class="weui-form-preview__value">{{detail.shipMobile}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">收货地址</view>
+              <view class="weui-form-preview__value">{{detail.shipArea}}{{detail.shipAddress}}</view>
+          </view>
+      </view>
+  </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <WInput>
+      <view slot="title" class="weui-label">物流信息：</view>
+      <picker slot="input" @change="categoryPicker" id="com" value="{{comIndex}}" range-key="name" range="{{middle}}">
+          <view class="weui-select weui-select_in-select-after">{{middle[comIndex].name}}</view>
+      </picker>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">运费：</view>
+      <input slot="input" class="weui-input" placeholder="请输入运费" @input="input" id="cost" value="{{input.cost}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">运单号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入运单号" @input="input" id="deliverySn" value="{{input.deliverySn}}"/>
+    </WInput>
+  </view>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" @tap="submit">确定发货</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import FormTips from '@/components/weui/tips';
+  import WInput from '@/components/weui/input'
+  import input from '@/mixins/input'
+  export default class OrderDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '订单发货'
+    }
+
+    components = {
+      Tips: FormTips,
+      WInput
+    }
+
+    mixins = [input]
+
+    data = {
+      detail: {},
+      input: {},
+      middle: [],
+      comIndex: 0
+    }
+
+    onLoad ({id}) {
+      this.id = id
+      this.get()
+    }
+
+    async get () {
+      const json = await api.orderDetail({
+        id: this.id || 'ff8081815156ec210151674174c801b9'
+      })
+      if (json.success) {}
+      this.middle = [
+        {
+        deliverycorpId: null,
+        name: "远成物流",
+        com: "yuancheng",
+        orderId: null,
+        productQuantity: null,
+        productId: null,
+        price: null,
+        productAttr: null,
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        },
+        {
+        deliverycorpId: null,
+        name: "恒路物流",
+        com: "henglu",
+        orderId: null,
+        productQuantity: null,
+        productId: null,
+        price: null,
+        productAttr: null,
+        time: null,
+        username: null,
+        quantity: null,
+        amount: null,
+        memberId: null,
+        id: null,
+        enterpriseId: null
+        }
+      ]
+      this.detail =  {
+        orderId: "ff8081815156ec210151674174c801b9",
+        addTime: "2015-12-03 17:52:01",
+        orderSn: "102550",
+        all: null,
+        proName: null,
+        orderStatusInt: 2,
+        paymentStatusInt: 2,
+        shippingStatusInt: 2,
+        orderStatus: "completed",
+        paymentStatus: "paid",
+        shippingStatus: "shipped",
+        invoiceName: null,
+        invoiceAmount: null,
+        deliveryTypeName: "圆通",
+        paymentConfigName: null,
+        productTotalPrice: 0.02,
+        deliveryFee: 600007,
+        paymentFee: 0,
+        totalAmount: 600007.02,
+        paidAmount: 600007.02,
+        productWeight: 500.001007,
+        productWeightUnit: "kg",
+        productTotalQuantity: 2,
+        shipName: "王永进",
+        shipArea: "浙江省杭州市西湖区",
+        shipAreaPath: "402881882ba8753a012ba8da48e000b0,402881882ba8753a012ba8da7d2f00b1,402881e44da29af5014da35e04900331",
+        shipAddress: "文三路",
+        shipZipCode: "310000",
+        shipPhone: "",
+        shipMobile: "13588506961",
+        memo: "",
+        memberId: null,
+        deliveryType: null,
+        paymentConfig: null,
+        paytype: "pc",
+        enterpriseId: "Enterp_0000000000000000000000039",
+        orderStatusTxt: "已完成",
+        deliverytypeId: "ff8081814dc9717e014dd21bc7f3000e",
+        productName: null,
+        com: null,
+        deliverySn: null,
+        deliveryCorpName: null,
+        startDate: null,
+        endDate: null,
+        sorting: null,
+        id: "ff8081815156ec210151674174c801b9"
+        }
+
+      this.input.orderId = this.detail.orderId
+      this.input.com = this.middle[0].com
+      this.$apply()
+    }
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.com,
+          method: 'required',
+          message: '物流信息不能为空'
+        },
+        {
+          value: this.input.cost,
+          method: 'required',
+          message: '运费不能为空'
+        },
+        {
+          value: this.input.deliverySn,
+          method: 'required',
+          message: '运单号不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    methods = {
+      categoryPicker (e) {
+        var index = e.detail.value
+        this[e.currentTarget.id+'Index'] = index
+        this.input[e.currentTarget.id] = this.middle[index].com
+      },
+      async submit () {
+        if (!this.validate()) {
+          return;
+        }
+        const json = await api.orderExpress({
+          data: this.input,
+          method: 'put'
+        })
+        if (json.success) {
+          Tips.success("修改成功");
+        } else {
+          Tips.error(json.msg)
+        }
+      }
+    }
+
+  }
+</script>
+<style>
+  .weui-form-preview__hd .weui-form-preview__label{
+    color: #000;
+    font-size: 14px
+  }
+</style>

@@ -1,6 +1,6 @@
 <template>
   <!--搜索-->
-  <SearchBar placeholder="请输入新闻标题" @input.user="input" />
+  <SearchBar placeholder="请输入新闻标题" @input.user="input"/>
 
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
@@ -20,7 +20,7 @@ import Item from '@/components/weui/item'
 import Loadmore from '@/components/weui/loadmore'
 export default class News extends wepy.page {
   config = {
-    navigationBarTitleText: '新闻管理',
+    navigationBarTitleText: '新闻管理'
   }
   components = {
     SearchBar,
