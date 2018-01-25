@@ -1,0 +1,102 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+        <!--列表-->
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <Item :item.sync="item" :pic.sync="pic" :index="index"/>
+        </repeat>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 3}}">
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Tab from '@/components/weui/tab'
+import Item from '@/components/order/orderItem'
+export default class Order extends wepy.page {
+  config = {
+    navigationBarTitleText: '服务缴费'
+  }
+  components = {
+    Tab,
+    Item
+  }
+
+  data = {
+    tabs: ['待缴费', '历史缴费', '服务记录', '已购产品'],
+    activeIndex: 0,
+    list: [],
+    log: 'init',
+    journal: 'init'
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  methods = {
+    switchTab (e) {
+      this.activeIndex = parseInt(e)
+      if (this.activeIndex === 1 && this.log !== 'init') {
+        this.getlog()
+      }
+      if (this.activeIndex === 2 && this.journal !== 'init') {
+        this.getjournal()
+      }
+    }
+  }
+
+  async get () {
+    Tips.loading()
+    const json = await api.receiptList()
+    Tips.loaded()
+    this.list = json.attributes.data
+  }
+
+  async getlog () {
+    Tips.loading()
+    const json = await api.receiptLog()
+    Tips.loaded()
+    this.log = json.attributes.data
+  }
+
+  async getjournal() {
+    Tips.loading()
+    const json = await api.journal()
+    Tips.loaded()
+    this.journal = json.attributes.data
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    if (this.activeIndex === 0) {
+      this.list = []
+      this.get()
+    }
+    if (this.activeIndex === 1) {
+      this.log = []
+      this.getlog()
+    }
+    if (this.activeIndex === 2) {
+      this.journal = []
+      this.getjournal()
+    }
+    wepy.stopPullDownRefresh()
+  }
+
+}
+</script>
+<style lang="less">
+</style>

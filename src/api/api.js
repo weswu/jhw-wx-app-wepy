@@ -64,6 +64,10 @@ const orderUpdate = (params) => http(params, host + '/rest/api/order/update')
 // 商城数据
 const data = (params) => http(params, host + '/rest/api/order/data')
 const purchase = (params) => http(params, host + '/rest/api/order/data/member_list')
+// 服务缴费
+const receiptList = (params) => http(params, host + '/rest/api/crm/receipt/list')
+const receiptLog = (params) => http(params, host + '/rest/api/crm/receipt/log')
+const journal = (params) => http(params, host + '/rest/api/crm/feedback/journal')
 
 module.exports = {
   wxJsCode2Session,
@@ -101,5 +105,7 @@ module.exports = {
   // 订单
   order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
   // 商城数据
-  data, purchase
+  data, purchase,
+  // 服务缴费
+  receiptList, receiptLog, journal
 }
