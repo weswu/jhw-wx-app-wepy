@@ -12,6 +12,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/servicepay/pay',
+      'pages/servicepay/mypay',
       'pages/index/index',
       'pages/data/data',
       'pages/data/purchaseQuantity',

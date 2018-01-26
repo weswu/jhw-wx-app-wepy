@@ -1,0 +1,67 @@
+<template>
+  <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{grade !== '04' && grade !== '14'}}">
+    <view class="weui-cell__bd weui-cell_primary">PC网站</view>
+    <view class="weui-cell__ft">
+      <view class="weui-badge" wx:if="{{userType === '展示版'}}">展示版</view>
+      <view class="weui-badge" wx:if="{{userType === '营销版'}}">营销版</view>
+      <view class="weui-badge" wx:if="{{userType === '品牌版'}}">品牌版</view>
+      <view class="weui-badge" wx:if="{{userType === '电商版'}}">电商版</view>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{mobileSite === '01' || mobileSite === '07' || mobileSite === '04' || mobileSite === '14'}}">
+    <view class="weui-cell__bd weui-cell_primary">手机网站</view>
+    <view class="weui-cell__ft">
+      <view class="weui-badge" wx:if="{{mobileSite === '01' || mobileSite === '04'}}">展示版</view>
+      <view class="weui-badge" wx:if="{{mobileSite === '07' || mobileSite === '14'}}">电商版</view>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{wcdMember === '00' || wcdMember === '01'}}">
+    <view class="weui-cell__bd weui-cell_primary">微传单</view>
+    <view class="weui-cell__ft">
+      <view class="weui-badge">免费</view>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{distribution}}">
+    <view class="weui-cell__bd weui-cell_primary">微分销</view>
+    <view class="weui-cell__ft">
+      <view class="weui-badge">会员</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  export default class ServiceGoods extends wepy.component {
+
+    data = {
+      wcdMember: '', // 01是微传单会员
+      grade: '',
+      userType: '',
+      mobileSite: '',
+      distribution: false
+    }
+
+    async onLoad () {
+      this.wcdMember = this.$parent.$parent.globalData.user.wcdMember  // 01是微传单会员
+      this.grade = this.$parent.$parent.globalData.user.grade
+      this.userType = this.$parent.$parent.globalData.user.userType
+      this.mobileSite = this.$parent.$parent.globalData.enterprise.mobileSite  /** 00/01/07 未开通/展示版/电商版 **/
+      this.get()
+    }
+
+    async get () {
+      const json = await api.dMember({
+        page: 1,
+        id: this.$parent.$parent.globalData.user.enterpriseId
+      })
+      var data = JSON.parse(json.substring(1, json.length - 1))
+      if (data.success) {
+        this.distribution = true
+        this.$apply()
+      }
+    }
+
+    methods = {}
+  }
+</script>

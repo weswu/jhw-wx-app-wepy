@@ -1,19 +1,77 @@
 <template>
+  <view class="weui-cells weui-cells_in-small-appmsg pay-header">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__hd">公司名:</view>
+      <view class="weui-cell__bd">{{name}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__hd">用户名:</view>
+      <view class="weui-cell__bd">{{username}}</view>
+    </view>
+  </view>
   <view class="weui-tab">
     <!--TAB-->
     <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
     <view class="weui-tab__panel">
       <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
         <!--列表-->
-        <repeat for="{{list}}" key="index" index="index" item="item">
-          <Item :item.sync="item" :pic.sync="pic" :index="index"/>
-        </repeat>
+        <checkbox-group @change="checkboxChange">
+          <repeat for="{{list}}" key="index" index="index" item="item">
+            <view class="weui-cell">
+                <view class="weui-cell__hd">
+                  <label class="checkbox">
+                    <checkbox value="{{item.price}}" checked="{{item.checked}}"/>{{item.value}}
+                  </label>
+                </view>
+                <view class="weui-cell__bd">
+                  <image src="/images/servicepay/{{item.type}}paid.gif"/>
+                  <repeat for="{{item.orderItemList}}" key="idx" index="idx" item="orderItem">
+                    <text>{{orderItem.prod_name}}    </text>
+                  </repeat>
+                </view>
+                <view class="weui-cell__ft">￥<text class="red">{{item.price}}</text>元\n{{item.tip}}</view>
+            </view>
+          </repeat>
+        </checkbox-group>
+        <view class="app_footer">
+          <view class="foot-lf">
+            选中<text>{{checkNum}}</text>
+            共计<text class="red">{{totel}}</text>元
+          </view>
+          <view class="app-button" @tap="pay">确定缴费</view>
+        </view>
+        <view class="empty" wx:if="{{list.length === 0}}">{{text}}</view>
       </view>
+
       <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+        <repeat for="{{log}}" key="index" index="index" item="item">
+          <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+              <view class="weui-cell__hd"><image src="/images/servicepay/allpaid.gif" style="width: 17px;height: 17px;margin-right: 5px" /></view>
+              <view class="weui-cell__bd weui-cell_primary">
+                  <view>{{item.name}}</view>
+                  {{item.so_date}}
+              </view>
+              <view class="weui-cell__ft">
+                ￥{{item.so_amount}}元<view>交易成功</view>
+              </view>
+          </view>
+        </repeat>
+        <view class="empty" wx:if="{{log.length === 0}}">{{text}}</view>
       </view>
-      <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
+
+      <view class="weui-tab__content journal" hidden="{{activeIndex != 2}}">
+        <repeat for="{{journal}}" key="index" index="index" item="item">
+          <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                  <view class="weui-media-box__title">{{item.jrnl_subject64}}</view>
+                  <view class="weui-media-box__desc">{{item.emp_name}}{{item.jrnl_start_time}}</view>
+              </view>
+          </navigator>
+        </repeat>
+        <view class="empty" wx:if="{{journal.length === 0}}">{{text}}</view>
       </view>
       <view class="weui-tab__content" hidden="{{activeIndex != 3}}">
+        <Goods/>
       </view>
     </view>
   </view>
@@ -23,60 +81,365 @@
 import wepy from 'wepy';
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
-import Item from '@/components/order/orderItem'
+import Goods from '@/pages/servicepay/goods'
 export default class Order extends wepy.page {
   config = {
     navigationBarTitleText: '服务缴费'
   }
   components = {
     Tab,
-    Item
+    Goods
   }
 
   data = {
+    name: '',
+    username: '',
     tabs: ['待缴费', '历史缴费', '服务记录', '已购产品'],
     activeIndex: 0,
     list: [],
+    checkNum: 0,
+    totel: 0,
     log: 'init',
-    journal: 'init'
+    journal: 'init',
+    text: '暂无数据'
   }
 
   onLoad () {
+    this.name = this.$parent.globalData.enterprise.name
+    this.username = this.$parent.globalData.user.username
     this.get()
   }
 
   methods = {
     switchTab (e) {
       this.activeIndex = parseInt(e)
-      if (this.activeIndex === 1 && this.log !== 'init') {
+      if (this.activeIndex === 1 && this.log === 'init') {
         this.getlog()
       }
-      if (this.activeIndex === 2 && this.journal !== 'init') {
+      if (this.activeIndex === 2 && this.journal === 'init') {
         this.getjournal()
       }
+    },
+    checkboxChange (e) {
+      this.checkNum = e.detail.value.length
+      this.totel = 0
+      for (var item of e.detail.value) {
+        this.totel = this.accAdd(this.totel, parseFloat(item))
+      }
+    },
+    pay () {
+      if (this.totel === 0) {
+        Tips.alert('请选择订单')
+        return false
+      }
+      wx.navigateTo({
+        url: 'mypay?totel=' + this.totel
+      })
     }
+  }
+  // 计算浮点数
+  accAdd (arg1, arg2) {
+    var r1, r2, m, c
+    try {
+      r1 = arg1.toString().split('.')[1].length
+    } catch (e) {
+      r1 = 0
+    }
+    try {
+      r2 = arg2.toString().split('.')[1].length
+    } catch (e) {
+      r2 = 0
+    }
+    c = Math.abs(r1 - r2)
+    m = Math.pow(10, Math.max(r1, r2))
+    if (c > 0) {
+      var cm = Math.pow(10, c)
+      if (r1 > r2) {
+        arg1 = Number(arg1.toString().replace('.', ''))
+        arg2 = Number(arg2.toString().replace('.', '')) * cm
+      } else {
+        arg1 = Number(arg1.toString().replace('.', '')) * cm
+        arg2 = Number(arg2.toString().replace('.', ''))
+      }
+    } else {
+      arg1 = Number(arg1.toString().replace('.', ''))
+      arg2 = Number(arg2.toString().replace('.', ''))
+    }
+    return (arg1 + arg2) / m
   }
 
   async get () {
     Tips.loading()
     const json = await api.receiptList()
     Tips.loaded()
-    this.list = json.attributes.data
+    if (json.success) {
+      this.list = json.attributes.data
+    } else {
+      this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
+    }
+    let result = [
+      {
+        so_date: 1414512000000,
+        so_amount: 200,
+        so_payed_amount: 0,
+        orderItemList: [
+          {
+            prod_name: "腾讯企业邮箱"
+          }
+        ],
+        so_id: 101617,
+        so_code: "xf2014100140"
+      },
+      {
+        so_date: 1414512000000,
+        so_amount: 200,
+        so_payed_amount: 0,
+        orderItemList: [
+          {
+            prod_name: "腾讯企业邮箱"
+          },
+          {
+            prod_name: "腾讯企业邮箱"
+          }
+        ],
+        so_id: 101617,
+        so_code: "xf2014100140"
+      }
+    ]
+    for (var i = 0; i < result.length; i++) {
+      result[i].name = ''
+      result[i].price = result[i].so_amount - result[i].so_payed_amount
+      result[i].type = 'no'
+      if (result[i].so_payed_amount > 0 && result[i].price > 0) {
+        result[i].tip = '部分支付'
+        result[i].type = 'under'
+      }
+      if (result[i].price === 0) {
+        result[i].tip = '已支付'
+        result[i].type = 'all'
+      }
+      result[i].check = false
+      this.list.push(result[i])
+    }
+    this.$apply()
   }
 
   async getlog () {
     Tips.loading()
     const json = await api.receiptLog()
     Tips.loaded()
-    this.log = json.attributes.data
+    if (json.success) {
+      this.log = json.attributes.data
+    }
+    this.log = []
+    let result = [
+      {
+      so_date: 1568131200000,
+      so_amount: 0,
+      so_payed_amount: 0,
+      orderItemList: [
+      {
+      prod_name: "手机网站续费"
+      }
+      ],
+      so_id: 159091,
+      so_code: "xf2019090030"
+      },
+      {
+      so_date: 1559145600000,
+      so_amount: 2580,
+      so_payed_amount: 2580,
+      orderItemList: [
+      {
+      prod_name: "会员2代续费【机汇网会员】"
+      },
+      {
+      prod_name: "国际域名续费"
+      }
+      ],
+      so_id: 159084,
+      so_code: "xf2019050020"
+      },
+      {
+      so_date: 1536595200000,
+      so_amount: 0,
+      so_payed_amount: 0,
+      orderItemList: [
+      {
+      prod_name: "手机网站续费"
+      }
+      ],
+      so_id: 159083,
+      so_code: "xf2018090060"
+      },
+      {
+      so_date: 1527609600000,
+      so_amount: 2580,
+      so_payed_amount: 2580,
+      orderItemList: [
+      {
+      prod_name: "会员2代续费【机汇网会员】"
+      },
+      {
+      prod_name: "国际域名续费"
+      }
+      ],
+      so_id: 159075,
+      so_code: "xf2018050048"
+      },
+      {
+      so_date: 1505059200000,
+      so_amount: 0,
+      so_payed_amount: 0,
+      orderItemList: [
+      {
+      prod_name: "手机网站续费"
+      }
+      ],
+      so_id: 159069,
+      so_code: "xf2017090093"
+      },
+      {
+      so_date: 1496073600000,
+      so_amount: 2840,
+      so_payed_amount: 2840,
+      orderItemList: [
+      {
+      prod_name: "国际域名续费"
+      },
+      {
+      prod_name: "展示型"
+      }
+      ],
+      so_id: 159067,
+      so_code: "xf2017050149"
+      },
+      {
+      so_date: 1473523200000,
+      so_amount: 1200,
+      so_payed_amount: 1200,
+      orderItemList: [
+      {
+      prod_name: "手机网站续费"
+      }
+      ],
+      so_id: 132098,
+      so_code: "xf2016090049"
+      },
+      {
+      so_date: 1464537600000,
+      so_amount: 1650,
+      so_payed_amount: 1650,
+      orderItemList: [
+      {
+      prod_name: "程序空间续费"
+      },
+      {
+      prod_name: "国际域名续费"
+      }
+      ],
+      so_id: 96789,
+      so_code: "xf2016050053"
+      },
+      {
+      so_date: 1441900800000,
+      so_amount: 1200,
+      so_payed_amount: 1200,
+      orderItemList: [
+      {
+      prod_name: "手机网站续费"
+      }
+      ],
+      so_id: 130905,
+      so_code: "xf2015090133"
+      },
+      {
+      so_date: 1432915200000,
+      so_amount: 1500,
+      so_payed_amount: 1500,
+      orderItemList: [
+      {
+      prod_name: "程序空间续费"
+      }
+      ],
+      so_id: 111343,
+      so_code: "xf2015050075"
+      },
+      {
+      so_date: 1404057600000,
+      so_amount: 4650,
+      so_payed_amount: 4650,
+      orderItemList: [
+      {
+      prod_name: "展示型"
+      }
+      ],
+      so_id: 111337,
+      so_code: "xf2014060367"
+      }
+    ]
+    for (var item of result) {
+      item.name = ''
+      for (var it of item.orderItemList) {
+        if (item.name === '') {
+          item.name += it.prod_name
+        } else {
+          item.name += '、' + it.prod_name
+        }
+      }
+      item.so_date = Utils.formatTime(item.so_date, 'yyyy-MM-dd')
+      this.log.push(item)
+    }
+    this.$apply()
   }
 
   async getjournal() {
     Tips.loading()
     const json = await api.journal()
     Tips.loaded()
-    this.journal = json.attributes.data
+    if (json.success) {
+      this.journal = json.attributes.data
+    }
+    this.journal = []
+    let result = [
+      {
+        jrnl_start_time: 1515216600000,
+        jrnl_subject64: "客户微信群里面发给我们几个要修改的地方 技术部已经修改完成。",
+        emp_name: "王海波（yjb）",
+        jrnl_id: 4794489
+        },
+        {
+        jrnl_start_time: 1512113400000,
+        jrnl_subject64: "威猛达微信服务群里面 客户发来一个新产品要上传上去，资料已经接收，等待安排上传",
+        emp_name: "王海波（yjb）",
+        jrnl_id: 4776779
+        },
+        {
+        jrnl_start_time: 1511936700000,
+        jrnl_subject64: "给王总介绍十五周年庆活动，电话没人接",
+        emp_name: "施静钱",
+        jrnl_id: 4774938
+        },
+        {
+        jrnl_start_time: 1510907400000,
+        jrnl_subject64: "客户群里发来一个产品资料 要上传到网站上去 已经接收资料 反馈已经提交",
+        emp_name: "王海波（yjb）",
+        jrnl_id: 4767164
+        },
+        {
+        jrnl_start_time: 1503123713000,
+        jrnl_subject64: "电话回访，满意度调查",
+        emp_name: "张静（吴祎祎）",
+        jrnl_id: 4646383
+      }
+    ]
+    for (var item of result) {
+      item.jrnl_start_time = Utils.formatTime(item.jrnl_start_time)
+      this.journal.push(item)
+    }
+    this.$apply()
   }
 
   // 下拉刷新
@@ -99,4 +462,54 @@ export default class Order extends wepy.page {
 }
 </script>
 <style lang="less">
+  .empty{
+    text-align: center; padding: 0.5rem 0px;
+  }
+  .pay-header{
+    .weui-cell__hd{
+      width: 120rpx
+    }
+  }
+  .weui-cell__hd{
+    margin-right: 10px;vertical-align: middle;width:20px; height: 20px;
+  }
+  .weui-cell__bd image {
+    width: 17px;height: 17px;vertical-align: middle;padding-right: 3px
+  }
+
+  .app_footer{
+    position: fixed;
+    color:#666;
+    line-height: 2.3rem;
+    font-size: 12px;
+    height: 2.3rem;
+    bottom: 0;
+    z-index: 9999;
+    width: 100%;
+    background: #fafafa;
+    display: -moz-box;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: -ms-flex;
+    display: flex;
+    .toggle {
+      padding-right: 0.2rem;
+    }
+    text {
+      padding:0 0.2rem
+    }
+  }
+  .app_footer .foot-lf{
+    color: #777;font-size: 12px;padding-left: 0.5rem;float: left;
+  }
+  .app_footer .app-button{
+    background: #ff6000;color:#fff;right: 0;  padding: 0 0.7rem;position: absolute;
+  }
+  .journal{
+    .weui-media-box__title{
+      font-size: 12px;white-space:normal;
+    }
+  }
 </style>

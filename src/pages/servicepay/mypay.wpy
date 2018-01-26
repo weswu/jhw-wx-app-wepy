@@ -1,0 +1,136 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">用户名:</view>
+      <view class="weui-cell__ft">{{username}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">实缴金额:</view>
+      <view class="weui-cell__ft">￥{{totel}}</view>
+    </view>
+  </view>
+
+  <view class="weui-panel weui-panel_access">
+    <view class="weui-panel__ft">
+      <radio-group @change="radioChange">
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <label class="radio">
+            <view class="weui-cell weui-cell_access">
+              <view class="weui-cell__hd">
+                  <radio value="{{index}}" checked="{{item.check}}"/>{{item.value}}
+              </view>
+              <view class="weui-cell__bd">
+                {{item.name}}
+                <view>{{item.desc}}</view>
+                <view wx:if="{{index === 2}}">公司名称： 浙江机汇网络科技有限公司
+                  <view>支付账号： 1202021509900658919</view>
+                </view>
+              </view>
+            </view>
+          </label>
+        </repeat>
+      </radio-group>
+    </view>
+  </view>
+
+  <view class="weui-btn-area" wx:if="{{index !== '2'}}">
+    <button class="weui-btn" type="primary" @tap="pay">付款</button>
+  </view>
+  <view @tap="tipHide">
+    <view class="pay-bg" wx:if="{{tip}}"></view>
+    <view class="buyImg" wx:if="{{index === '0' && tip}}">
+      <image src="/images/servicepay/zhifubao.jpg" mode="scaleToFill"/>
+    </view>
+    <view class="buyImg" wx:if="{{index === '1' && tip}}">
+      <image src="/images/servicepay/weixin.jpg" mode="scaleToFill"/>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class MyPay extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的缴费'
+  }
+  components = {}
+
+  data = {
+    username: '',
+    totel: '',
+    index: '0',
+    tip: false,
+    list: [
+      {
+        name: '支付宝',
+        desc: '使用支付宝账号支付',
+        check: true,
+        icon: ''
+      },
+      {
+        name: '微信支付',
+        desc: '使用微信账号支付',
+        check: false,
+        icon: ''
+      },
+      {
+        name: '手动支付',
+        desc: '开户行： 中国工商银行杭州市开元支行',
+        check: false,
+        icon: ''
+      }
+    ]
+  }
+
+  onLoad({totel}) {
+    this.username = this.$parent.globalData.user.username  // 01是微传单会员
+    this.totel = totel
+  }
+
+  methods = {
+    tipHide () {
+      this.tip = false
+    },
+    radioChange (e) {
+      this.index = e.detail.value
+      this.$apply()
+    },
+    pay () {
+      if (this.index === '0' || this.index === '1') {
+        this.tip = true
+      }
+    }
+  }
+
+}
+</script>
+
+<style>
+.buyImg {
+  width: 700rpx;
+  max-height: 90%;
+  overflow: hidden;
+  background-color: white;
+  opacity: 1;
+  position: fixed;
+  top: 25rpx;
+  z-index: 10000;
+  transition: all .3s ease;
+  left: 25rpx;
+  padding: 0;
+  border-radius: 0.2rem;
+  box-shadow: 1px 1px 1px #eee;
+}
+.pay-bg {
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  background: #000;
+}
+.buyImg image{
+  width: 100%;
+  height: 810rpx
+}
+</style>
