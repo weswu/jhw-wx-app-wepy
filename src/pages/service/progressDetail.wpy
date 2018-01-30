@@ -1,0 +1,96 @@
+<template>
+  <view class="titlef5">描述</view>
+  <view class="p10 c666"><text>{{desc}}</text></view>
+  <view class="titlef5">处理结果</view>
+  <view class="p10 c666">{{result}}</view>
+  <view class="titlef5">处理过程</view>
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <navigator url="progressDetail" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">{{item.emp_name}}</view>
+            <view class="weui-media-box__desc">
+              <text class="time">{{item.deal_time}}</text>
+              <view class="c000">{{item.deal_result}}</view>
+            </view>
+        </view>
+    </navigator>
+  </repeat>
+
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+export default class ProgressDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '服务进度'
+  }
+  components = {}
+
+  data = {
+    id: '323613',
+    desc: '',
+    result: '',
+    list: []
+  }
+
+  onLoad ({id, title, desc, result}) {
+    wx.setNavigationBarTitle({
+      title: title
+    })
+    this.id = id
+    this.desc = desc
+    this.result = result || '暂无数据'
+    this.get()
+  }
+
+  async get () {
+    Tips.loading()
+    const json = await api.progressDetail({
+      id: this.id
+    })
+    Tips.loaded()
+    if (json.success) {
+      this.list = json.attributes.data
+    } else {
+      this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
+    }
+    let result = [
+{
+fdbk_r_id: 931530,
+emp_name: "王婷立/前台",
+deal_time: 1496366253000,
+deal_result: "通过，浙公网安备 33078402100360号"
+},
+{
+fdbk_r_id: 926368,
+emp_name: "王婷立/前台",
+deal_time: 1495164793000,
+deal_result: "已提交"
+}
+]
+    for (var item of result) {
+      item.deal_time = Utils.formatTime(item.deal_time, 'yyyy-MM-dd')
+      this.list.push(item)
+    }
+    this.$apply()
+  }
+}
+</script>
+<style>
+.titlef5 {
+    background: #f5f5f5;
+    padding: .4rem .5rem;
+    font-weight: 600;
+    font-size: 12px;
+}.c666 {
+    color: #666;
+}.p10 {
+    padding: 10px;
+}
+.c000{
+    color: #000;
+}
+</style>

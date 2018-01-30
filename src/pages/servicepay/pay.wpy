@@ -64,7 +64,7 @@
           <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
               <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
                   <view class="weui-media-box__title">{{item.jrnl_subject64}}</view>
-                  <view class="weui-media-box__desc">{{item.emp_name}}{{item.jrnl_start_time}}</view>
+                  <view class="weui-media-box__desc">负责人:{{item.emp_name}}<text class="time">{{item.jrnl_start_time}}</text></view>
               </view>
           </navigator>
         </repeat>
@@ -84,7 +84,7 @@ import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
 import Goods from '@/pages/servicepay/goods'
-export default class Order extends wepy.page {
+export default class Pay extends wepy.page {
   config = {
     navigationBarTitleText: '服务缴费'
   }
@@ -469,6 +469,9 @@ export default class Order extends wepy.page {
     .weui-cell__hd{
       width: 120rpx
     }
+  }
+  .time{
+    padding-left: 10px
   }
   .weui-cell__hd{
     margin-right: 10px;vertical-align: middle;width:20px; height: 20px;

@@ -1,0 +1,145 @@
+<template>
+  <view class="weui-cells weui-cells_in-small-appmsg pay-header">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__hd">公司名:</view>
+      <view class="weui-cell__bd">{{name}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__hd">用户名:</view>
+      <view class="weui-cell__bd">{{username}}</view>
+    </view>
+  </view>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content">
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <navigator url="progressDetail?id={{item.fdbk_id}}&title={{item.fdbk_subject64}}&desc={{item.fdbk_intro1k}}&result={{item.fdbk_result}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                  <view class="weui-media-box__title">{{item.fdbk_subject64}}</view>
+                  <view class="weui-media-box__desc">负责人:{{item.emp_name}}<text class="time">{{item.fdbk_due_date}}</text></view>
+              </view>
+          </navigator>
+        </repeat>
+        <view class="empty" wx:if="{{list.length === 0}}">{{text}}</view>
+      </view>
+    </view>
+  </view>
+  <button class="weui-btn fixed-bottom" type="primary" size="default" @tap="submit">我要服务反馈</button>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Tab from '@/components/weui/tab'
+export default class Progress extends wepy.page {
+  config = {
+    navigationBarTitleText: '服务进度'
+  }
+  components = {
+    Tab
+  }
+
+  data = {
+    name: '',
+    username: '',
+    tabs: ['正在服务', '服务结束'],
+    activeIndex: 0,
+    list: [],
+    sort: '00',
+    text: '暂无数据'
+  }
+
+  onLoad () {
+    this.name = this.$parent.globalData.enterprise.name
+    this.username = this.$parent.globalData.user.username
+    this.get()
+  }
+
+  methods = {
+    switchTab (e) {
+      this.activeIndex = parseInt(e)
+      this.list = []
+      if (this.activeIndex === 0) {
+        this.sort = '00'
+        this.get()
+      }
+      if (this.activeIndex === 1) {
+        this.sort = '01'
+        this.get()
+      }
+    },
+    submit () {
+      wx.navigateTo({
+        url: '/pages/setting/serviceFeedback'
+      })
+    }
+  }
+  async get () {
+    Tips.loading()
+    const json = await api.progress({
+      data: {
+        sort: this.sort
+      }
+    })
+    Tips.loaded()
+    if (json.success) {
+      this.list = json.attributes.data
+    } else {
+      this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
+    }
+    let result = [
+      {
+      fdbk_id: 323613,
+      fdbk_result: "",
+      emp_name: "赵汉杰",
+      fdbk_subject64: "网安备案",
+      fdbk_intro1k: [
+      "描述： ",
+      "1.公司网址：www.zgwmd.com ",
+      "2.修改内容具体描述： ",
+      "（1）.修改内容： "
+      ],
+      fdbk_due_date: 1495123200000
+      }
+    ]
+    for (var item of result) {
+      item.fdbk_due_date = Utils.formatTime(item.fdbk_due_date, 'yyyy-MM-dd')
+      var d = ''
+      for (var desc of item.fdbk_intro1k) {
+        d ? d += ('\n' + desc) : d = desc
+      }
+      item.fdbk_intro1k = d
+      this.list.push(item)
+    }
+    this.$apply()
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.list = []
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+}
+</script>
+<style lang="less">
+  .empty{
+    text-align: center; padding: 0.5rem 0px;
+  }
+  .pay-header{
+    .weui-cell__hd{
+      width: 120rpx
+    }
+  }
+  .time{
+    padding-left: 10px
+  }
+  .weui-media-box__title{
+    color: #0034d1;
+  }
+</style>

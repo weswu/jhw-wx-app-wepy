@@ -1,0 +1,161 @@
+<template>
+  <view class="point-info">
+    <view class="point-username"><text class="iconfont icon-person2"></text>{{enterprise.name}}</view>
+    <view class="point-use">{{user.username}} 可用积分</view>
+    <navigator url="pointDetail" class="point-detail"><text class="point-value">{{point}}</text></navigator>
+    <navigator url="rule" class="point-rule">积分规则<i class="iconfont icon-tishi" style="padding-left:0.2rem;font-size: 0.7rem;"></i></navigator>
+    <navigator url="ranking" class="ranking">当前积分排行：{{rank}}</navigator>
+  </view>
+  <view class="point-exchange">
+    <view class="point-title"><view><i class="iconfont icon-lipin"></i>积分兑换</view></view>
+    <view class="weui-grids">
+        <block wx:for="{{grids}}" wx:key="*this">
+            <view class="weui-grid" hover-class="weui-grid_active" @tap="exchange" id="{{item.id}}" data-point="{{item.point}}">
+                <view class="weui-grid__label">{{item.title}}</view>
+                <view class="desc">{{item.desc}}</view>
+                <i class="iconfont icon-{{item.icon}}"></i>
+            </view>
+        </block>
+    </view>
+    <view class="point-title"><view><i class="iconfont icon-remen"></i>热门兑换</view></view>
+    <view class="weui-grids weui-grids2">
+        <block wx:for="{{grids2}}" wx:key="*this">
+            <view class="weui-grid" hover-class="weui-grid_active" @tap="exchange" id="{{item.id}}" data-point="{{item.point}}">
+                <view class="weui-grid__label">{{item.title}}</view>
+                <view class="desc">{{item.desc}}</view>
+                <view class="content">{{item.content}}</view>
+            </view>
+        </block>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+export default class Progress extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的积分'
+  }
+
+  data = {
+    user: {},
+    enterprise: {},
+    point: 0,
+    rank: 0,
+    grids: [
+      { title: '兑换软文', desc: '500积分兑软文', icon: 'xinwen', point: 500, id: 'Integralpro_00000000000000000201' },
+      { title: '移动办公布属', desc: '1000积分兑丁丁、微信布属', icon: 'shangpin', point: 1000, id: 'Integralpro_00000000000000000221' },
+      { title: '兑换流量', desc: '国内通用流量100MB兑', icon: 'liuliang', point: 5000, id: 'Integralpro_00000000000000000081' }
+    ],
+    grids2: [
+      { title: '软文', desc: '引流，传播品牌', content:'500积分', point: 500, id: 'Integralpro_00000000000000000201' },
+      { title: '国内通用流量', desc: '2/3/4G通用', content:'兑100MB', point: 5000, id: 'Integralpro_00000000000000000081' }
+    ]
+  }
+
+  onLoad () {
+    this.user = this.$parent.globalData.user
+    this.enterprise = this.$parent.globalData.enterprise
+    this.get()
+  }
+
+  methods = {
+    ranking () {
+
+    },
+    async exchange (e) {
+      if (e.currentTarget.dataset.point > this.point) {
+        return Tips.alert('您的积分不足')
+
+      }
+      Tips.loading()
+      const json = await api.pointProduct({
+        id: e.currentTarget.id
+      })
+      Tips.loaded()
+      if (json.success) {
+        Tips.success('兑换成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+  }
+  async get () {
+    Tips.loading()
+    const json = await api.point()
+    Tips.loaded()
+    if (json.success) {
+      this.point = json.attributes.point
+      this.rank = json.attributes.rank
+    }
+    this.point = 102
+    this.rank = 48
+    this.$apply()
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+}
+</script>
+<style lang="less">
+page{
+  background:#f5f5f5;
+}
+.weui-grids{
+  background: #fff;
+  .weui-grid{
+    padding:10px 10px 5px 10px;
+    text-align:center;
+  }
+  .desc{
+    font-size: 12px;
+    color: #999;
+    padding: 5px 0;
+    height: 30px;
+  }
+  i{
+    font-size:34px;
+    color:#43aee2;
+    text-align: center;
+    display:block;
+  }
+}
+.weui-grids2{
+  margin: 0 20px 20px 20px;
+  .weui-grid{
+    width: 50%;
+    padding-bottom: 20px;
+  }
+  .content{
+    border-radius: 20px;
+    border: 1px solid #b6b1ae;
+    height: 20px;
+    line-height: 20px;
+    width: 80%;
+    padding: 0 5px;
+    margin: 0 auto;
+    font-size: 12px;
+    color: #999;
+  }
+}
+.point-info{position:relative;text-align:center;color:#fff;padding:1rem 0 0.5rem 0;line-height:1.2rem;background:#ff7300;background:-moz-linear-gradient(left,#ea3062,#f8386b 30%,#ea3062);background:-webkit-gradient(linear,left top,right top,from(rgba(253,114,0,.93)),color-stop(.3,#ff7300),to(#ff6a00));background:-webkit-linear-gradient(left,rgba(253,114,0,.93),#ff7300 30%,#ff6a00);background:-o-linear-gradient(left,rgba(253,114,0,.93),#ff7300 30%,#ff6a00)}
+.point-username{font-size:16px}
+.point-use{padding-bottom:.8rem;}
+.point-value{font-size:2rem}
+.point-detail{display:block}
+.point-rule{position:absolute;top:.2rem;right:.35rem}
+.point-view{position:absolute;padding-left:1rem}
+.icon-person2{font-size:.8rem;padding-right:.2rem}
+.icon-lipin{color:#ffcc15;padding-right:10px}
+.icon-remen{color:#ff6315;padding-right:10px}
+.point-title{text-align:center;line-height:1.5rem;height:2rem;clear:both;padding: 10px 0 3px 0;}
+.point-title:after{content:'';background:#ddd;width:80%;height:1px;margin:0 10%;display:block;margin-top:-.73rem}
+.point-title view{padding:0 20px;display:inline-block;background:#f5f5f5;box-sizing:border-box}
+</style>

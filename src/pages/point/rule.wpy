@@ -1,0 +1,119 @@
+<template>
+  <view class="rule">
+    <view>1、积分专属机汇网，仅限机汇网内使用；</view>
+    <view>2、在机汇网后台、微信公众号【机汇网络】和APP进行以下操作时，均可获得积分；</view>
+    <view class="table">
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">操作行为</view></view>
+          <view class="weui-flex__item"><view class="placeholder">获得数量</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">账号资料修改</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.accountEditPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">产品新增</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.productAddPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">产品修改</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.productEditPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">新闻新增</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.newsAddPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">新闻修改</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.newsEditPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">网站发布</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.publishPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">每月操作记录大于15次</view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.mounthRecordPoint}}积分</view></view>
+      </view>
+      <view class="weui-flex">
+          <view class="weui-flex__item"><view class="placeholder">改进意见提交，<navigator url="/pages/setting/serviceFeedback" style="color: #da4747;">马上发送</navigator></view></view>
+          <view class="weui-flex__item"><view class="placeholder">{{model.advisePoint}}积分</view></view>
+      </view>
+    </view>
+    <view>3、积分不能兑现，不可转让。</view>
+    <view class="btn">
+      <navigator url="pointDetail"><button class="weui-btn" type="primary" size="mini">积分明细</button></navigator>
+      <navigator url="exchange"><button class="weui-btn" type="primary" size="mini">兑换记录</button></navigator>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+export default class Setting extends wepy.page {
+  config = {
+    navigationBarTitleText: '积分规则是什么？'
+  }
+  components = {}
+
+  data = {
+    model: {}
+  }
+
+  onLoad() {
+    this.get()
+  }
+
+  async get () {
+    const json = await api.pointRule()
+    if (json.success) {
+      this.model = json.attributes.data
+    } else {
+      this.model = {
+integralRuleId: "Integralrule_0000000000000000041",
+addTime: 1487145126515,
+updateTime: 1511749948347,
+enterpriseId: "Admin_00000000000000000000000005",
+accountEditPoint: 10,
+productAddPoint: 2,
+productEditPoint: 1,
+newsAddPoint: 5,
+newsEditPoint: 1,
+publishPoint: 1,
+mounthRecordPoint: 1,
+advisePoint: 100,
+orderPoint: 0,
+posterPoint: 100,
+pointType: "0",
+scale: null,
+id: null
+}
+    }
+  }
+}
+</script>
+<style lang="less">
+  .rule{
+    padding: 10px;
+    line-height: 2;
+    .table{
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      text-align: center;
+      .weui-flex__item{
+        padding: 3px 0;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+    navigator{
+      display:inline
+    }
+    .btn {
+      margin-top: 10px;
+      navigator{
+        margin-right: 20px
+      }
+    }
+  }
+</style>

@@ -68,6 +68,16 @@ const purchase = (params) => http(params, host + '/rest/api/order/data/member_li
 const receiptList = (params) => http(params, host + '/rest/api/crm/receipt/list')
 const receiptLog = (params) => http(params, host + '/rest/api/crm/receipt/log')
 const journal = (params) => http(params, host + '/rest/api/crm/feedback/journal')
+// 服务进度
+const progress = (params) => http(params, host + '/rest/api/crm/feedback/list')
+const progressDetail = (params) => http(params, host + '/rest/api/crm/feedback/detail/' + params.id)
+// 积分
+const point = (params) => http(params, host + '/rest/api/point/info')
+const pointProduct = (params) => http(params, host + '/rest/api/point_product/detail/' + params.id)
+const pointRule = (params) => http(params, host + '/rest/api/point_rule/info')
+const pointList = (params) => http(params, host + '/rest/api/point/list')
+const pointRank = (params) => http(params, host + '/rest/api/point/rank')
+
 
 module.exports = {
   wxJsCode2Session,
@@ -107,5 +117,9 @@ module.exports = {
   // 商城数据
   data, purchase,
   // 服务缴费
-  receiptList, receiptLog, journal
+  receiptList, receiptLog, journal,
+  //服务进度
+  progress, progressDetail,
+  // 积分
+  point, pointProduct, pointRule, pointList, pointRank
 }
