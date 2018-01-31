@@ -1,0 +1,112 @@
+<template>
+  <Tips />
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <WInput>
+      <view slot="title" class="weui-label">朋友姓名：</view>
+      <input slot="input" class="weui-input" placeholder="请输入朋友姓名" @input="input" id="name" value="{{input.name}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">朋友公司：</view>
+      <input slot="input" class="weui-input" placeholder="请输入朋友公司" @input="input" id="company" value="{{input.company}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">朋友电话：</view>
+      <input slot="input" class="weui-input" placeholder="请输入朋友电话" @input="input" id="phone" value="{{input.phone}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">推荐人：</view>
+      <input slot="input" class="weui-input" placeholder="请输入推荐人" @input="input" id="referee" value="{{input.referee}}"/>
+    </WInput>
+    <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell">
+            <view class="weui-cell__bd">
+                <textarea class="weui-textarea" placeholder="说明..." @input="input" id="content" value="{{input.content}}" style="height: 80px"/>
+            </view>
+        </view>
+    </view>
+  </view>
+
+  <view class="weui-btn-area">
+    <button class="weui-btn" type="primary" @tap="submit">推荐好友</button>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips';
+import WInput from '@/components/weui/input'
+import input from '@/mixins/input'
+export default class ServiceFeedback extends wepy.page {
+  config = {
+    navigationBarTitleText: '推荐朋友'
+  }
+
+  components = {
+    Tips: FormTips,
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    input: {},
+    sf: {
+      card_no: '',
+      fdbk_subject64: '朋友介绍[APP]',
+      fdbk_type: '5'
+    }
+  }
+
+  async onLoad () {
+    this.sf.card_no = this.$parent.globalData.user.username
+  }
+
+  methods = {}
+
+  validate() {
+    const rules = [
+      {
+        value: this.input.name,
+        method: 'required',
+        message: '朋友姓名不能为空'
+      },
+      {
+        value: this.input.company,
+        method: 'required',
+        message: '朋友公司不能为空'
+      },
+      {
+        value: this.input.phone,
+        method: 'required',
+        message: '朋友电话不能为空'
+      },
+      {
+        value: this.input.referee,
+        method: 'required',
+        message: '推荐人不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
+  async submit () {
+    if (!this.validate()) {
+      return;
+    }
+    this.sf.fdbk_intro1k = '姓名:' + this.input.name + '\n公司:' + this.input.company + '\n电话:' + this.input.phone +
+    '\n推荐人:' + this.input.referee + '\n说明:' + this.input.content
+    const json = await api.serviceFeedback({
+      data: this.sf,
+      method: 'post'
+    })
+    if (json.status !== 'ERROR') {
+      Tips.success("反馈成功");
+    } else {
+      Tips.error(json.err_code)
+    }
+  }
+
+}
+</script>

@@ -1,0 +1,67 @@
+<template>
+  <view class="weui-cell weui-cells_in-small-appmsg">
+      <view class="weui-cell__hd">用户名</view>
+      <view class="weui-cell__bd">手机号码</view>
+      <view class="weui-cell__ft">时间</view>
+  </view>
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <view class="weui-cell">
+        <view class="weui-cell__hd">{{item.enterprise.name || item.name || '匿名'}}</view>
+        <view class="weui-cell__bd">{{item.cellphone || item.phone}}</view>
+        <view class="weui-cell__ft">{{item.addTime}}</view>
+    </view>
+  </repeat>
+</template>
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Utils from '@/utils/Utils'
+import Tips from '@/utils/Tips'
+export default class PurchaseAmount extends wepy.page {
+  config = {
+    navigationBarTitleText: '我推广的会员'
+  }
+
+  data = {
+    list: [],
+    count: 0
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    Tips.loading()
+    const json = await api.spreadRank({
+      data: {
+        username: this.$parent.globalData.user.username
+      }
+    })
+    Tips.loaded()
+    if (json.success) {
+      json.attributes.data.forEach(item => {
+        item.addTime = Utils.formatTime(item.addTime, 'yyyy-MM-dd hh:mm')
+        this.list.push(item)
+      })
+    }
+    wx.setNavigationBarTitle({
+      title: '我推广的会员(' + json.attributes.count + ')'
+    })
+    this.$apply()
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.list = []
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+}
+</script>
+<style media="screen">
+  .weui-cell__hd{
+    margin-right: 5px;vertical-align: middle;width:200rpx; height: 20px;
+  }
+</style>

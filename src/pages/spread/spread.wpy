@@ -1,0 +1,135 @@
+<template>
+  <view class='extend_tip'>
+    <view class='tip'>你可以把以下专属于你的推广海报保存到相册，并转发到朋友圈和微信群，即可获取积分和现金优惠卷。</view>
+    <navigator url="rank" class='extend_tip_a'>我推广的会员</navigator>
+    <navigator url="friend" class='extend_tip_a'>推荐朋友</navigator>
+  </view>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" >
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <view class='p10' wx:if='{{item.posterCate === activeIndex}}'>
+            <image mode="widthFix" class='extend_img' src="{{item.pic}}"/>
+            <view class='extend_desc'>{{item.posterDesc}}</view>
+            <button type="primary" @tap='saveImg({{item}})'>点击生成,保存图片</button>
+          </view>
+        </repeat>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Tab from '@/components/weui/tab'
+  import Tips from '@/utils/Tips'
+  export default class Spread extends wepy.page {
+    config = {
+      navigationBarTitleText: '参与推广'
+    }
+    components = {
+      Tab
+    }
+    data = {
+      tabs: ["促销类", "产品类", "人物类", "知识类"],
+      activeIndex: '0',
+      list: []
+    }
+
+    onLoad () {
+      this.get()
+    }
+
+    methods = {
+      switchTab (e) {
+        this.activeIndex = e
+      },
+      async saveImg (p) {
+        var data = {
+          pic: p.pic,
+          qrcodeWidth: p.qrcodeWidth,
+          qrcodeHeight: p.qrcodeHeight,
+          username: 'ggggfj',
+          qrcodeLeft: p.qrcodeLeft,
+          qrcodeTop: p.qrcodeTop,
+          posterId: p.posterId,
+          qrcode: 'http://wcd.jihui88.com/rest/comm/qrbar/create?w=' + p.qrcodeWidth + '&text=http://www.jihui88.com/member/reg_m.html?d=' + this.$parent.globalData.user.username
+        }
+        Tips.loading()
+        const json = await api.posters({
+          data: data,
+          method: 'post'
+        })
+        Tips.loaded()
+        let url = 'https://api.jihui88.net/qrcode_poster/posters/' + p.posterId + '.jpg'
+        this.down_file(url)
+      }
+    }
+
+    async get () {
+      Tips.loading()
+      const json = await api.spread()
+      Tips.loaded()
+      for (var item of json.attributes.data) {
+        item.pic = 'http://img.jihui88.com/' + item.pic
+        this.list.push(item)
+      }
+      this.$apply()
+    }
+
+    down_file (url) {
+      const downloadTask = wx.downloadFile({
+        url: url,
+        success: function (res) {
+          // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+         console.log(res)
+         if(res.statusCode === 200){
+           wx.saveImageToPhotosAlbum({
+             filePath: res.tempFilePath,
+             success() {
+               wx.showToast({
+                 title: '成功',
+                 icon: 'success',
+                 duration: 2000
+               })
+             }
+           })
+         }
+        }
+      })
+      downloadTask.onProgressUpdate((res) => {
+        // console.log('下载进度', res.progress)
+        // console.log('已经下载的数据长度', res.totalBytesWritten)
+        // console.log('预期需要下载的数据总长度', res.totalBytesExpectedToWrite)
+      })
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.list = []
+      this.get()
+      wepy.stopPullDownRefresh()
+    }
+
+  }
+</script>
+
+
+<style lang="less">
+.extend_tip{background:#f5f5f5;padding:10px;color:#666;line-height:1.8;font-family:'Microsoft YaHei',Helvetica,Arial,'WenQuanYi Micro Hei'}
+.extend_tip .tip{text-indent:25px;}
+.extend_tip_a{color:#ff7300;padding:10px 25px;display:inline-block;font-family:'Microsoft YaHei',Helvetica,Arial,'WenQuanYi Micro Hei';}
+.p10{
+  padding: 10px;
+  image{
+    width: 100%;
+  }
+  .extend_desc {
+    color: #666;
+    padding: 15px 5px;
+  }
+}
+</style>

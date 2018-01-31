@@ -46,3 +46,16 @@ async testAsync () {
 
 ### 按钮
 <button @tap="plus('a')" size="mini">  +  </button>
+
+### 请求接口
+http://crmyun.jihui88.com:9500
+
+http://app.jihui88.com
+
+https://wx.jihui88.net   ===   http://www.jihui88.com
+
+### 下载推广图片
+https://api.jihui88.net
+
+### 上传接口
+http://app.jihui88.com

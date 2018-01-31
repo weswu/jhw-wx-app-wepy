@@ -77,7 +77,10 @@ const pointProduct = (params) => http(params, host + '/rest/api/point_product/de
 const pointRule = (params) => http(params, host + '/rest/api/point_rule/info')
 const pointList = (params) => http(params, host + '/rest/api/point/list')
 const pointRank = (params) => http(params, host + '/rest/api/point/rank')
-
+// 推广
+const spread = (params) => http(params, host + '/rest/api/poster/list?pageSize=72')
+const spreadRank = (params) => http(params, wxHost + '/rest/api/comm/poster/userlist')
+const posters = (params) => http(params, 'http://api.jihui88.net/qrcode_poster/api/poster')
 
 module.exports = {
   wxJsCode2Session,
@@ -121,5 +124,7 @@ module.exports = {
   //服务进度
   progress, progressDetail,
   // 积分
-  point, pointProduct, pointRule, pointList, pointRank
+  point, pointProduct, pointRule, pointList, pointRank,
+  // 推广
+  spread, spreadRank, posters
 }
