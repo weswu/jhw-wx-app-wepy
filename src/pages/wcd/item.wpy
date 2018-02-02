@@ -1,0 +1,51 @@
+<template>
+  <navigator url="{{url}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{pic}}">
+          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}"/>
+      </view>
+      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
+          {{dx}}
+      </view>
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">{{title}}</view>
+          <view class="weui-media-box__desc">{{content}}</view>
+          <view class="weui-media-box__info" wx:if="{{time}}">{{time}}</view>
+      </view>
+      <view class="weui-media-box__ft" wx:if="{{operation}}" @tap.stop="del({{id}})">
+          <i class="iconfont icon-lajixiang"></i>
+      </view>
+  </navigator>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class WcdItem extends wepy.component {
+    props = {
+      id: {},
+      dx: {},
+      url: {},
+      title: {},
+      content: {},
+      pic: {},
+      time: {},
+      operation: {}
+    }
+    data = {}
+
+    onLoad () {
+    }
+
+    methods = {
+      del (id) {
+        this.$emit('del', id)
+      }
+    }
+  }
+</script>
+
+<style>
+  .icon-lajixiang{
+    font-size: 24px;
+    color: #999
+  }
+</style>

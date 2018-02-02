@@ -1,0 +1,139 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" @change.user="switchTab"/>
+    <view class="weui-tab__panel" wx:if="!chaxun">
+      <view class="weui-tab__content">
+        <Item :list.sync="list" hidden="{{activeIndex != '0'}}"/>
+        <!-- 加载提示 -->
+        <Loadmore :more.sync="more"/>
+      </view>
+    </view>
+  </view>
+  <view class="chaxun" hidden="chaxun" style="color:#999">
+    <view>在电脑端输入网址</view>
+    <view>http://wcd.jihui88.com/leaflet/index.html</view>
+    <view>登录即可免费创建微传单</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Tab from '@/components/weui/tab'
+  import Utils from '@/utils/Utils'
+  import Loadmore from '@/components/weui/loadmore'
+  import Item from '@/pages/wcd/item'
+  export default class Wcd extends wepy.page {
+    config = {
+      navigationBarTitleText: '微传单'
+    }
+    components = {
+      Tab,
+      Loadmore,
+      Item
+    }
+    data = {
+      tabs: ["我的微传单", "案例"],
+      activeIndex: '0',
+      list: [],
+      page: 1,
+      more: { loading: true },
+      chaxun: '',
+      category: [
+        { name: '全部', id: '' },
+        { name: 'VIP专属', id: 343798 },
+        { name: '外包设计', id: 343764 },
+        { name: '品牌', id: 343763 },
+        { name: '推荐', id: 343762 },
+        { name: '风格', id: 343761 },
+        { name: '节假', id: 343760 },
+        { name: '个人', id: 343759 },
+        { name: '企业', id: 343758 },
+        { name: '行业', id: 343757 }
+      ],
+      searchData: {
+        page: 1,
+        pageSize: 10,
+        category_id: '',
+        recvState: ''
+      }
+    }
+
+    onLoad () {
+      if (this.$parent.globalData.user.wcdMember === '01') {
+        this.chaxun = true
+        this.get()
+      }
+    }
+
+    goto (id) {
+      wx.navigateTo({
+        url: '/pages/setting/webView?src=http://www.jihui88.com/wcd/html/'+id+'.html?debug=01'
+      })
+    }
+
+    methods = {
+      switchTab (e) {
+        this.activeIndex = e
+      }
+    }
+
+    async get () {
+      const json = await api.wcd({
+        data: {
+          page: this.page,
+          pageSize: 10
+        }
+      })
+      if (data.success) {
+        return false
+      }
+      await Utils.scrollList(this, json2)
+      this.$apply()
+    }
+
+    async getCase () {
+      const json = await api.wcdCase({
+        data: {
+          page: this.page,
+          pageSize: 10
+        }
+      })
+      if (data.success) {
+        await Utils.scrollList(this, json2)
+      }
+      this.$apply()
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.more.loading = true
+      if (this.activeIndex === '0') {
+        this.page = 1
+        this.list = []
+        this.get()
+      }
+      if (this.activeIndex === '2') {
+        this.bPage = 1
+        this.bList = []
+        this.getBouns()
+      }
+      wepy.stopPullDownRefresh()
+    }
+
+    // 加载更多
+    async onReachBottom () {
+      if (this.more.loading) { return false }
+      this.more.loading = true
+      if (this.activeIndex === '0') {
+        this.page += 1
+        this.get()
+      }
+      if (this.activeIndex === '2') {
+        this.bPage += 1
+        this.getBouns()
+      }
+    }
+  }
+</script>

@@ -54,8 +54,13 @@ http://app.jihui88.com
 
 https://wx.jihui88.net   ===   http://www.jihui88.com
 
+http://wcd.jihui88.com/rest/comm/wcd/copyp
+
 ### 下载推广图片
 https://api.jihui88.net
 
 ### 上传接口
 http://app.jihui88.com
+
+### webView
+http://wwww.jihui88.com

@@ -81,6 +81,11 @@ const pointRank = (params) => http(params, host + '/rest/api/point/rank')
 const spread = (params) => http(params, host + '/rest/api/poster/list?pageSize=72')
 const spreadRank = (params) => http(params, wxHost + '/rest/api/comm/poster/userlist')
 const posters = (params) => http(params, 'http://api.jihui88.net/qrcode_poster/api/poster')
+// 微传单
+const wcd = (params) => http(params, host + '/rest/api/wcd/list')
+const wcdVip = (params) => http(params, host + '/rest/api/wcd/vip')
+const wcdCopy = (params) => http(params,  'http://wcd.jihui88.com/rest/comm/wcd/copyp')
+const wcdCase = (params) => http(params, host + '/rest/api/wcd/case')
 
 module.exports = {
   wxJsCode2Session,
@@ -105,6 +110,8 @@ module.exports = {
   product, productDetail,
   // 新闻
   news, newsDetail,
+  // 分类
+  category,
   // 证书
   cert, certDetail,
   // 友情链接
@@ -126,5 +133,7 @@ module.exports = {
   // 积分
   point, pointProduct, pointRule, pointList, pointRank,
   // 推广
-  spread, spreadRank, posters
+  spread, spreadRank, posters,
+  // 微传单
+  wcd, wcdCase, wcdVip, wcdCopy
 }
