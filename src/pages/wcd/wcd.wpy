@@ -9,11 +9,11 @@
         <Loadmore :more.sync="more"/>
       </view>
     </view>
-  </view>
-  <view class="chaxun" hidden="chaxun" style="color:#999">
-    <view>在电脑端输入网址</view>
-    <view>http://wcd.jihui88.com/leaflet/index.html</view>
-    <view>登录即可免费创建微传单</view>
+    <view class="chaxun" hidden="chaxun" style="color:#999">
+      <view>在电脑端输入网址</view>
+      <view>http://wcd.jihui88.com/leaflet/index.html</view>
+      <view>登录即可免费创建微传单</view>
+    </view>
   </view>
 </template>
 
@@ -86,7 +86,7 @@
           pageSize: 10
         }
       })
-      if (data.success) {
+      if (json.success) {
         return false
       }
       await Utils.scrollList(this, json2)
@@ -100,7 +100,7 @@
           pageSize: 10
         }
       })
-      if (data.success) {
+      if (json.success) {
         await Utils.scrollList(this, json2)
       }
       this.$apply()

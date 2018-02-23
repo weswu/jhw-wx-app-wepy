@@ -13,7 +13,7 @@
           <view class='p10' wx:if='{{item.posterCate === activeIndex}}'>
             <image mode="widthFix" class='extend_img' src="{{item.pic}}"/>
             <view class='extend_desc'>{{item.posterDesc}}</view>
-            <button type="primary" @tap='saveImg({{item}})'>点击生成,保存图片</button>
+            <button type="primary" @tap='saveImg({{item}})'>保存图片</button>
           </view>
         </repeat>
       </view>

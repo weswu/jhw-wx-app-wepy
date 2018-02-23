@@ -1,0 +1,329 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" @change.user="switchTab"/>
+    <!-- 分类btn -->
+    <view class="categoryIcon" @tap.stop="open" wx:if="{{activeIndex === '1'}}"><i class="iconfont icon-category"></i></view>
+    <view class="weui-tab__panel">
+      <!--分类-->
+      <view class="page-category" animation="{{animationData}}" wx:if="{{activeIndex === '1'}}">
+        <view class="page-content">
+          <repeat for="{{category}}" key="index" index="index" item="item">
+            <view @tap="getCategoryCase({{item.id}})" class="{{searchData.category_id === item.id ? 'cative' :''}}">
+              <text>{{item.name}}</text>
+            </view>
+          </repeat>
+        </view>
+      </view>
+      <view class="weui-tab__content" wx:if="{{chaxun || activeIndex === '1'}}">
+        <!--列表-->
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <Item :title="item.title" :content="item.state==='0'?'该手机网站暂未开通':item.language === '1'?'中文版':'英文版'" :pic="item.logo"
+          :url="'/pages/setting/webView?src=http://sj.jihui88.com/rest/site/'+item.id+'/index'"/>
+        </repeat>
+        <!-- 加载提示 -->
+        <Loadmore :more.sync="more"/>
+      </view>
+      <view class="chaxun" wx:else style="color:#999">
+        <view>您还未开通手机网站，请联系客服开通</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Utils from '@/utils/Utils'
+  import Tab from '@/components/weui/tab'
+  import Item from '@/components/weui/item'
+  import Loadmore from '@/components/weui/loadmore'
+  export default class Mobile extends wepy.page {
+    config = {
+      navigationBarTitleText: '微网站'
+    }
+    components = {
+      Tab,
+      Item,
+      Loadmore
+    }
+    data = {
+      tabs: ["我的手机网站", "案例展示"],
+      activeIndex: '0',
+      list: [],
+      page: 1,
+      more: { loading: true },
+      chaxun: '',
+      category: [
+        { name: '全部', id: '' },
+        { name: '个人', id: 104 },
+        { name: '行业', id: 101 },
+        { name: '企业', id: 102 },
+        { name: '官方主题', id: 343762 }
+      ],
+      state: false,
+      searchData: {
+        page: 1,
+        pageSize: 16,
+        category_id: ''
+      }
+    }
+
+    onLoad () {
+      let mobileSite = this.$parent.globalData.enterprise.mobileSite
+      if (mobileSite === '01' || mobileSite === '04' || mobileSite === '07' || mobileSite === '14') {
+        this.chaxun = true
+        this.get()
+      }
+    }
+
+    goto (id) {
+      wx.navigateTo({
+        url: '/pages/setting/webView?src=http://www.jihui88.com/wcd/html/'+id+'.html?debug=01'
+      })
+    }
+
+    methods = {
+      switchTab (e) {
+        this.activeIndex = e
+        this.list = []
+        if (this.activeIndex === '0') {
+          this.page = 1
+          this.get()
+        } else {
+          this.searchData.page = 1
+          this.getCase()
+        }
+      }
+    }
+
+    async get () {
+      const json = await api.mobile({
+        data: {
+          page: this.page,
+          pageSize: 16
+        }
+      })
+      if (json.success) {
+        return false
+      }
+      let json2 = {
+      success: true,
+      msg: "操作成功",
+      obj: null,
+      attributes: {
+      per_page: 10,
+      data: [
+      {
+      logo: "upload//k//k1//keqin//picture//2017//05//11/6cd1ba09-c858-430b-8926-6cba6a39c7ed.png",
+      language: "1",
+      id: 275,
+      state: "0",
+      title: "可亲母婴"
+      },
+      {
+      logo: null,
+      language: "2",
+      id: 150,
+      state: "0",
+      title: "周志豪"
+      },
+      {
+      logo: "upload//y//y2//yijgm//picture//2016//07//07/cdc71a8c-284d-44d0-8b67-71dbcc86d065.jpg",
+      language: "2",
+      id: 58,
+      state: "1",
+      title: "手机网站测试"
+      },
+      {
+      logo: "upload//y//y2//yijgm//picture//2016//07//07/cdc71a8c-284d-44d0-8b67-71dbcc86d065.jpg",
+      language: "1",
+      id: 57,
+      state: "1",
+      title: "qqqq六"
+      }
+      ],
+      count: 0,
+      page: 1
+      }
+      }
+      await Utils.scrollList(this, json2)
+      this.$apply()
+    }
+
+    async getCase () {
+      const json = await api.mobileCase({
+        data: this.searchData
+      })
+      let json2 ={
+success: true,
+msg: "操作成功",
+obj: null,
+attributes: {
+per_page: 10,
+data: [
+{
+logo: "upload//x//x1//xdmy//picture//2018//01//31/0af80852-2a9e-4cac-9463-c2acba7de823.jpg",
+language: "1",
+id: 380,
+state: "1",
+title: "浙江兴达门业有限公司"
+},
+{
+logo: "upload//x//x2//xinxinda//picture//2018//01//30/e1f0a408-8192-42a0-bb3d-b168ae6ec190.jpg",
+language: "1",
+id: 379,
+state: "1",
+title: "浙江兴达门业有限公司"
+},
+{
+logo: "upload//e//e2//egsc//picture//2018//01//26/cfcd9aa0-6471-46aa-8d22-6c6ff4560e84.jpg",
+language: "1",
+id: 377,
+state: "1",
+title: "二哥送菜"
+},
+{
+logo: "upload//y//y3//ykmyl//picture//2018//01//26/28f4ebdb-d935-4289-8be9-a7d11798a948.png",
+language: "1",
+id: 376,
+state: "1",
+title: "永康市美元来工贸有限公司"
+},
+{
+logo: "upload//y//y3//ykdx//picture//2017//02//22/412e91c9-1c87-4ba3-bb3e-da493268738b.jpg",
+language: "1",
+id: 373,
+state: "1",
+title: "浙江浙南电器有限公司"
+},
+{
+logo: "upload//j//j2//jhhe//picture//2018//01//05/46108d73-e63a-4b4f-ba0a-068b00d337a2.jpg",
+language: "1",
+id: 371,
+state: "1",
+title: "汇和电器"
+},
+{
+logo: "upload//x//x2//xianghai//picture//2017//03//06/6b2a5679-4379-4b6e-b046-4f7aaf3d11a3.png",
+language: "2",
+id: 369,
+state: "1",
+title: "永康市香海衡器厂"
+},
+{
+logo: "upload//k//k1//kecheng//picture//2017//12//04/3f56fd6a-f090-481b-8a4b-e20631322506.png",
+language: "1",
+id: 364,
+state: "1",
+title: "浙江科城工贸有限公司"
+},
+{
+logo: "upload//x//x2//xgyy//picture//2017//11//30/1ecb7721-227d-4798-8e22-d85e10c67878.png",
+language: "2",
+id: 363,
+state: "1",
+title: "Yongkang Starlight Garden Tools Co.,Ltd"
+},
+{
+logo: "upload//c//c2//chinaaining//picture//2017//11//30/99aadde6-63d0-4bc2-b4eb-72b33c9efaa2.jpg",
+language: "1",
+id: 362,
+state: "1",
+title: "永康市爱宁电器有限公司"
+}
+],
+count: 0,
+page: 1
+}
+}
+      if (json.success) {
+      }
+      await Utils.scrollList(this, json2)
+      this.$apply()
+    }
+
+    open () {
+      this.state = !this.state
+      if (this.state) {
+        this.attrAn(0,200,true,300)
+      } else {
+        this.attrAn(200,0,false,300)
+      }
+    }
+
+
+    async attrAn (anFrom, anTo, modal, duration) {
+      var animation = wx.createAnimation({
+        duration: duration,
+        timingFunction: "linear",
+        delay: 0
+      })
+      this.animation = animation
+      animation.translateX(anFrom).step()
+      this.setData({
+        animationData: animation.export(),
+        showModalStatus: modal
+      })
+      setTimeout(function() {
+        animation.translateX(anTo).step()
+        this.setData({
+          animationData: animation.export()
+        })
+      }.bind(this), 0)
+    }
+
+    getCategoryCase (e) {
+      this.more.loading = true
+      this.list = []
+      this.searchData.page = 1
+      this.searchData.category_id = e.currentTarget.dataset.wpygetcategorycaseA
+      this.open()
+      this.getCase()
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.more.loading = true
+      this.list = []
+      if (this.activeIndex === '0') {
+        this.page = 1
+        this.get()
+      }
+      if (this.activeIndex === '1') {
+        this.searchData.page = 1
+        this.getCase()
+      }
+      wepy.stopPullDownRefresh()
+    }
+
+    // 加载更多
+    async onReachBottom () {
+      if (this.more.loading) { return false }
+      this.more.loading = true
+      if (this.activeIndex === '0') {
+        this.page += 1
+        this.get()
+      }
+      if (this.activeIndex === '1') {
+        this.searchData.page += 1
+        this.getCase()
+      }
+    }
+  }
+</script>
+<style lang="less">
+  .page-category{
+    width:200px;overflow:hidden;position:fixed;top:51px;left:-200px;z-index:99;background:#fff;box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
+    .page-content{
+      view{
+        font-size: 16px;
+        color: #666;
+        padding: 5px 10px;
+      }
+      .cative{
+        background: #ff5241;color:#fff
+      }
+    }
+  }
+</style>

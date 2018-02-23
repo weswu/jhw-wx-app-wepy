@@ -86,6 +86,9 @@ const wcd = (params) => http(params, host + '/rest/api/wcd/list')
 const wcdVip = (params) => http(params, host + '/rest/api/wcd/vip')
 const wcdCopy = (params) => http(params,  'http://wcd.jihui88.com/rest/comm/wcd/copyp')
 const wcdCase = (params) => http(params, host + '/rest/api/wcd/case')
+// 微网站
+const mobile = (params) => http(params, host + '/rest/api/mobile/list')
+const mobileCase = (params) => http(params, host + '/rest/api/mobile/case')
 
 module.exports = {
   wxJsCode2Session,
@@ -135,5 +138,7 @@ module.exports = {
   // 推广
   spread, spreadRank, posters,
   // 微传单
-  wcd, wcdCase, wcdVip, wcdCopy
+  wcd, wcdCase, wcdVip, wcdCopy,
+  // 微网站
+  mobile, mobileCase
 }

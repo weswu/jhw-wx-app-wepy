@@ -16,10 +16,6 @@
 
   <view class="weui-panel weui-panel_access">
     <view class="weui-panel__ft">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">机汇微商城</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access">m.jihui88.com</view>
-      </view>
       <navigator url="sale" class="weui-cell weui-cell_access">
         <view class="weui-cell__bd">促销活动</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
@@ -29,7 +25,7 @@
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
       <navigator url="about"  class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">关于机汇网</view>
+        <view class="weui-cell__bd">关于小程序</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>

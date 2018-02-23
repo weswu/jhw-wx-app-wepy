@@ -58,18 +58,18 @@
       enterprise: {},
       employee: {},
       grids: [
-        {url: '#/shopData', name: '商城数据', icon: 'tongji', color: '#5bba19'},
-        {url: '#/mobile/me', name: '微网站', icon: 'weiwangzhan', color: '#8da5cb'},
-        {url: '#/wcd/me', name: '微传单', icon: 'weizhan', color: '#FF6000'},
+        {url: '/pages/data/data', name: '商城数据', icon: 'tongji', color: '#5bba19'},
+        {url: '/pages/mobile/mobile', name: '微网站', icon: 'weiwangzhan', color: '#8da5cb'},
+        {url: '/pages/wcd/wcd', name: '微传单', icon: 'weizhan', color: '#FF6000'},
         {url: '/pages/distribution/distribution', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
         {url: '/pages/member/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
         {url: '/pages/service/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
         {url: '/pages/service/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},
         {url: '/pages/service/seoHelp', name: 'SEO帮助', icon: 'seo', color: '#5bba19'},
-        {url: '#/serivepay/payment', name: '服务缴费', icon: 'jiaofei', color: '#FF6000'},
-        {url: '#/serive_progress', name: '服务进度', icon: 'f12', color: '#8da5cb'},
-        {url: '#/point', name: '我的积分', icon: 'xinwen', color: '#5bba19'},
-        {url: '#/spread', name: '参与推广', icon: 'pengyou', color: '#f69215'}
+        {url: '/pages/servicepay/pay', name: '服务缴费', icon: 'jiaofei', color: '#FF6000'},
+        {url: '/pages/service/progress', name: '服务进度', icon: 'f12', color: '#8da5cb'},
+        {url: '/pages/point/point', name: '我的积分', icon: 'xinwen', color: '#5bba19'},
+        {url: '/pages/spread/spread', name: '参与推广', icon: 'pengyou', color: '#f69215'}
       ]
     }
 

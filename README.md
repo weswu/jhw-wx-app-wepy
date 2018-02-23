@@ -64,3 +64,4 @@ http://app.jihui88.com
 
 ### webView
 http://wwww.jihui88.com
+http://sj.jihui88.com
