@@ -1,158 +1,2363 @@
 <template>
-  <Tips />
-  <view class="weui-cells weui-cells_after-title">
-    <WInput>
-      <view slot="title" class="weui-label">证书名称：</view>
-      <input slot="input" class="weui-input" placeholder="请输入证书名称" @input="input" id="name" value="{{input.name}}"/>
-    </WInput>
+  <!-- 添加 -->
+  <navigator url="categoryDetail?type={{type}}" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
-    <WInput>
-      <view slot="title" class="weui-label">证书类型：</view>
-      <picker slot="input" @change="categoryPicker" id="type" value="{{typeIndex}}" range-key="text" range="{{category}}">
-          <view class="weui-select weui-select_in-select-after">{{category[typeIndex].text}}</view>
-      </picker>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">发证机构：</view>
-      <input slot="input" class="weui-input" placeholder="请输入发证机构" @input="input" id="organize" value="{{input.organize}}"/>
-    </WInput>
-
-    <WInput>
-      <view slot="title" class="weui-label">证书图片：</view>
-      <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
-        <view class="weui-uploader__file">
-            <image class="weui-uploader__img" src="http://img.jihui88.com/{{input.attaPic}}" mode="aspectFill"/>
-        </view>
+  <repeat for="{{list}}" key="index" index="index" item="item" wx:if="{{item.isroot === '01'}}">
+    <view class="weui-cells">
+      <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+              <view class="weui-label one"><i class="iconfont icon-more"></i></view>
+          </view>
+          <view class="weui-cell__bd">
+              <input class="weui-input" value="{{item.name}}" @input="input" id="{{item.id}}"/>
+          </view>
+          <view class="weui-cell__ft">
+              <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item.id}})"></icon>
+          </view>
       </view>
-    </WInput>
-  </view>
+      <repeat for="{{item.sonCate}}" key="index2" index="index2" item="item2">
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label two"><i class="iconfont icon-more"></i></view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" value="{{item2.name}}" @input="input" id="{{item.id}}"/>
+            </view>
+            <view class="weui-cell__ft">
+                <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item2.id}})"></icon>
+            </view>
+        </view>
+        <repeat for="{{item2.sonCate}}" key="index3" index="index3" item="item3">
+          <view class="weui-cell weui-cell_input">
+              <view class="weui-cell__hd">
+                  <view class="weui-label three"><i class="iconfont icon-more"></i></view>
+              </view>
+              <view class="weui-cell__bd">
+                  <input class="weui-input" value="{{item3.name}}" @input="input" id="{{item.id}}"/>
+              </view>
+              <view class="weui-cell__ft">
+                  <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item3.id}})"></icon>
+              </view>
+          </view>
+        </repeat>
+      </repeat>
+    </view>
+  </repeat>
   <view class="weui-btn-area">
-      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+      <button class="weui-btn" type="primary" @tap="submit">保存</button>
   </view>
 </template>
-
 <script>
   import wepy from 'wepy';
   import api from '@/api/api'
   import Tips from '@/utils/Tips'
-  import input from '@/mixins/input'
-  import FormTips from '@/components/weui/tips'
-  import WInput from '@/components/weui/input'
 
   export default class Category extends wepy.page {
     config = {}
-    components = {
-      Tips: FormTips,
-      WInput
-    }
     data = {
-      id:'',
-      input: {
-        type: '01'
+      type:'',
+      list: [
+      {
+      categoryId: "Category_00000000000000000087651",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000255577",
+      name: "高档圆形塑料花盆",
+      cdesc: "-----高档圆形塑料花盆",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087651"
       },
-      typeIndex: 0,
-      category: [
-        {text: '基本证书', value: '01'},
-        {text: '税务登记证', value: '07'},
-        {text: '荣誉证书', value: '04'},
-        {text: '营业执照', value: '06'},
-        {text: '组织机构代码证', value: '08'},
-        {text: '实地认证', value: '09'},
-        {text: '其它证书', value: '05'}
-      ]
+      {
+      categoryId: "Category_00000000000000000087652",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "壁挂花盆",
+      cdesc: "壁挂花盆",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087652"
+      },
+      {
+      categoryId: "Category_00000000000000000087648",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "高档迷你花盆",
+      cdesc: "高档迷你花盆",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087648"
+      },
+      {
+      categoryId: "Category_00000000000000000087647",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "高档烤漆圆形花盆",
+      cdesc: "高档烤漆圆形花盆",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249973",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087647",
+      name: "子分",
+      cdesc: "-----子分",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249974",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249973",
+      name: "1分类",
+      cdesc: "----------1分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249975",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "类",
+      cdesc: "---------------类",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000249975"
+      },
+      {
+      categoryId: "Category_00000000000000000306538",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "zz",
+      cdesc: "---------------zz",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000306538"
+      }
+      ],
+      id: "Category_00000000000000000249974"
+      }
+      ],
+      id: "Category_00000000000000000249973"
+      },
+      {
+      categoryId: "Category_00000000000000000087655",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087647",
+      name: "高档方形塑料花盆",
+      cdesc: "-----高档方形塑料花盆",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087655"
+      }
+      ],
+      id: "Category_00000000000000000087647"
+      },
+      {
+      categoryId: "Category_00000000000000000249973",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087647",
+      name: "子分",
+      cdesc: "-----子分",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249974",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249973",
+      name: "1分类",
+      cdesc: "----------1分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249975",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "类",
+      cdesc: "---------------类",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000249975"
+      },
+      {
+      categoryId: "Category_00000000000000000306538",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "zz",
+      cdesc: "---------------zz",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000306538"
+      }
+      ],
+      id: "Category_00000000000000000249974"
+      }
+      ],
+      id: "Category_00000000000000000249973"
+      },
+      {
+      categoryId: "Category_00000000000000000249974",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249973",
+      name: "1分类",
+      cdesc: "----------1分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000249975",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "类",
+      cdesc: "---------------类",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000249975"
+      },
+      {
+      categoryId: "Category_00000000000000000306538",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "zz",
+      cdesc: "---------------zz",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000306538"
+      }
+      ],
+      id: "Category_00000000000000000249974"
+      },
+      {
+      categoryId: "Category_00000000000000000249975",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "类",
+      cdesc: "---------------类",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000249975"
+      },
+      {
+      categoryId: "Category_00000000000000000306538",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000249974",
+      name: "zz",
+      cdesc: "---------------zz",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000306538"
+      },
+      {
+      categoryId: "Category_00000000000000000087655",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087647",
+      name: "高档方形塑料花盆",
+      cdesc: "-----高档方形塑料花盆",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087655"
+      },
+      {
+      categoryId: "Category_00000000000000000087653",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "吊兰花盆",
+      cdesc: "吊兰花盆",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087646",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087653",
+      name: "高档烤漆方形花盆",
+      cdesc: "-----高档烤漆方形花盆",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000255637",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087646",
+      name: "子分类",
+      cdesc: "----------子分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000255637"
+      }
+      ],
+      id: "Category_00000000000000000087646"
+      }
+      ],
+      id: "Category_00000000000000000087653"
+      },
+      {
+      categoryId: "Category_00000000000000000087646",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087653",
+      name: "高档烤漆方形花盆",
+      cdesc: "-----高档烤漆方形花盆",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000255637",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087646",
+      name: "子分类",
+      cdesc: "----------子分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000255637"
+      }
+      ],
+      id: "Category_00000000000000000087646"
+      },
+      {
+      categoryId: "Category_00000000000000000255637",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087646",
+      name: "子分类",
+      cdesc: "----------子分类",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000255637"
+      },
+      {
+      categoryId: "Category_00000000000000000087654",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "种菜盆",
+      cdesc: "种菜盆",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000101764",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087654",
+      name: "和1",
+      cdesc: "-----和1",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000101764"
+      }
+      ],
+      id: "Category_00000000000000000087654"
+      },
+      {
+      categoryId: "Category_00000000000000000101764",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087654",
+      name: "和1",
+      cdesc: "-----和1",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000101764"
+      },
+      {
+      categoryId: "Category_00000000000000000284997",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "测试",
+      cdesc: "测试",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000284998",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000284997",
+      name: "测试11",
+      cdesc: "-----测试11",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000284998"
+      },
+      {
+      categoryId: "Category_00000000000000000284999",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000284997",
+      name: "测试122",
+      cdesc: "-----测试122",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000284999"
+      }
+      ],
+      id: "Category_00000000000000000284997"
+      },
+      {
+      categoryId: "Category_00000000000000000284998",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000284997",
+      name: "测试11",
+      cdesc: "-----测试11",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000284998"
+      },
+      {
+      categoryId: "Category_00000000000000000284999",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000284997",
+      name: "测试122",
+      cdesc: "-----测试122",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000284999"
+      },
+      {
+      categoryId: "Category_00000000000000000087660",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "长包",
+      cdesc: "长包",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087660"
+      },
+      {
+      categoryId: "Category_00000000000000000087665",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "短包",
+      cdesc: "短包",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087665"
+      },
+      {
+      categoryId: "Category_00000000000000000087666",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "中包",
+      cdesc: "中包",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087666"
+      },
+      {
+      categoryId: "Category_00000000000000000087661",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "手提包",
+      cdesc: "手提包",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087662",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "男式",
+      cdesc: "-----男式",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087662"
+      },
+      {
+      categoryId: "Category_00000000000000000087663",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "女式",
+      cdesc: "-----女式",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087671",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "蓝色",
+      cdesc: "----------蓝色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087671"
+      },
+      {
+      categoryId: "Category_00000000000000000087672",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "红色",
+      cdesc: "----------红色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087669",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "美的",
+      cdesc: "---------------美的",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087669"
+      },
+      {
+      categoryId: "Category_00000000000000000087670",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "品牌",
+      cdesc: "---------------品牌",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087670"
+      }
+      ],
+      id: "Category_00000000000000000087672"
+      },
+      {
+      categoryId: "Category_00000000000000000087668",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "黑色",
+      cdesc: "----------黑色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087668"
+      }
+      ],
+      id: "Category_00000000000000000087663"
+      },
+      {
+      categoryId: "Category_00000000000000000087664",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "儿童",
+      cdesc: "-----儿童",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087664"
+      }
+      ],
+      id: "Category_00000000000000000087661"
+      },
+      {
+      categoryId: "Category_00000000000000000087662",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "男式",
+      cdesc: "-----男式",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087662"
+      },
+      {
+      categoryId: "Category_00000000000000000087663",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "女式",
+      cdesc: "-----女式",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087671",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "蓝色",
+      cdesc: "----------蓝色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087671"
+      },
+      {
+      categoryId: "Category_00000000000000000087672",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "红色",
+      cdesc: "----------红色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087669",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "美的",
+      cdesc: "---------------美的",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087669"
+      },
+      {
+      categoryId: "Category_00000000000000000087670",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "品牌",
+      cdesc: "---------------品牌",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087670"
+      }
+      ],
+      id: "Category_00000000000000000087672"
+      },
+      {
+      categoryId: "Category_00000000000000000087668",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "黑色",
+      cdesc: "----------黑色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087668"
+      }
+      ],
+      id: "Category_00000000000000000087663"
+      },
+      {
+      categoryId: "Category_00000000000000000087671",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "蓝色",
+      cdesc: "----------蓝色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087671"
+      },
+      {
+      categoryId: "Category_00000000000000000087672",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "红色",
+      cdesc: "----------红色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087669",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "美的",
+      cdesc: "---------------美的",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087669"
+      },
+      {
+      categoryId: "Category_00000000000000000087670",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "品牌",
+      cdesc: "---------------品牌",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087670"
+      }
+      ],
+      id: "Category_00000000000000000087672"
+      },
+      {
+      categoryId: "Category_00000000000000000087669",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "美的",
+      cdesc: "---------------美的",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087669"
+      },
+      {
+      categoryId: "Category_00000000000000000087670",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087672",
+      name: "品牌",
+      cdesc: "---------------品牌",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000087670"
+      },
+      {
+      categoryId: "Category_00000000000000000087668",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087663",
+      name: "黑色",
+      cdesc: "----------黑色",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087668"
+      },
+      {
+      categoryId: "Category_00000000000000000087664",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087661",
+      name: "儿童",
+      cdesc: "-----儿童",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087664"
+      },
+      {
+      categoryId: "Category_00000000000000000087667",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "休闲包",
+      cdesc: "休闲包",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087667"
+      },
+      {
+      categoryId: "Category_00000000000000000274322",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "铝合金折叠购物车XDL08",
+      cdesc: "铝合金折叠购物车XDL08",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000274322"
+      },
+      {
+      categoryId: "Category_00000000000000000276671",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "本色一类-八类花",
+      cdesc: "本色一类-八类花",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000276671"
+      },
+      {
+      categoryId: "Category_00000000000000000274323",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "牛头柄便携购物车XDN系列",
+      cdesc: "牛头柄便携购物车XDN系列",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000274323"
+      },
+      {
+      categoryId: "Category_00000000000000000087639",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "联想",
+      cdesc: "联想",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087658",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "Y470",
+      cdesc: "-----Y470",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000248628",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087658",
+      name: "234",
+      cdesc: "----------234",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000248629",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000248628",
+      name: "44",
+      cdesc: "---------------44",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000248629"
+      }
+      ],
+      id: "Category_00000000000000000248628"
+      }
+      ],
+      id: "Category_00000000000000000087658"
+      },
+      {
+      categoryId: "Category_00000000000000000087640",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "Y460",
+      cdesc: "-----Y460",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087640"
+      },
+      {
+      categoryId: "Category_00000000000000000087641",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "N470",
+      cdesc: "-----N470",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087641"
+      }
+      ],
+      id: "Category_00000000000000000087639"
+      },
+      {
+      categoryId: "Category_00000000000000000087658",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "Y470",
+      cdesc: "-----Y470",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000248628",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087658",
+      name: "234",
+      cdesc: "----------234",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000248629",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000248628",
+      name: "44",
+      cdesc: "---------------44",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000248629"
+      }
+      ],
+      id: "Category_00000000000000000248628"
+      }
+      ],
+      id: "Category_00000000000000000087658"
+      },
+      {
+      categoryId: "Category_00000000000000000248628",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087658",
+      name: "234",
+      cdesc: "----------234",
+      grade: "03",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000248629",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000248628",
+      name: "44",
+      cdesc: "---------------44",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000248629"
+      }
+      ],
+      id: "Category_00000000000000000248628"
+      },
+      {
+      categoryId: "Category_00000000000000000248629",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000248628",
+      name: "44",
+      cdesc: "---------------44",
+      grade: "04",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: null,
+      id: "Category_00000000000000000248629"
+      },
+      {
+      categoryId: "Category_00000000000000000087640",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "Y460",
+      cdesc: "-----Y460",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087640"
+      },
+      {
+      categoryId: "Category_00000000000000000087641",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087639",
+      name: "N470",
+      cdesc: "-----N470",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087641"
+      },
+      {
+      categoryId: "Category_00000000000000000087656",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "苹果",
+      cdesc: "苹果",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087642",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087656",
+      name: "IPID",
+      cdesc: "-----IPID",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087642"
+      }
+      ],
+      id: "Category_00000000000000000087656"
+      },
+      {
+      categoryId: "Category_00000000000000000087642",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087656",
+      name: "IPID",
+      cdesc: "-----IPID",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087642"
+      },
+      {
+      categoryId: "Category_00000000000000000087657",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "神洲",
+      cdesc: "神洲",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087659",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087657",
+      name: "P460",
+      cdesc: "-----P460",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087659"
+      }
+      ],
+      id: "Category_00000000000000000087657"
+      },
+      {
+      categoryId: "Category_00000000000000000087659",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087657",
+      name: "P460",
+      cdesc: "-----P460",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087659"
+      },
+      {
+      categoryId: "Category_00000000000000000087649",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "分类",
+      cdesc: "分类",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087645",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087649",
+      name: "分类2",
+      cdesc: "-----分类2",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087645"
+      }
+      ],
+      id: "Category_00000000000000000087649"
+      },
+      {
+      categoryId: "Category_00000000000000000087645",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000087649",
+      name: "分类2",
+      cdesc: "-----分类2",
+      grade: "02",
+      isroot: "00",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087645"
+      },
+      {
+      categoryId: "Category_00000000000000000087650",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "综合类",
+      cdesc: "综合类",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087650"
+      },
+      {
+      categoryId: "Category_00000000000000000087643",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "产品",
+      cdesc: "产品",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087643"
+      },
+      {
+      categoryId: "Category_00000000000000000251664",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "另加",
+      cdesc: "另加",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000251664"
+      },
+      {
+      categoryId: "Category_00000000000000000282315",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "所有产品",
+      cdesc: "所有产品",
+      grade: null,
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000282315"
+      },
+      {
+      categoryId: "Category_00000000000000000294723",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "产品",
+      cdesc: "产品",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000294723"
+      },
+      {
+      categoryId: "Category_00000000000000000297222",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "属性价格区间测试",
+      cdesc: "属性价格区间测试",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000297222"
+      },
+      {
+      categoryId: "Category_00000000000000000316364",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "测试商品",
+      cdesc: "测试商品",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000316364"
+      },
+      {
+      categoryId: "Category_00000000000000000331071",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "属性测试",
+      cdesc: "属性测试",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000331071"
+      },
+      {
+      categoryId: "Category_00000000000000000255577",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: null,
+      name: "钢轨钻孔",
+      cdesc: "钢轨钻孔",
+      grade: "00",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [
+      {
+      categoryId: "Category_00000000000000000087651",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000255577",
+      name: "高档圆形塑料花盆",
+      cdesc: "-----高档圆形塑料花盆",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087651"
+      }
+      ],
+      id: "Category_00000000000000000255577"
+      },
+      {
+      categoryId: "Category_00000000000000000087651",
+      enterpriseId: null,
+      type: null,
+      adduserId: null,
+      belongId: "Category_00000000000000000255577",
+      name: "高档圆形塑料花盆",
+      cdesc: "-----高档圆形塑料花盆",
+      grade: "01",
+      isroot: "01",
+      addTime: null,
+      isdisplay: null,
+      state: "01",
+      sort: 0,
+      image: null,
+      key: null,
+      hunkdisplay: null,
+      alias: null,
+      updateTime: null,
+      sonCate: [ ],
+      id: "Category_00000000000000000087651"
+      }
+     ]
     }
-    mixins = [input]
 
-    onLoad ({id}) {
-      if (id) {
-        this.id = id
-        this.get()
-        wx.setNavigationBarTitle({ title: '证书修改'})
+    onLoad ({type}) {
+      this.type = type || 'product'
+      this.get()
+      if (this.type === 'product') {
+        wx.setNavigationBarTitle({ title: '产品分类'})
       } else {
-        wx.setNavigationBarTitle({ title: '证书添加'})
+        wx.setNavigationBarTitle({ title: '新闻分类'})
       }
-
-    }
-
-    async get () {
-      const json = await api.certDetail({
-        id: this.id
-      })
-      if (json.success) {
-        this.input = json.attributes.data
-      }
-      this.input = {
-        certificateId: "Certificate_00000000000000007799",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        name: "aa",
-        organize: "ba",
-        state: "01",
-        type: "07",
-        attachmentId: "Attach_0000000000000000001384336",
-        attaPic: "upload//g//g2//ggggfj//picture//2017//08//04/69521af9-edbf-4c83-b615-03d53f64c252.png",
-        addTime: 1501814881264,
-        sort: 526,
-        domain: null,
-        updateTime: null,
-        id: "Certificate_00000000000000007799"
-      }
-      this.category.forEach((item, index) => {
-        if (item.value === this.input.type) {
-          this.typeIndex = index
-        }
-      })
-      this.$apply()
     }
 
     methods = {
-      categoryPicker (e) {
-        var index = e.detail.value
-        this[e.currentTarget.id+'Index'] = index
-        this.input[e.currentTarget.id] = this.category[index].value
+      input (e) {
+        this.list.forEach((item, index, arr) => {
+          if (item.id === e.target.id) {
+            item.name = e.detail.value
+          }
+          item.sonCate && item.sonCate.forEach((item2, index2, arr2) => {
+            if (item2.id === e.target.id) {
+              item2.name = e.detail.value
+            }
+            item2.sonCate && item2.sonCate.forEach((item3, index3, arr3) => {
+              if (item3.id === e.target.id) {
+                item3.name = e.detail.value
+              }
+            })
+          })
+        })
+      },
+      // 删除
+      async del (e) {
+        await Tips.confirm('确认删除吗？')
+        Tips.loading()
+        const json = await api.categoryDetail({
+          method: 'delete',
+          data: {
+            type: this.type === 'product' ? '10' : '11'
+          },
+          id: e
+        })
+        Tips.loaded()
+        if (json.success) {
+          this.list.forEach((item, index, arr) => {
+            if (item.id === id) {
+              arr.splice(index, 1)
+            }
+            item.sonCate && item.sonCate.forEach((item2, index2, arr2) => {
+              if (item2.id === id) {
+                arr2.splice(index2, 1)
+              }
+              item2.sonCate && item2.sonCate.forEach((item3, index3, arr3) => {
+                if (item3.id === id) {
+                  arr3.splice(index3, 1)
+                }
+              })
+            })
+          })
+          wepy.setStorageSync('category', this.list);
+          Tips.success('删除成功')
+        }
       }
     }
 
-    validate() {
-      const rules = [
-        {
-          value: this.input.name,
-          method: 'required',
-          message: '证书名称为空'
-        },
-        {
-          value: this.input.organize,
-          method: 'required',
-          message: '发证机构不能为空'
-        }
-      ];
-      return this.check(rules);
+    async get () {
+      const json = await api.category({
+        type: this.type
+      })
+      if (json.success) {
+        this.list = json.attributes.data
+      }
+      wepy.setStorageSync('category', this.list);
+      this.$apply()
     }
 
     async submit () {
-      if (!this.validate()) {
-        return;
-      }
-      let data = {
-        data: {
-          name: this.input.name,
-          type: this.input.type,
-          organize: this.input.organize,
-          attId: this.input.attachmentId
-        },
-        method: 'post'
-      }
-      if (this.id) {
-        data.method = 'put'
-        data.id = this.id
-      }
+      var list = ''
+      this.list.forEach(function (item, i) {
+        if (i === 0) { list = 'id=' + item.id + ',name=' + item.name }
+        if (i !== 0) { list = list + ';id=' + item.id + ',name=' + item.name }
+        item.sonCate && item.sonCate.forEach(function (item1, j) {
+          if (i !== 0) { list = list + ';id=' + item1.id + ',name=' + item1.name }
+          item1.sonCate && item1.sonCate.forEach(function (item2, x) {
+            if (i !== 0) { list = list + ';id=' + item2.id + ',name=' + item2.name }
+          })
+        })
+      })
       Tips.loading()
-      const json = await api.certDetail(data)
+      const json = await api.categoryUpdate({
+        data: {
+          list: list
+        },
+        method: 'put'
+      })
       Tips.loaded()
       if (json.success) {
-        Tips.success(this.id ? '修改成功' : '添加成功')
+        wepy.setStorageSync('category', this.list);
+        Tips.success('保存成功')
       } else {
         Tips.error(json.msg)
       }
     }
   }
 </script>
+<style lang="less">
+  .weui-cells{
+    .weui-label{
+      width:80rpx;
+    }
+    .two{
+      padding-left: 20rpx
+    }
+    .three{
+      padding-left: 40rpx
+    }
+  }
+  .addObj {
+    right:40px;
+  }
+</style>

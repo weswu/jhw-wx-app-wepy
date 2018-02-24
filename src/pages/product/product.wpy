@@ -1,6 +1,8 @@
 <template>
   <!--搜索-->
   <SearchBar placeholder="请输入产品标题" @input.user="input"/>
+  <!-- 添加 -->
+  <navigator url="productDetail" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
@@ -42,6 +44,30 @@ export default class Product extends wepy.page {
   onLoad () {
     this.get()
   }
+
+  methods = {
+    // 删除
+    async del (e) {
+      await Tips.confirm('确认删除吗？')
+      Tips.loading()
+      const json = await api.certDetail({
+        method: 'delete',
+        id: e
+      })
+      Tips.loaded()
+      if (json.success) {
+        await Utils.del(this, e, '证书管理')
+        Tips.success('删除成功')
+      }
+    },
+    // 搜索
+    async input (val) {
+      this.page = 1
+      this.list = []
+      this.name = val
+      this.get()
+    }
+  }  
 
   async get () {
     this.list = [

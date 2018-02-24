@@ -31,6 +31,8 @@ const album = (params) => http(params, host + '/rest/api/album/attr/list/' + par
 const albumCategory = (params) => http(params, host + '/rest/api/album/list?pageSize=100')
 // 分类
 const category = (params) => http(params, host + '/rest/api/' + params.type + '/categoryManage')
+const categoryUpdate = (params) => http(params, host + '/rest/api/category/update')
+const categoryDetail = (params) => http(params, host + '/rest/api/category/detail' + (params.id ? '/' + params.id : ''))
 // 产品
 const product = (params) => http(params, host + '/rest/api/product/list')
 const productDetail = (params) => http(params, host + '/rest/api/product/detail/' + params.id)
@@ -108,13 +110,12 @@ module.exports = {
   serviceFeedback,
   // 相册
   album, albumCategory,
-  category,
   // 产品
   product, productDetail,
   // 新闻
   news, newsDetail,
   // 分类
-  category,
+  category, categoryUpdate, categoryDetail,
   // 证书
   cert, certDetail,
   // 友情链接

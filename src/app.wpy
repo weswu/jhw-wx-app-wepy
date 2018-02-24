@@ -12,9 +12,12 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index/index',
+      'pages/category/category',
+      'pages/category/categoryDetail',
+      'pages/index/data',
+      'pages/product/product',
       'pages/mobile/mobile',
       'pages/wcd/wcd',
-      'pages/category/category',
       'pages/spread/spread',
       'pages/spread/friend',
       'pages/spread/rank',
@@ -48,7 +51,6 @@ export default class extends wepy.app {
       'pages/cert/certDetail',
       'pages/news/newsDetail',
       'pages/news/news',
-      'pages/product/product',
       'pages/product/productDetail',
       'pages/album/album',
       'pages/service/video',
@@ -70,7 +72,6 @@ export default class extends wepy.app {
       'pages/user/user',
       'pages/user/login',
       'pages/user/publish',
-      'pages/index/data',
       'pages/index/my'
     ],
     window: {
