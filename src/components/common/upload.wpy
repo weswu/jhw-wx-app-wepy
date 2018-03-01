@@ -1,0 +1,48 @@
+<template>
+  <image mode="widthFix" src="{{src}}" @tap="chooseImage"/>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  export default class Upload extends wepy.component {
+    props = {
+      src: {
+        default: '/images/no_image.png'
+      },
+      name: {}
+    }
+    methods = {
+      chooseImage () {
+        var that = this;
+        wx.chooseImage({
+          count: 1, // 默认1
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            wx.showLoading({ title: '正在上传', mask: true})
+            wx.uploadFile({
+             url: 'http://app.jihui88.com//rest/api/album/fileupload',
+             filePath: res.tempFilePaths[0],//临时路径
+             name: 'Filedata',
+             formData: {
+               fileLen: res.tempFiles[0].size
+             },
+             success: function (res) {
+               wx.hideLoading()
+               that.$emit('change', res)
+             }
+           })
+          }
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="less">
+  image{
+    width: 250rpx;
+    max-height: 250rpx;
+  }
+</style>

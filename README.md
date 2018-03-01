@@ -61,6 +61,18 @@ https://api.jihui88.net
 
 ### 上传接口
 http://app.jihui88.com
+```javascript
+------WebKitFormBoundarybSd1pePCMUd7Lhhh
+Content-Disposition: form-data; name="Filedata"; filename="logo2.jpg"
+Content-Type: image/jpeg
+
+
+------WebKitFormBoundarybSd1pePCMUd7Lhhh
+Content-Disposition: form-data; name="fileLen"
+
+2346
+------WebKitFormBoundarybSd1pePCMUd7Lhhh--
+```
 
 ### webView
 http://wwww.jihui88.com

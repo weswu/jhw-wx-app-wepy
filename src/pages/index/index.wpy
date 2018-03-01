@@ -1,9 +1,9 @@
 <template>
   <view class="header">
-    <navigator url="" class="weui-media-box weui-media-box_appmsg">
-      <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+    <view class="weui-media-box weui-media-box_appmsg">
+      <navigator url="/pages/user/enterprise" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
         <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png"/>
-      </view>
+      </navigator>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view>{{user.username}},您好！</view>
         <view wx:if='userInfo.versions'>当前版本：{{userInfo.versions}}</view>
@@ -11,9 +11,9 @@
         <view wx:elif="userInfo.endTime && userInfo.endTime !== '0'">到期时间：{{userInfo.endTime}}</view>
         <view>服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
       </view>
-    </navigator>
+    </view>
     <navigator url="/pages/setting/setting" style='position: absolute;top: 15px;right: 15px;color:#fff'>
-      <i class="iconfont icon-circularset" style="color:#fff;font-size:40rpx"></i>
+      <i class="iconfont icon-circularset" style="color:#fff;font-size:50rpx"></i>
     </navigator>
   </view>
 
