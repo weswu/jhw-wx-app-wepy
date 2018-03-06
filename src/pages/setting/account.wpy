@@ -1,5 +1,5 @@
 <template>
-  <view class="weui-cell weui-cell-border-top">
+  <view class="weui-cell weui-cell-border-top" style="background: #f5f5f5;">
     <view class="weui-cell__hd">
       <view class="weui-label">账号</view>
     </view>
@@ -15,7 +15,7 @@
     </view>
   </view>
 
-  <view class="weui-cell weui-cell-border-top">
+  <view class="weui-cell weui-cell-border-top" style="background: #f5f5f5;">
     <view class="weui-cell__hd">
       <view class="weui-label">安全</view>
     </view>

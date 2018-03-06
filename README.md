@@ -2,7 +2,7 @@
 
 > 这是一个用小程序编写的会员后台App。
 
-[在线地址](http://app.jihui88.com)
+[APP在线地址](http://app.jihui88.com)
 
 ### 技术栈
 - [wepy](https://tencent.github.io/wepy/) 开发框架
@@ -50,17 +50,17 @@ async testAsync () {
 ### 请求接口
 http://crmyun.jihui88.com:9500
 
-http://app.jihui88.com
+app接口 https://app.jihui88.com
 
-https://wx.jihui88.net   ===   http://www.jihui88.com
+机汇网 https://wx.jihui88.net
 
-http://wcd.jihui88.com/rest/comm/wcd/copyp
 
-### 下载推广图片
-https://api.jihui88.net
+### 下载图片
+推广  https://api.jihui88.net
 
-### 上传接口
-http://app.jihui88.com
+### 上传图片
+https://app.jihui88.com
+
 ```javascript
 ------WebKitFormBoundarybSd1pePCMUd7Lhhh
 Content-Disposition: form-data; name="Filedata"; filename="logo2.jpg"
@@ -75,5 +75,4 @@ Content-Disposition: form-data; name="fileLen"
 ```
 
 ### webView
-http://wwww.jihui88.com
-http://sj.jihui88.com
+http://wwww.jihui88.com/webview.html?src=xxx

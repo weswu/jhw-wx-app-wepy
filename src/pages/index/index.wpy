@@ -147,4 +147,7 @@
 .status>.ul>.li{width: 25%;-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1 1 0%;-moz-flex:1 1 0;-ms-flex:1 1 0%;flex:1 1 0%;display:block;padding:.3rem 0}
 .status_num,.status_txt{display:block;line-height:1.5;text-align:center;color:#bbb}
 .status_txt{color:#999}.status_num{font-size:.8rem}
+.weui-grids{
+  margin-bottom: 20rpx
+}
 </style>

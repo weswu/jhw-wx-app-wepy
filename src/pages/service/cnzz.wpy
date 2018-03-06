@@ -33,8 +33,22 @@ export default class Cnzz extends wepy.page {
   }
 
   goto () {
-    wx.navigateTo({
-      url: '/pages/setting/webView?src=https://itunes.apple.com/cn/app/cnzz/id710500922?mt=8'
+    wx.showModal({
+      title: '下载地址',
+      content: 'https://itunes.apple.com/cn/app/cnzz/id710500922?mt=8',
+      confirmText: '复制',
+      success: function(res) {
+        if (res.confirm) {
+          wx.setClipboardData({
+            data: 'https://itunes.apple.com/cn/app/cnzz/id710500922?mt=8',
+            success: function(res) {
+              tip.success('复制成功');
+            }
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   }
 

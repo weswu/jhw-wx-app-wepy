@@ -85,8 +85,6 @@ const spreadRank = (params) => http(params, wxHost + '/rest/api/comm/poster/user
 const posters = (params) => http(params, 'http://api.jihui88.net/qrcode_poster/api/poster')
 // 微传单
 const wcd = (params) => http(params, host + '/rest/api/wcd/list')
-const wcdVip = (params) => http(params, host + '/rest/api/wcd/vip')
-const wcdCopy = (params) => http(params,  'http://wcd.jihui88.com/rest/comm/wcd/copyp')
 const wcdCase = (params) => http(params, host + '/rest/api/wcd/case')
 // 微网站
 const mobile = (params) => http(params, host + '/rest/api/mobile/list')
@@ -139,7 +137,7 @@ module.exports = {
   // 推广
   spread, spreadRank, posters,
   // 微传单
-  wcd, wcdCase, wcdVip, wcdCopy,
+  wcd, wcdCase,
   // 微网站
   mobile, mobileCase
 }

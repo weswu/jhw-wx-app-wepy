@@ -39,10 +39,10 @@
   <view @tap="tipHide">
     <view class="pay-bg" wx:if="{{tip}}"></view>
     <view class="buyImg" wx:if="{{index === '0' && tip}}">
-      <image src="/images/servicepay/zhifubao.jpg" mode="scaleToFill"/>
+      <image src="https://img.jihui88.com/upload/j/j2/jihui88/picture/2018/03/06/f136a659-ce28-4d6b-b85e-a252a6b19fc9_7.jpg" mode="scaleToFill"/>
     </view>
     <view class="buyImg" wx:if="{{index === '1' && tip}}">
-      <image src="/images/servicepay/weixin.jpg" mode="scaleToFill"/>
+      <image src="https://img.jihui88.com/upload/j/j2/jihui88/picture/2018/03/06/0d7872ca-9ece-4cb3-a6cf-d9be1cc7a433_7.jpg" mode="scaleToFill"/>
     </view>
   </view>
 </template>

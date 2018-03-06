@@ -11,7 +11,7 @@ export default class WebView extends wepy.page {
   }
 
   onLoad (option){
-    this.src = option.src
+    this.src = 'https://www.jihui88.com/webview.html?src=' + option.src
   }
 
 }
