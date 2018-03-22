@@ -11,12 +11,14 @@ import { wxJsCode2Session, user2session } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/product/product',
+    'pages/news/news',
+      'pages/category/categoryList',
       'pages/index/index',
       'pages/index/data',
       'pages/index/my',
       'pages/category/category',
       'pages/category/categoryDetail',
-      'pages/product/product',
       'pages/mobile/mobile',
       'pages/wcd/wcd',
       'pages/spread/spread',
@@ -51,7 +53,6 @@ export default class extends wepy.app {
       'pages/cert/cert',
       'pages/cert/certDetail',
       'pages/news/newsDetail',
-      'pages/news/news',
       'pages/product/productDetail',
       'pages/album/album',
       'pages/service/video',

@@ -1,6 +1,6 @@
 <template>
   <!--搜索-->
-  <SearchBar placeholder="请输入新闻标题" @input.user="input"/>
+  <SearchBar placeholder="请输入新闻标题" @input.user="input" :type.sync="type"/>
 
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
@@ -30,13 +30,52 @@ export default class News extends wepy.page {
 
   data = {
     list: [],
-    page: 1,
-    pageSize: 20,
-    more: { loading: true }
+    searchData: {
+      page: 1,
+      title: '',
+      category: ''
+    },
+    more: { loading: true },
+    type: 'news'
   }
 
   onLoad () {
+    this.searchData.category = ''
+    wx.setStorageSync('curCategory', 'all')
     this.get()
+  }
+
+  async onShow () {
+    // 设置选中的分类
+    var key = wx.getStorageSync('curCategory')
+    if (key !== 'all') {
+      this.searchData.category = key
+      this.get()
+    }
+  }
+
+  methods = {
+    // 删除
+    async del (e) {
+      await Tips.confirm('确认删除吗？')
+      Tips.loading()
+      const json = await api.productDetail({
+        method: 'delete',
+        id: e
+      })
+      Tips.loaded()
+      if (json.success) {
+        await Utils.del(this, e, '产品管理')
+        Tips.success('删除成功')
+      }
+    },
+    // 搜索
+    async input (val) {
+      this.list = []
+      this.searchData.page = 1
+      this.searchData.title = val
+      this.get()
+    }
   }
 
   async get () {
@@ -134,66 +173,15 @@ export default class News extends wepy.page {
       }
     ]
 
-    this.cate = [
-      {
-        albumId: "Album_00000000000000000000056104",
-        belongId: "Enterp_0000000000000000000000039",
-        enterpriseId: null,
-        blongType: null,
-        name: "产品批量上传",
-        adesc: null,
-        tag: null,
-        addTime: null,
-        userId: "User_000000000000000000000000082",
-        state: "01",
-        type: "05",
-        updateTime: null,
-        parentId: null,
-        id: "Album_00000000000000000000056104"
-      },
-      {
-        albumId: "Album_00000000000000000000074262",
-        belongId: "Enterp_0000000000000000000000039",
-        enterpriseId: null,
-        blongType: null,
-        name: "[系统]微信小程序Banner相册",
-        adesc: null,
-        tag: null,
-        addTime: 1502171403945,
-        userId: "User_000000000000000000000000082",
-        state: "01",
-        type: "11",
-        updateTime: null,
-        parentId: null,
-        id: "Album_00000000000000000000074262"
-      }
-    ]
-
-      const data = await api.news({
-        data: {
-          page: this.page,
-          pageSize: this.pageSize
-        },
-        id: this.id
+    const data = await api.news({
+      data: this.searchData
+    })
+    if (data.success) {
+      this.list = data.attributes.data
+      wx.setNavigationBarTitle({
+        title: '新闻管理' + data.attributes.count
       })
-      if (data.success) {
-        this.list = data.attributes.data
-        wx.setNavigationBarTitle({
-          title: '新闻管理' + data.attributes.count
-        })
-      }
-
-      const json = await api.category({
-        type: 'news'
-      })
-      if (json.success) {
-        this.cate = json.attributes.data
-      }
-
-  }
-
-  cateChange (e) {
-    this.cateIndex = e.detail.value
+    }
   }
 
 }

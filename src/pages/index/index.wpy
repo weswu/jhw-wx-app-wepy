@@ -12,7 +12,7 @@
         <view>服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
       </view>
     </view>
-    <navigator url="/pages/setting/setting" style='position: absolute;top: 15px;right: 15px;color:#fff'>
+    <navigator url="/pages/setting/setting" style='position: absolute;top: 11px;right: 15px;color:#fff'>
       <i class="iconfont icon-circularset" style="color:#fff;font-size:50rpx"></i>
     </navigator>
   </view>

@@ -24,7 +24,7 @@
                   </label>
                 </view>
                 <view class="weui-cell__bd">
-                  <image src="/images/servicepay/{{item.type}}paid.gif"/>
+                  <image src="http://app.jihui88.com/static/img/{{item.type}}paid.gif"/>
                   <repeat for="{{item.orderItemList}}" key="idx" index="idx" item="orderItem">
                     <text>{{orderItem.prod_name}}    </text>
                   </repeat>
@@ -46,7 +46,7 @@
       <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
         <repeat for="{{log}}" key="index" index="index" item="item">
           <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-              <view class="weui-cell__hd"><image src="/images/servicepay/allpaid.gif" style="width: 17px;height: 17px;margin-right: 5px" /></view>
+              <view class="weui-cell__hd"><image src="http://app.jihui88.com/static/img/allpaid.gif" style="width: 17px;height: 17px;margin-right: 5px" /></view>
               <view class="weui-cell__bd weui-cell_primary">
                   <view>{{item.name}}</view>
                   {{item.so_date}}

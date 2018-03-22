@@ -82,7 +82,7 @@ const pointRank = (params) => http(params, host + '/rest/api/point/rank')
 // 推广
 const spread = (params) => http(params, host + '/rest/api/poster/list?pageSize=72')
 const spreadRank = (params) => http(params, wxHost + '/rest/api/comm/poster/userlist')
-const posters = (params) => http(params, 'http://api.jihui88.net/qrcode_poster/api/poster')
+const posters = (params) => http(params, 'https://api.jihui88.net/qrcode_poster/api/poster')
 // 微传单
 const wcd = (params) => http(params, host + '/rest/api/wcd/list')
 const wcdCase = (params) => http(params, host + '/rest/api/wcd/case')

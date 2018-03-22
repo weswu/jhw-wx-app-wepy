@@ -1,5 +1,6 @@
 <template>
   <view class="weui-search-bar">
+    <navigator url="/pages/category/categoryList?type={{type}}" wx:if="{{type}}" class="weui-search-bar__category"><i class="iconfont icon-category"></i></navigator>
     <view class="weui-search-bar__form">
       <view class="weui-search-bar__box">
         <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
@@ -23,6 +24,7 @@
   export default class SearchBar extends wepy.component {
     props = {
       back: {},
+      type: {},
       inputVal: {
         twoWay: true
       },
@@ -82,5 +84,13 @@
   .search-placeholder{
     height: 48px;
     width: 100%;
+  }
+  .weui-search-bar__category{
+    padding-top: 3px;
+    .icon-category{
+      color: #999;
+      padding-right: 7px;
+      padding-left: 4px;
+    }
   }
 </style>
