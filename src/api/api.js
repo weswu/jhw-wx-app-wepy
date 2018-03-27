@@ -5,8 +5,7 @@ const host = 'http://app.jihui88.com'
 const wxHost = 'https://wx.jihui88.net'
 
 //微信的code换取sessionKey
-const wxJsCode2Session = (params) => http(params, wxHost + "/rest/api/shop/member/wxapplogin");
-const user2session = (params) => http(params, apiMall + "/api/wechat/user2session?jsoncallback=?");
+const wxapplogin = (params) => http(params, wxHost + "/rest/api/user/wxapplogin");
 // 登录
 const login = (params) => http(params, host + '/rest/api/user/login')
 const logout = (params) => http(params, host + '/rest/api/user/logout')
@@ -91,13 +90,12 @@ const mobile = (params) => http(params, host + '/rest/api/mobile/list')
 const mobileCase = (params) => http(params, host + '/rest/api/mobile/case')
 
 module.exports = {
-  wxJsCode2Session,
-  user2session,
-  login, logout,
+  wxapplogin,
   // 基本数据
   user, userInfo,
   enterprise,
   employee,
+  login, logout,
   // 静态化
   publish, publishMobile,
   // 留言

@@ -2,7 +2,7 @@
   <view class="header">
     <view class="weui-media-box weui-media-box_appmsg">
       <navigator url="/pages/user/enterprise" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="http://img.jihui88.com/upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png"/>
+        <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{enterprise.logo}}"/>
       </navigator>
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view>{{user.username}},您好！</view>
@@ -82,46 +82,23 @@
       }
     }
 
-    onLoad() {
-      this.get()
+    async onLoad () {
+      let that = this
+      this.$parent.getInfo(function(json){
+        //更新数据
+        that.user = json.user
+        that.userInfo = json.userInfo
+        that.enterprise = json.enterprise
+        that.get()
+        console.log('用户数据存入当前页面');
+      })
     }
 
     async get() {
-      const json = await api.user()
-      if (json.success) {
-        this.user = json.attributes.data
-      } else {
-        this.user = this.$parent.globalData.user
-      }
-
-      const userInfo = await api.userInfo()
-      if (userInfo.success) {
-        this.userInfo = userInfo.attributes.data
-      } else {
-        this.userInfo = {
-          unshipped: 0,
-          shipped: 0,
-          unread: 0,
-          versions: "营销版",
-          name: "ggggfj",
-          logo: "upload//g//g2//ggggfj//picture//2018//01//15/709ca1ef-a0d9-476b-b265-c899636fcb89.jpg",
-          endTime: "1",
-          unpaid: 0
-        }
-      }
-
-      const enterprise = await api.enterprise()
-      if (enterprise.success) {
-        this.enterprise = enterprise.attributes.data
-      } else {
-        this.enterprise = this.$parent.globalData.enterprise
-      }
-
       const employee = await api.employee()
       if (employee.success) {
         this.employee = employee.attributes.data
       }
-
       this.$apply()
     }
 
@@ -134,6 +111,13 @@
   background-size: cover;
   overflow: hidden;
   color: #fff;
+  .weui-media-box__hd_in-appmsg {
+    width:70px;
+    height:70px;
+    image{
+      border-radius: 100%;
+    }
+  }
 }
 .weui-grid {
   width:25%;text-align:center;

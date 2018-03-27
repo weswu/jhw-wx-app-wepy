@@ -7,72 +7,37 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import { wxJsCode2Session, user2session } from './api/api';
+import { wxapplogin, user, userInfo, enterprise } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/product/product',
-    'pages/news/news',
-      'pages/category/categoryList',
-      'pages/index/index',
-      'pages/index/data',
-      'pages/index/my',
-      'pages/category/category',
-      'pages/category/categoryDetail',
+      'pages/index/index', 'pages/index/my', 'pages/index/data',
+      'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
+      'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageBind',
+      'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
       'pages/wcd/wcd',
-      'pages/spread/spread',
-      'pages/spread/friend',
-      'pages/spread/rank',
-      'pages/point/point',
-      'pages/point/ranking',
-      'pages/point/exchange',
-      'pages/point/pointDetail',
-      'pages/point/rule',
-      'pages/service/progress',
-      'pages/service/progressDetail',
-      'pages/servicepay/pay',
-      'pages/servicepay/mypay',
-      'pages/data/data',
-      'pages/data/purchaseQuantity',
-      'pages/data/purchaseAmount',
-      'pages/order/order',
-      'pages/order/price',
-      'pages/order/send',
-      'pages/order/orderDetail',
-      'pages/message/message',
-      'pages/message/messageDetail',
-      'pages/message/messageBind',
       'pages/distribution/distribution',
-      'pages/member/member',
-      'pages/member/memberDetail',
-      'pages/bind/bind',
-      'pages/bind/bindDetail',
-      'pages/link/link',
-      'pages/link/linkDetail',
-      'pages/cert/cert',
-      'pages/cert/certDetail',
-      'pages/news/newsDetail',
-      'pages/product/productDetail',
+      'pages/member/member', 'pages/member/memberDetail',
+      'pages/service/video', 'pages/service/cnzz','pages/service/seoHelp',
+      'pages/servicepay/pay', 'pages/servicepay/mypay',
+      'pages/service/progress', 'pages/service/progressDetail',
+      'pages/point/point', 'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
+      'pages/spread/spread', 'pages/spread/friend', 'pages/spread/rank',
+      'pages/product/product', 'pages/product/productDetail',
+      'pages/news/news', 'pages/news/newsDetail',
+      'pages/category/category', 'pages/category/categoryDetail', 'pages/category/categoryList',
+      'pages/cert/cert', 'pages/cert/certDetail',
+      'pages/link/link', 'pages/link/linkDetail',
       'pages/album/album',
-      'pages/service/video',
-      'pages/service/seoHelp',
-      'pages/service/cnzz',
-      'pages/service/service',
-      'pages/service/faq',
-      'pages/service/faq1',
-      'pages/setting/setting',
-      'pages/setting/sale',
-      'pages/setting/logList',
-      'pages/setting/serviceFeedback',
-      'pages/setting/password',
-      'pages/setting/account',
-      'pages/setting/webView',
-      'pages/user/map',
-      'pages/user/user',
+      'pages/setting/setting', 'pages/setting/account', 'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
+      'pages/service/service', 'pages/service/faq', 'pages/service/faq1',
+      'pages/setting/password','pages/setting/webView',
+      'pages/user/user', 'pages/user/map',
       'pages/user/enterprise',
-      'pages/user/login',
-      'pages/user/publish'
+      'pages/bind/bind', 'pages/bind/bindDetail',
+      'pages/user/publish',
+      'pages/user/login'
     ],
     window: {
       backgroundColor: '#ffffff',
@@ -118,65 +83,10 @@ export default class extends wepy.app {
 
   globalData = {
     userInfo: null,
-    user: {
-      userId: "User_000000000000000000000000082",
-      username: "ggggfj",
-      enterpriseId: "Enterp_0000000000000000000000039",
-      password: "e10adc3949ba59abbe56e057f20f883e",
-      sex: "00",
-      name: "name",
-      position: "it22",
-      cellphone: "13868184604",
-      phone: "86-0571-72204155",
-      fax: "0571-122222",
-      email: "zjut_wyj2@163.com",
-      address: "address",
-      qq: "123445914",
-      msn: "11913",
-      zipcode: "322001",
-      url: "http://www.sohu.com",
-      grade: "02",
-      state: "01",
-      icp: null,
-      userType: "营销版",
-      wcdMember: "01",
-      weibo: null,
-      weixin: null,
-      id: "User_000000000000000000000000082"
-    },
-    enterprise: {
-      enterpriseId: "Enterp_0000000000000000000000039",
-      userId: "User_000000000000000000000000082",
-      name: "455256",
-      mainBusiness: "a",
-      legalPre: "fhffhhhvv",
-      staffSum: "1",
-      businessType: "00",
-      icp: "a",
-      annualTurnover: "123123",
-      registeredCapital: "123123123",
-      logo: "upload//g//g2//ggggfj//picture//2017//01//04/760fa6f7-2f23-470c-8d4a-7c954e2d5288.png",
-      mobileSite: "14",
-      mapaddress: "",
-      gsbsZym: "2",
-      psr: null,
-      type: "07",
-      address: "402881882ba8753a012ba8d3f4f1008e",
-      dist: "ghhgffggv",
-      email: "604053328@qq.com",
-      phone: null,
-      certType: "00",
-      certPic: "upload//g//g2//ggggfj//picture//2017//06//01/94526c88-cd49-4a3f-a75e-b6a4d29b3378.jpg",
-      certNumber: "554258",
-      legalPersonIdNumber: null,
-      legalPersonPhoto: null,
-      legalPersonBust: null,
-      legalPersonCellphone: null,
-      domainCertPic: null,
-      id: "Enterp_0000000000000000000000039"
-    },
-    appid: 'wx5979261410e2ae66',
-    secret: 'adfa3ba0c79f2e9be8df8b1ec7466fd3',
+    user: {},
+    enterprise: {},
+    appid: 'wx2aba9d238ba02a76',
+    secret: 'c7131553b820b07e778d763bac18e259',
     recvState: ''
   }
 
@@ -187,28 +97,56 @@ export default class extends wepy.app {
   }
 
   async onLaunch() {
-    console.log('叽叽--开始启动');
+    console.log('叽叽');
+  }
+
+  async getInfo(cb) {
     let that = this;
-    //用户信息
-    const res = await wepy.login();
-    if (res.code) {
-      let resp = await wxJsCode2Session({
-        data: {
-          code: res.code
-        },
-        method: 'post'
-      })
+    if (this.globalData.user.username) {
+      typeof cb == 'function' && cb(this.globalData)
+    } else {
+      //用户信息
+      const login = await wepy.login();
+      if (login.code) {
+        let u = await wepy.getUserInfo();
+        const resp =  await wxapplogin({
+          data: {
+            code: login.code,
+            encryptedData: u.encryptedData,
+            iv: u.iv,
+            nickName: u.userInfo.nickName,
+            headimgurl: u.userInfo.avatarUrl,
+            appid: this.globalData.appid,
+            appsecret: this.globalData.secret
+          },
+          method: 'post'
+        })
+        if (resp.success) {
+          var data = resp.attributes.data;
+          if (data.username) {
+            that.globalData.user.userId = data.userId
+            that.globalData.user.username = data.username
+            wepy.setStorageSync('skey', data.skey);
+          }
+        } else {
+          console.log(resp.msg || '登录失败')
+        }
+      }
+      const json = await user()
+      if (json.success) {
+        this.globalData.user = json.attributes.data
+      }
+      const res = await userInfo()
+      if (res.success) {
+        this.globalData.userInfo = res.attributes
+      }
+      const resp = await enterprise()
+      if (resp.success) {
+        this.globalData.enterprise = resp.attributes.data
+      }
+      typeof cb == 'function' && cb(that.globalData)
     }
-
   }
 
-  async getUserInfo() {
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
-    }
-    let res = await wepy.getUserInfo()
-    this.globalData.userInfo = res.userInfo
-    return res.userInfo
-  }
 }
 </script>

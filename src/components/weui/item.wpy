@@ -1,7 +1,7 @@
 <template>
   <navigator url="{{url}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{pic}}">
-          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}"/>
+          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}" bindload="imageLoad" style="{{height}}"/>
       </view>
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
           {{dx}}
@@ -28,24 +28,27 @@
       content: {},
       pic: {},
       time: {},
+      height: {},
       operation: {}
     }
     data = {}
 
-    onLoad () {
-    }
+    onLoad () {}
 
     methods = {
       del (id) {
         this.$emit('del', id)
+      },
+      imageLoad (e) {
+        var $width = e.detail.width,    //获取图片真实宽度
+          $height = e.detail.height,
+          ratio = $width / $height;    //图片的真实宽高比例
+
+        var viewWidth = 60;    //宽度
+        var viewHeight = viewWidth / ratio;    //计算的高度值
+        var height = 'height:' + viewHeight + 'px'
+        this.$emit('height', height, this.$index)
       }
     }
   }
 </script>
-
-<style>
-  .icon-lajixiang{
-    font-size: 24px;
-    color: #999
-  }
-</style>
