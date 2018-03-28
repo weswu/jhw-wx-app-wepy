@@ -65,7 +65,7 @@ export default class Login extends wepy.page {
     }
     const json = await api.login({
       data: data,
-      method: 'post'
+      method: 'POST'
     });
     if (json.success) {
       wx.setStorage({

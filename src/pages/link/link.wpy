@@ -43,7 +43,7 @@ export default class Link extends wepy.page {
       await Tips.confirm('确认删除吗？')
       Tips.loading()
       const json = await api.linkDetail({
-        method: 'delete',
+        method: 'DELETE',
         id: e
       })
       Tips.loaded()

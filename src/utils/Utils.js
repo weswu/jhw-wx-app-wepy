@@ -30,15 +30,34 @@ const addAll = (a, b) => {
     a.push(b[i])
   }
 }
+const listTwo = (ctx, json, text) => {
+  ctx.count = json.attributes.count
+  if (json.attributes.data.length === 0) {
+    ctx.more.empty = true
+  } else {
+    ctx.more.empty = false
+  }
+  text && wx.setNavigationBarTitle({
+    title: text + '(' + ctx.count + ')'
+  })
+}
 /*
  * @author: wes
  * @date: 2018-1-17
  * @desc: 滚动加载数据
 */
-const scrollList = (ctx, json, text) => {
+const scrollList = (ctx, json, text, searchData) => {
   if (json.success) {
     addAll(ctx.list, json.attributes.data)
-    if (ctx.page === 1) {
+    ctx.pageSize = ctx.pageSize || 16
+    let isOnePage = false
+    if (searchData && ctx.searchData.page === 1){
+      isOnePage = true
+      ctx.searchData.pageSize = ctx.searchData.pageSize || 16
+    } else if(ctx.page === 1){
+      isOnePage = true
+    }
+    if (isOnePage) {
       ctx.count = json.attributes.count
       if (json.attributes.data.length === 0) {
         ctx.more.empty = true
@@ -49,8 +68,11 @@ const scrollList = (ctx, json, text) => {
         title: text + '(' + ctx.count + ')'
       })
     }
-    ctx.pageSize = ctx.pageSize || 16
-    if (json.attributes.data.length < ctx.pageSize) { ctx.more.reachBottom = true } else { ctx.more.reachBottom = false }
+    let pageSize = ctx.pageSize
+    if (searchData){
+      pageSize = ctx.searchData.pageSize
+    }
+    if (json.attributes.data.length < pageSize) { ctx.more.reachBottom = true } else { ctx.more.reachBottom = false }
   } else {
     ctx.refresh = false
   }

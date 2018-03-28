@@ -15,7 +15,7 @@
           </repeat>
         </view>
       </view>
-      <view class="weui-tab__content" wx:if="{{chaxun || activeIndex === '1'}}">
+      <view class="weui-tab__content" wx:if="{{grade || activeIndex === '1'}}">
         <!--列表-->
         <repeat for="{{list}}" key="index" index="index" item="item">
           <Item :title="item.title" :content="item.state==='0'?'该手机网站暂未开通':item.language === '1'?'中文版':'英文版'" :pic="item.logo"
@@ -53,7 +53,7 @@
       list: [],
       page: 1,
       more: { loading: true },
-      chaxun: '',
+      grade: false, //是否开通
       category: [
         { name: '全部', id: '' },
         { name: '个人', id: 104 },
@@ -72,7 +72,7 @@
     onLoad () {
       let mobileSite = this.$parent.globalData.enterprise.mobileSite
       if (mobileSite === '01' || mobileSite === '04' || mobileSite === '07' || mobileSite === '14') {
-        this.chaxun = true
+        this.grade = true
         this.get()
       }
     }
@@ -87,6 +87,7 @@
       switchTab (e) {
         this.activeIndex = e
         this.list = []
+        this.more.loading = true
         if (this.activeIndex === '0') {
           this.page = 1
           this.get()
@@ -119,12 +120,11 @@
       const json = await api.mobileCase({
         data: this.searchData
       })
-
       if (json.success) {
         json.attributes.data.forEach(item => {
           item.height = ''
         })
-        await Utils.scrollList(this, json)
+        await Utils.scrollList(this, json, null, true)
       }
     }
 
@@ -183,8 +183,7 @@
     }
 
     // 加载更多
-    async onReachBottom () {
-      debugger
+    onReachBottom () {
       if (this.more.loading) { return false }
       this.more.loading = true
       if (this.activeIndex === '0') {
@@ -198,18 +197,3 @@
     }
   }
 </script>
-<style lang="less">
-  .page-category{
-    width:200px;overflow:hidden;position:fixed;top:51px;left:-200px;z-index:99;background:#fff;box-shadow: 0 1px 6px rgba(0,0,0,.117647), 0 1px 4px rgba(0,0,0,.117647);
-    .page-content{
-      view{
-        font-size: 16px;
-        color: #666;
-        padding: 5px 10px;
-      }
-      .cative{
-        background: #ff5241;color:#fff
-      }
-    }
-  }
-</style>

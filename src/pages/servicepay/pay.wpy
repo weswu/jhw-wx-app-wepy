@@ -101,8 +101,8 @@ export default class Pay extends wepy.page {
     list: [],
     checkNum: 0,
     totel: 0,
-    log: 'init',
-    journal: 'init',
+    log: [],
+    journal: [],
     text: '暂无数据'
   }
 
@@ -115,10 +115,10 @@ export default class Pay extends wepy.page {
   methods = {
     switchTab (e) {
       this.activeIndex = parseInt(e)
-      if (this.activeIndex === 1 && this.log === 'init') {
+      if (this.activeIndex === 1 && this.log.length === 0) {
         this.getlog()
       }
-      if (this.activeIndex === 2 && this.journal === 'init') {
+      if (this.activeIndex === 2 && this.journal.length === 0) {
         this.getjournal()
       }
     },
@@ -175,55 +175,26 @@ export default class Pay extends wepy.page {
     const json = await api.receiptList()
     Tips.loaded()
     if (json.success) {
-      this.list = json.attributes.data
+      let result = json.attributes.data
+      for (var i = 0; i < result.length; i++) {
+        result[i].name = ''
+        result[i].price = result[i].so_amount - result[i].so_payed_amount
+        result[i].type = 'no'
+        if (result[i].so_payed_amount > 0 && result[i].price > 0) {
+          result[i].tip = '部分支付'
+          result[i].type = 'under'
+        }
+        if (result[i].price === 0) {
+          result[i].tip = '已支付'
+          result[i].type = 'all'
+        }
+        result[i].check = false
+        this.list.push(result[i])
+      }
+      this.$apply()
     } else {
       this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
     }
-    let result = [
-      {
-        so_date: 1414512000000,
-        so_amount: 200,
-        so_payed_amount: 0,
-        orderItemList: [
-          {
-            prod_name: "腾讯企业邮箱"
-          }
-        ],
-        so_id: 101617,
-        so_code: "xf2014100140"
-      },
-      {
-        so_date: 1414512000000,
-        so_amount: 200,
-        so_payed_amount: 0,
-        orderItemList: [
-          {
-            prod_name: "腾讯企业邮箱"
-          },
-          {
-            prod_name: "腾讯企业邮箱"
-          }
-        ],
-        so_id: 101617,
-        so_code: "xf2014100140"
-      }
-    ]
-    for (var i = 0; i < result.length; i++) {
-      result[i].name = ''
-      result[i].price = result[i].so_amount - result[i].so_payed_amount
-      result[i].type = 'no'
-      if (result[i].so_payed_amount > 0 && result[i].price > 0) {
-        result[i].tip = '部分支付'
-        result[i].type = 'under'
-      }
-      if (result[i].price === 0) {
-        result[i].tip = '已支付'
-        result[i].type = 'all'
-      }
-      result[i].check = false
-      this.list.push(result[i])
-    }
-    this.$apply()
   }
 
   async getlog () {
@@ -231,168 +202,23 @@ export default class Pay extends wepy.page {
     const json = await api.receiptLog()
     Tips.loaded()
     if (json.success) {
-      this.log = json.attributes.data
-    }
-    this.log = []
-    let result = [
-      {
-      so_date: 1568131200000,
-      so_amount: 0,
-      so_payed_amount: 0,
-      orderItemList: [
-      {
-      prod_name: "手机网站续费"
-      }
-      ],
-      so_id: 159091,
-      so_code: "xf2019090030"
-      },
-      {
-      so_date: 1559145600000,
-      so_amount: 2580,
-      so_payed_amount: 2580,
-      orderItemList: [
-      {
-      prod_name: "会员2代续费【机汇网会员】"
-      },
-      {
-      prod_name: "国际域名续费"
-      }
-      ],
-      so_id: 159084,
-      so_code: "xf2019050020"
-      },
-      {
-      so_date: 1536595200000,
-      so_amount: 0,
-      so_payed_amount: 0,
-      orderItemList: [
-      {
-      prod_name: "手机网站续费"
-      }
-      ],
-      so_id: 159083,
-      so_code: "xf2018090060"
-      },
-      {
-      so_date: 1527609600000,
-      so_amount: 2580,
-      so_payed_amount: 2580,
-      orderItemList: [
-      {
-      prod_name: "会员2代续费【机汇网会员】"
-      },
-      {
-      prod_name: "国际域名续费"
-      }
-      ],
-      so_id: 159075,
-      so_code: "xf2018050048"
-      },
-      {
-      so_date: 1505059200000,
-      so_amount: 0,
-      so_payed_amount: 0,
-      orderItemList: [
-      {
-      prod_name: "手机网站续费"
-      }
-      ],
-      so_id: 159069,
-      so_code: "xf2017090093"
-      },
-      {
-      so_date: 1496073600000,
-      so_amount: 2840,
-      so_payed_amount: 2840,
-      orderItemList: [
-      {
-      prod_name: "国际域名续费"
-      },
-      {
-      prod_name: "展示型"
-      }
-      ],
-      so_id: 159067,
-      so_code: "xf2017050149"
-      },
-      {
-      so_date: 1473523200000,
-      so_amount: 1200,
-      so_payed_amount: 1200,
-      orderItemList: [
-      {
-      prod_name: "手机网站续费"
-      }
-      ],
-      so_id: 132098,
-      so_code: "xf2016090049"
-      },
-      {
-      so_date: 1464537600000,
-      so_amount: 1650,
-      so_payed_amount: 1650,
-      orderItemList: [
-      {
-      prod_name: "程序空间续费"
-      },
-      {
-      prod_name: "国际域名续费"
-      }
-      ],
-      so_id: 96789,
-      so_code: "xf2016050053"
-      },
-      {
-      so_date: 1441900800000,
-      so_amount: 1200,
-      so_payed_amount: 1200,
-      orderItemList: [
-      {
-      prod_name: "手机网站续费"
-      }
-      ],
-      so_id: 130905,
-      so_code: "xf2015090133"
-      },
-      {
-      so_date: 1432915200000,
-      so_amount: 1500,
-      so_payed_amount: 1500,
-      orderItemList: [
-      {
-      prod_name: "程序空间续费"
-      }
-      ],
-      so_id: 111343,
-      so_code: "xf2015050075"
-      },
-      {
-      so_date: 1404057600000,
-      so_amount: 4650,
-      so_payed_amount: 4650,
-      orderItemList: [
-      {
-      prod_name: "展示型"
-      }
-      ],
-      so_id: 111337,
-      so_code: "xf2014060367"
-      }
-    ]
-    for (var item of result) {
-      item.name = ''
-      for (var it of item.orderItemList) {
-        if (item.name === '') {
-          item.name += it.prod_name
-        } else {
-          item.name += '、' + it.prod_name
+      let result = json.attributes.data
+      for (var item of result) {
+        item.name = ''
+        for (var it of item.orderItemList) {
+          if (item.name === '') {
+            item.name += it.prod_name
+          } else {
+            item.name += '、' + it.prod_name
+          }
         }
+        item.so_date = Utils.formatTime(item.so_date, 'yyyy-MM-dd')
+        this.log.push(item)
       }
-      item.so_date = Utils.formatTime(item.so_date, 'yyyy-MM-dd')
-      this.log.push(item)
+      this.$apply()
+    } else {
+      this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
     }
-    this.$apply()
   }
 
   async getjournal() {
@@ -400,46 +226,15 @@ export default class Pay extends wepy.page {
     const json = await api.journal()
     Tips.loaded()
     if (json.success) {
-      this.journal = json.attributes.data
-    }
-    this.journal = []
-    let result = [
-      {
-        jrnl_start_time: 1515216600000,
-        jrnl_subject64: "客户微信群里面发给我们几个要修改的地方 技术部已经修改完成。",
-        emp_name: "王海波（yjb）",
-        jrnl_id: 4794489
-        },
-        {
-        jrnl_start_time: 1512113400000,
-        jrnl_subject64: "威猛达微信服务群里面 客户发来一个新产品要上传上去，资料已经接收，等待安排上传",
-        emp_name: "王海波（yjb）",
-        jrnl_id: 4776779
-        },
-        {
-        jrnl_start_time: 1511936700000,
-        jrnl_subject64: "给王总介绍十五周年庆活动，电话没人接",
-        emp_name: "施静钱",
-        jrnl_id: 4774938
-        },
-        {
-        jrnl_start_time: 1510907400000,
-        jrnl_subject64: "客户群里发来一个产品资料 要上传到网站上去 已经接收资料 反馈已经提交",
-        emp_name: "王海波（yjb）",
-        jrnl_id: 4767164
-        },
-        {
-        jrnl_start_time: 1503123713000,
-        jrnl_subject64: "电话回访，满意度调查",
-        emp_name: "张静（吴祎祎）",
-        jrnl_id: 4646383
+      let result = json.attributes.data
+      for (var item of result) {
+        item.jrnl_start_time = Utils.formatTime(item.jrnl_start_time)
+        this.journal.push(item)
       }
-    ]
-    for (var item of result) {
-      item.jrnl_start_time = Utils.formatTime(item.jrnl_start_time)
-      this.journal.push(item)
+      this.$apply()
+    } else {
+      this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
     }
-    this.$apply()
   }
 
   // 下拉刷新
@@ -515,4 +310,8 @@ export default class Pay extends wepy.page {
       font-size: 12px;white-space:normal;
     }
   }
+  .weui-tab .weui-navbar {
+    position:absolute;
+  }
+
 </style>

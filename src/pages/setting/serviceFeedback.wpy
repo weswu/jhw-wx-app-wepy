@@ -99,7 +99,7 @@ export default class ServiceFeedback extends wepy.page {
     }
     const json = await api.serviceFeedback({
       data: data,
-      method: 'post'
+      method: 'POST'
     })
     this.input.fdbk_subject64 = ''
     if (json.status !== 'ERROR') {

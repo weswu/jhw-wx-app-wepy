@@ -2276,7 +2276,7 @@
         await Tips.confirm('确认删除吗？')
         Tips.loading()
         const json = await api.categoryDetail({
-          method: 'delete',
+          method: 'DELETE',
           data: {
             type: this.type === 'product' ? '10' : '11'
           },
@@ -2340,7 +2340,7 @@
         data: {
           list: list
         },
-        method: 'put'
+        method: 'PUT'
       })
       Tips.loaded()
       if (json.success) {

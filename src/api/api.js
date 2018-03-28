@@ -1,6 +1,6 @@
 import { http } from '@/utils/Http'
 
-const host = 'http://app.jihui88.com'
+const host = 'https://app.jihui88.com'
 
 const wxHost = 'https://wx.jihui88.net'
 

@@ -6,7 +6,8 @@
         <view class="weui-cell__ft">{{item.useable}}分</view>
     </view>
   </repeat>
-  <view class="more" @tap="more" wx:if="{{page < 5}}">查看更多</view>
+  <view class="more" wx:if="{{list.length === 0}}">暂无数据</view>
+  <view class="more" @tap="more" wx:if="{{list.length > 0 && page < 5}}">查看更多</view>
 
   <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">大数据显示</view>
@@ -54,85 +55,16 @@ export default class PontRank extends wepy.page {
       }
     })
     if (json.success) {
-    }
-    let json2 = {
-      success: true,
-      msg: null,
-      obj: null,
-      attributes: {
-      per_page: 10,
-      data: [{
-      integralRecordId: "8a9e457e60f84cfa01610c1100e6003c",
-      enterpriseId: "Enterp_0000000000000000000049090",
-      addTime: null,
-      updateTime: null,
-      interalRuleId: null,
-      income: null,
-      out: null,
-      useable: 3330,
-      productId: null,
-      state: null,
-      integralRecordDesc: "机汇网官方网站",
-      id: null
-      },
-      {
-      integralRecordId: "Interalr_00000000000000000159722",
-      enterpriseId: "Enterp_0000000000000000000030716",
-      addTime: null,
-      updateTime: null,
-      interalRuleId: null,
-      income: null,
-      out: null,
-      useable: 1334,
-      productId: null,
-      state: null,
-      integralRecordDesc: "中策电缆永通集团有限公司",
-      id: null
-      },
-      {
-      integralRecordId: "Interalr_00000000000000000160242",
-      enterpriseId: "Enterp_0000000000000000000045414",
-      addTime: null,
-      updateTime: null,
-      interalRuleId: null,
-      income: null,
-      out: null,
-      useable: 940,
-      productId: null,
-      state: null,
-      integralRecordDesc: "七星布草",
-      id: null
-      },
-      {
-      integralRecordId: "Interalr_00000000000000000158841",
-      enterpriseId: "Enterp_0000000000000000000053148",
-      addTime: null,
-      updateTime: null,
-      interalRuleId: null,
-      income: null,
-      out: null,
-      useable: 697,
-      productId: null,
-      state: null,
-      integralRecordDesc: "浙外涉外人才培训学院",
-      id: null
-      }],
-      count: 619,
-      rank: 49,
-      page: 1,
-      point: 102
+      this.point = json.attributes.point
+      this.rank = json.attributes.rank
+      if (this.rank !== 0 && this.page === 1) {
+        this.number = ((json.attributes.count - this.rank) / json.attributes.count).toFixed(2) * 100
       }
+      for (var item of json.attributes.data) {
+        this.list.push(item)
+      }
+      this.$apply()
     }
-
-    this.point = json2.attributes.point
-    this.rank = json2.attributes.rank
-    if (this.rank !== 0 && this.page === 1) {
-      this.number = ((json2.attributes.count - this.rank) / json2.attributes.count).toFixed(2) * 100
-    }
-    for (var item of json2.attributes.data) {
-      this.list.push(item)
-    }
-    this.$apply()
   }
 
   // 下拉刷新

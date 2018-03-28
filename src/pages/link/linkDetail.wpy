@@ -97,10 +97,10 @@ id: "Link_000000000000000000000052278"
           name: this.input.name,
           url: this.input.url
         },
-        method: 'post'
+        method: 'POST'
       }
       if (this.id) {
-        data.method = 'put'
+        data.method = 'PUT'
         data.id = this.id
       }
       Tips.loading()

@@ -97,11 +97,17 @@ export default class extends wepy.app {
   }
 
   async onLaunch() {
-    console.log('叽叽');
+    console.log('启动');
   }
 
   async getInfo(cb) {
     let that = this;
+    let key = wepy.getStorageSync('skey')
+    if (key) {
+      this.globalData.user = wepy.getStorageSync('user')
+      this.globalData.userInfo = wepy.getStorageSync('userInfo')
+      this.globalData.enterprise = wepy.getStorageSync('enterprise')
+    }
     if (this.globalData.user.username) {
       typeof cb == 'function' && cb(this.globalData)
     } else {
@@ -119,13 +125,12 @@ export default class extends wepy.app {
             appid: this.globalData.appid,
             appsecret: this.globalData.secret
           },
-          method: 'post'
+          method: 'POST'
         })
         if (resp.success) {
           var data = resp.attributes.data;
+          console.log('启动:'+data.username);
           if (data.username) {
-            that.globalData.user.userId = data.userId
-            that.globalData.user.username = data.username
             wepy.setStorageSync('skey', data.skey);
           }
         } else {
@@ -134,15 +139,19 @@ export default class extends wepy.app {
       }
       const json = await user()
       if (json.success) {
+        console.log('user:'+json.attributes.data.username);
         this.globalData.user = json.attributes.data
+        wepy.setStorageSync('user', json.attributes.data);
       }
       const res = await userInfo()
       if (res.success) {
         this.globalData.userInfo = res.attributes
+        wepy.setStorageSync('userInfo', res.attributes);
       }
-      const resp = await enterprise()
-      if (resp.success) {
-        this.globalData.enterprise = resp.attributes.data
+      const enterp = await enterprise()
+      if (enterp.success) {
+        this.globalData.enterprise = enterp.attributes.data
+        wepy.setStorageSync('enterprise', enterp.attributes.data);
       }
       typeof cb == 'function' && cb(that.globalData)
     }

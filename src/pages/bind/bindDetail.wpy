@@ -97,7 +97,7 @@
           icp: this.input.icp,
           type: this.input.type
         },
-        method: 'post'
+        method: 'POST'
       })
       Tips.loaded()
       if (json.success) {

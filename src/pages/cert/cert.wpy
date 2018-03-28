@@ -51,7 +51,7 @@ export default class Cert extends wepy.page {
       await Tips.confirm('确认删除吗？')
       Tips.loading()
       const json = await api.certDetail({
-        method: 'delete',
+        method: 'DELETE',
         id: e
       })
       Tips.loaded()

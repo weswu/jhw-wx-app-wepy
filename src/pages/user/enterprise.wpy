@@ -1,8 +1,9 @@
 <template>
+  <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
     <WInput>
       <view slot="title" class="weui-label">公司LOGO</view>
-      <view slot="input" style="width: 300rpx;padding-top: 8px">
+      <view slot="input" style="width: 300rpx;padding: 8px">
         <Upload :src.sync="logo" @change.user="image"/>
       </view>
     </WInput>
@@ -59,6 +60,7 @@
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips'
 import WInput from '@/components/weui/input'
 import Upload from '@/components/common/upload'
 import input from '@/mixins/input'
@@ -68,6 +70,7 @@ export default class Enterprise extends wepy.page {
   }
 
   components = {
+    Tips: FormTips,
     WInput,
     Upload
   }
@@ -88,7 +91,7 @@ export default class Enterprise extends wepy.page {
 
   async onReady () {
     if (!this.$parent.globalData.enterprise.enterpriseId) {
-      this.getEnterprise()
+      this.get()
     } else {
       this.input = this.$parent.globalData.enterprise
       this.logo = 'http://img.jihui88.com/' + this.input.logo
@@ -96,17 +99,55 @@ export default class Enterprise extends wepy.page {
     }
   }
 
-  methods = {
-    image (text) {
-      this.input.logo = text.data
-      this.logo = 'http://img.jihui88.com/upload//g//g2//ggggfj//picture//2018//01//15/709ca1ef-a0d9-476b-b265-c899636fcb89.jpg'
+  async get () {
+    const json = await api.enterprise()
+    if (json.success) {
+      this.input = json.attributes.data
+      this.$apply()
+    } else {
+      Tips.error(json.msg)
     }
   }
 
+  methods = {
+    image (text) {
+      this.input.logo = text.data
+    }
+  }
+
+  validate() {
+    const rules = [
+      {
+        value: this.input.name,
+        method: 'required',
+        message: '公司名称不能为空'
+      },
+      {
+        value: this.input.mainBusiness,
+        method: 'required',
+        message: '主营产品不能为空'
+      },
+      {
+        value: this.input.legalPre,
+        method: 'required',
+        message: '法人代表不能为空'
+      },
+      {
+        value: this.input.staffSum,
+        method: 'required',
+        message: '员工数量不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
   async submit () {
+    if (!this.validate()) {
+      return;
+    }
     const json = await api.enterprise({
       data: this.input,
-      method: 'put'
+      method: 'PUT'
     })
     if (json.success) {
       Tips.success("保存成功");
@@ -115,17 +156,8 @@ export default class Enterprise extends wepy.page {
     }
   }
 
-  async getEnterprise () {
-    const json = await api.enterprise()
-    if (json.success) {
-      Tips.success("保存成功");
-    } else {
-      Tips.error(json.msg)
-    }
-  }
-
   onPullDownRefresh () {
-    this.getEnterprise()
+    this.get()
     wx.stopPullDownRefresh()
   }
 

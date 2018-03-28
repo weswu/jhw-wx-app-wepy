@@ -87,35 +87,20 @@ export default class Progress extends wepy.page {
     })
     Tips.loaded()
     if (json.success) {
-      this.list = json.attributes.data
+      let result = json.attributes.data
+      for (var item of result) {
+        item.fdbk_due_date = Utils.formatTime(item.fdbk_due_date, 'yyyy-MM-dd')
+        var d = ''
+        for (var desc of item.fdbk_intro1k) {
+          d ? d += ('\n' + desc) : d = desc
+        }
+        item.fdbk_intro1k = d
+        this.list.push(item)
+      }
+      this.$apply()
     } else {
       this.text = '请在正常工作时间浏览噢\n周一到周五　8:00～17:30'
     }
-    let result = [
-      {
-      fdbk_id: 323613,
-      fdbk_result: "",
-      emp_name: "赵汉杰",
-      fdbk_subject64: "网安备案",
-      fdbk_intro1k: [
-      "描述： ",
-      "1.公司网址：www.zgwmd.com ",
-      "2.修改内容具体描述： ",
-      "（1）.修改内容： "
-      ],
-      fdbk_due_date: 1495123200000
-      }
-    ]
-    for (var item of result) {
-      item.fdbk_due_date = Utils.formatTime(item.fdbk_due_date, 'yyyy-MM-dd')
-      var d = ''
-      for (var desc of item.fdbk_intro1k) {
-        d ? d += ('\n' + desc) : d = desc
-      }
-      item.fdbk_intro1k = d
-      this.list.push(item)
-    }
-    this.$apply()
   }
 
   // 下拉刷新
@@ -141,5 +126,8 @@ export default class Progress extends wepy.page {
   }
   .weui-media-box__title{
     color: #0034d1;
+  }
+  .weui-tab .weui-navbar {
+    position:absolute;
   }
 </style>

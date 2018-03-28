@@ -173,78 +173,11 @@
     }
     data = {
       tabs: ["基本信息", "产品内容", "商城属性"],
-      activeIndex: 2,
+      activeIndex: '0',
       id:'',
       input: {},
       categoryIndex: 0,
-      category: [
-        {
-        categoryId: "Category_00000000000000000087651",
-        enterpriseId: null,
-        type: null,
-        adduserId: null,
-        belongId: "Category_00000000000000000255577",
-        name: "高档圆形塑料花盆",
-        cdesc: "-----高档圆形塑料花盆",
-        grade: "01",
-        isroot: "01",
-        addTime: null,
-        isdisplay: null,
-        state: "01",
-        sort: 0,
-        image: null,
-        key: null,
-        hunkdisplay: null,
-        alias: null,
-        updateTime: null,
-        sonCate: [ ],
-        id: "Category_00000000000000000087651"
-        },
-        {
-        categoryId: "Category_00000000000000000087652",
-        enterpriseId: null,
-        type: null,
-        adduserId: null,
-        belongId: null,
-        name: "壁挂花盆",
-        cdesc: "壁挂花盆",
-        grade: "00",
-        isroot: "01",
-        addTime: null,
-        isdisplay: null,
-        state: "01",
-        sort: 0,
-        image: null,
-        key: null,
-        hunkdisplay: null,
-        alias: null,
-        updateTime: null,
-        sonCate: [ ],
-        id: "Category_00000000000000000087652"
-        },
-        {
-        categoryId: "Category_00000000000000000087648",
-        enterpriseId: null,
-        type: null,
-        adduserId: null,
-        belongId: null,
-        name: "高档迷你花盆",
-        cdesc: "高档迷你花盆",
-        grade: "00",
-        isroot: "01",
-        addTime: null,
-        isdisplay: null,
-        state: "01",
-        sort: 0,
-        image: null,
-        key: null,
-        hunkdisplay: null,
-        alias: null,
-        updateTime: null,
-        sonCate: [ ],
-        id: "Category_00000000000000000087648"
-        }
-      ],
+      category: [],
       imgArr: [],
       weightunits: [
         {id: 'g', name: '克'},
@@ -267,74 +200,9 @@
       if (json.success) {
         this.input = json.attributes.data
         this.imgArr = JSON.parse(this.input.productimageliststore) || []
+        this.$apply()
       } else {
         Tips.error(json.msg)
-        this.input = {
-          productId: "Product_000000000000000000581124",
-          enterpriseId: null,
-          adduserId: null,
-          name: "aa商量",
-          prodtype: "与你",
-          pkey: "22",
-          state: "01",
-          category: "Category_00000000000000000087652",
-          addTime: null,
-          endTime: null,
-          price: "1",
-          unit: null,
-          proddesc: "<p>a</p>",
-          brandId: null,
-          entType: null,
-          tag: null,
-          contactId: null,
-          folder: null,
-          publish: null,
-          publishTime: null,
-          unpublishTime: null,
-          viewsum: "0",
-          activity: null,
-          type: null,
-          sort: 0,
-          isdisplay: "1",
-          loginView: "0",
-          domain: null,
-          broadcast: null,
-          pModel: null,
-          ads: "0",
-          detailTitle1: null,
-          detailTitle2: null,
-          detailTitle3: null,
-          detail1: null,
-          detail2: null,
-          detail3: null,
-          seoTitle: "11",
-          seoDescription: "33",
-          adminBroadcast: null,
-          auditTime: null,
-          picPath: "upload/g/g2/ggggfj/picture/2016/11/29/f0a83431-d266-492b-ae9a-230542065dc4.jpg",
-          productimageliststore: '[{"id":"Attach_0000000000000000001292948","sourceProductImagePath":"upload/g/g2/ggggfj/picture/2016/11/29/f0a83431-d266-492b-ae9a-230542065dc4.jpg","type":"main_pic"},{"id":"Attach_0000000000000000001391525","sourceProductImagePath":"upload//g//g2//ggggfj//picture//2017//08//22/1ac85e6c-4949-49ac-8d1a-484b8de69d9a.jpg","type":"pertain_pic"}]',
-          url: null,
-          updateTime: null,
-          marketprice: 0,
-          point: 0,
-          productsn: null,
-          store: 1998,
-          weight: 0,
-          weightunit: "kg",
-          freezestore: 0,
-          producttypeId: null,
-          isMarketable: "01",
-          isNew: "00",
-          isBest: "00",
-          isHot: "00",
-          isAgent: "01",
-          sell: 0,
-          mobiledesc: null,
-          lanId: 1,
-          id: "Product_000000000000000000581124"
-        }
-        this.imgArr = JSON.parse(this.input.productimageliststore) || []
-        this.$apply()
       }
     }
 
@@ -352,23 +220,60 @@
       },
       editorTip () {
         Tips.success('暂不支持修改')
-      },
-      async confirm() {
-        const data = this.scores.map(item => {
-          return {
-            sku: item.sku,
-            star: item.star,
-            goodsId: item.goodsId,
-            orderId: this.orderId
-          }
-        });
-        await Tips.confirm('确认评价？');
-        Tips.loading();
-        await comment.add(data);
-        await Tips.success('评价成功');
-        Event.emit(Event.ORDER_LIST_UPDATE);
       }
     };
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.name,
+          method: 'required',
+          message: '昵称不能为空'
+        },
+        {
+          value: this.input.email,
+          method: 'required',
+          message: '发证机构不能为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      let data = {
+        data: {
+          name: this.input.name,
+          password: this.input.password,
+          email: this.input.email,
+          point: this.input.point,
+          deposit: this.input.deposit,
+          memberrankId: this.input.memberrankId,
+          isaccountEnabled: this.input.isaccountEnabled
+        },
+        method: 'POST'
+      }
+      if (this.id) {
+        data.method = 'PUT'
+        data.id = this.id
+      } else {
+        if (!this.input.username) { return Tips.alert('账号不能为空') }
+        if (!this.input.password) { return Tips.alert('密码不能为空') }
+        if (!this.input.point) { data.data.point = 0 }
+        if (!this.input.deposit) { data.data.deposit = 0 }
+        data.data.username = this.input.username
+      }
+      Tips.loading()
+      const json = await api.memberDetail(data)
+      Tips.loaded()
+      if (json.success) {
+        Tips.success(this.id ? '修改成功' : '添加成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
   }
 </script>
 

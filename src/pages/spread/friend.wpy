@@ -99,7 +99,7 @@ export default class ServiceFeedback extends wepy.page {
     '\n推荐人:' + this.input.referee + '\n说明:' + this.input.content
     const json = await api.serviceFeedback({
       data: this.sf,
-      method: 'post'
+      method: 'POST'
     })
     if (json.status !== 'ERROR') {
       Tips.success("反馈成功");

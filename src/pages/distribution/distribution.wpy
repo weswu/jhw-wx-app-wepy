@@ -217,4 +217,12 @@
   .search-placeholder{
     height: 0
   }
+  .weui-media-box {
+    padding:5px 15px;
+    position:relative;
+    .weui-media-box__ft{
+      font-size: 14px;
+    }
+  }
+
 </style>

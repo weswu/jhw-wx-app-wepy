@@ -47,99 +47,12 @@ export default class PurchaseAmount extends wepy.page {
       }
     })
     if (json.success) {
+      this.point = json.attributes.point
+      for (var item of json.attributes.data) {
+        item.addTime = Utils.formatTime(item.addTime, 'yyyy-MM-dd hh:mm')
+      }
+      await Utils.scrollList(this, json, '积分明细')
     }
-    let json2 = {
-success: true,
-msg: null,
-obj: null,
-attributes: {
-per_page: 5000,
-totalAmount: 0.04,
-data: [
-  {
-  integralRecordId: "Interalr_00000000000000000152441",
-  enterpriseId: "Enterp_0000000000000000000051118",
-  addTime: 1515379706463,
-  updateTime: null,
-  interalRuleId: "Integralrule_0000000000000000041",
-  income: 1,
-  out: 0,
-  useable: 102,
-  productId: null,
-  state: 0,
-  integralRecordDesc: "用户后台产品修改",
-  id: null
-  },
-  {
-  integralRecordId: "Interalr_00000000000000000151881",
-  enterpriseId: "Enterp_0000000000000000000051118",
-  addTime: 1515205153844,
-  updateTime: null,
-  interalRuleId: "Integralrule_0000000000000000041",
-  income: 1,
-  out: 0,
-  useable: 101,
-  productId: null,
-  state: 0,
-  integralRecordDesc: "用户后台产品修改",
-  id: null
-  },
-  {
-  integralRecordId: "Interalr_00000000000000000151861",
-  enterpriseId: "Enterp_0000000000000000000051118",
-  addTime: 1515205075518,
-  updateTime: null,
-  interalRuleId: "Integralrule_0000000000000000041",
-  income: 2,
-  out: 0,
-  useable: 100,
-  productId: null,
-  state: 0,
-  integralRecordDesc: "用户后台产品添加",
-  id: null
-  },
-  {
-  integralRecordId: "Interalr_00000000000000000142201",
-  enterpriseId: "Enterp_0000000000000000000051118",
-  addTime: 1513238941896,
-  updateTime: null,
-  interalRuleId: "Integralrule_0000000000000000041",
-  income: 1,
-  out: 0,
-  useable: 98,
-  productId: null,
-  state: 0,
-  integralRecordDesc: "用户后台产品修改",
-  id: null
-  },
-  {
-  integralRecordId: "Interalr_00000000000000000142181",
-  enterpriseId: "Enterp_0000000000000000000051118",
-  addTime: 1513238890695,
-  updateTime: null,
-  interalRuleId: "Integralrule_0000000000000000041",
-  income: 2,
-  out: 0,
-  useable: 97,
-  productId: null,
-  state: 0,
-  integralRecordDesc: "用户后台产品添加",
-  id: null
-  }
-],
-point: 102,
-count: 3,
-productTotalQuantity: 4,
-pic: [ ],
-page: 1,
-operator: 3
-}
-}
-    this.point = json2.attributes.point
-    for (var item of json2.attributes.data) {
-      item.addTime = Utils.formatTime(item.addTime, 'yyyy-MM-dd hh:mm')
-    }
-    await Utils.scrollList(this, json2, '积分明细')
   }
 
   // 下拉刷新

@@ -37,12 +37,6 @@ export default class My extends wepy.page {
 
   data = {}
 
-  onLoad() {
-    let ctx = this
-    this.$parent.getUserInfo().then(res => {
-      ctx.userInfo = res
-      ctx.$apply()
-    })
-  }
+  onLoad() {}
 }
 </script>

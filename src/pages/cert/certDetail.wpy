@@ -139,10 +139,10 @@
           organize: this.input.organize,
           attId: this.input.attachmentId
         },
-        method: 'post'
+        method: 'POST'
       }
       if (this.id) {
-        data.method = 'put'
+        data.method = 'PUT'
         data.id = this.id
       }
       Tips.loading()

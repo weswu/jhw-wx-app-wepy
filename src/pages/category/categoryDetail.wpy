@@ -2274,7 +2274,7 @@
       Tips.loading()
       const json = await api.categoryDetail({
         data: this.input,
-        method: 'post'
+        method: 'POST'
       })
       Tips.loaded()
       if (json.success) {

@@ -11,6 +11,9 @@ export default class WebView extends wepy.page {
   }
 
   onLoad (option){
+    if (option.src.indexOf('wcd') > -1){
+      option.src = option.src + '?debug=01'
+    }
     this.src = 'https://www.jihui88.com/webview.html?src=' + option.src
   }
 

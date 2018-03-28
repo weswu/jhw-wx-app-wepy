@@ -1,5 +1,5 @@
 <template>
-  <view wx:if="{{grade === '07' || $store.state.enterprise.mobileSite === '14'}}">
+  <view wx:if="{{grade}}">
     <!--搜索-->
     <SearchBar placeholder="请输入用户名" @input.user="input"/>
     <!-- 添加 -->
@@ -7,7 +7,7 @@
 
     <!--列表-->
     <repeat for="{{list}}" key="index" index="index" item="item">
-      <Item :id="item.id" :dx="index+1" :title="item.name" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
+      <Item :id="item.id" :dx="index+1" :title="item.name || item.username" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
     </repeat>
   </view>
 
@@ -42,11 +42,16 @@ export default class Mmber extends wepy.page {
     page: 1,
     name: '',
     count: 0,
-    more: { loading: true }
+    more: { loading: true },
+    grade: false
   }
 
   onLoad () {
-    this.get()
+    let mobileSite = this.$parent.globalData.enterprise.mobileSite
+    if (mobileSite === '7'||mobileSite === '14'||this.$parent.globalData.user.userType === '电商版') {
+      this.grade = true
+      this.get()
+    }
   }
 
   methods = {
@@ -64,79 +69,11 @@ export default class Mmber extends wepy.page {
       data: {
         page: this.page,
         name: this.name
-      },
-      id: this.id
+      }
     })
-    const json2 = {
-success: true,
-msg: "操作成功",
-obj: null,
-attributes: {
-per_page: 16,
-data: [
-  {
-  memberId: "ff808181596ed2a001598b1645cb041f",
-  addTime: "2017-01-11 09:13:29",
-  updateTime: null,
-  deposit: 0,
-  email: "1@qq.com",
-  lockedDate: null,
-  loginDate: null,
-  loginFailureCount: 0,
-  loginIp: null,
-  password: "e10adc3949ba59abbe56e057f20f883e",
-  passwordRecoverKey: null,
-  point: 0,
-  registerIp: null,
-  safeAnswer: null,
-  safeQuestion: null,
-  username: "???? ??.????",
-  memberrankId: "ff8081814b56f84d014b572385030002",
-  enterpriseId: null,
-  isaccountEnabled: "00",
-  isaccountLocked: null,
-  name: "???? ??.????",
-  img: null,
-  fxstate: null,
-  belongId: null,
-  mobile: null,
-  id: "ff808181596ed2a001598b1645cb041f"
-  },
-  {
-  memberId: "ff808181591a177101592a507bd60626",
-  addTime: "2016-12-23 14:13:54",
-  updateTime: null,
-  deposit: 0,
-  email: null,
-  lockedDate: null,
-  loginDate: null,
-  loginFailureCount: 0,
-  loginIp: null,
-  password: "e10adc3949ba59abbe56e057f20f883e",
-  passwordRecoverKey: null,
-  point: 0,
-  registerIp: null,
-  safeAnswer: null,
-  safeQuestion: null,
-  username: "路人",
-  memberrankId: "ff8081814b56f84d014b572385030002",
-  enterpriseId: null,
-  isaccountEnabled: "00",
-  isaccountLocked: null,
-  name: "路人",
-  img: null,
-  fxstate: null,
-  belongId: null,
-  mobile: null,
-  id: "ff808181591a177101592a507bd60626"
-  }
-],
-count: 1,
-page: 1
-}
-}
-    await Utils.scrollList(this, json2, '会员管理')
-
+    if (json.success) {
+      await Utils.scrollList(this, json, '会员管理')
+    }
   }
 
   tel () {

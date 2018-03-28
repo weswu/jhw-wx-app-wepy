@@ -1,4 +1,5 @@
 <template>
+  <Tips />
   <!--性别-->
   <view class="weui-cell weui-cells_in-small-appmsg">
     <view class="weui-cell__hd">
@@ -75,6 +76,7 @@
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips'
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 export default class User extends wepy.page {
@@ -83,19 +85,32 @@ export default class User extends wepy.page {
   }
 
   components = {
+    Tips: FormTips,
     WInput
   }
 
   mixins = [input]
 
-  data = {}
+  data = {
+    input: {}
+  }
 
   async onLoad () {
     if (!this.$parent.globalData.user.username) {
-      this.getUser()
+      this.get()
     } else {
       this.input = this.$parent.globalData.user
       this.$apply()
+    }
+  }
+
+  async get () {
+    const json = await api.user()
+    if (json.success) {
+      this.input = json.attributes.data
+      this.$apply()
+    } else {
+      Tips.error(json.msg)
     }
   }
 
@@ -105,10 +120,34 @@ export default class User extends wepy.page {
     }
   }
 
+  validate() {
+    const rules = [
+      {
+        value: this.input.name,
+        method: 'required',
+        message: '姓名不能为空'
+      },
+      {
+        value: this.input.position,
+        method: 'required',
+        message: '职务不能为空'
+      },
+      {
+        value: this.input.phone,
+        method: 'required',
+        message: '电话不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
   async submit () {
-    const json = await api.setUser({
+    if (!this.validate()) {
+      return;
+    }
+    const json = await api.user({
       data: this.input,
-      method: 'put'
+      method: 'PUT'
     })
     if (json.success) {
       Tips.success("保存成功");
@@ -117,14 +156,10 @@ export default class User extends wepy.page {
     }
   }
 
-  async getUser () {
-    const json = await api.user()
-    if (json.success) {
-      Tips.success("保存成功");
-    } else {
-      Tips.error(json.msg)
-    }
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.get()
+    wepy.stopPullDownRefresh()
   }
-
 }
 </script>

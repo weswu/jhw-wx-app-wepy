@@ -63,13 +63,9 @@ export default class Progress extends wepy.page {
   }
 
   methods = {
-    ranking () {
-
-    },
     async exchange (e) {
       if (e.currentTarget.dataset.point > this.point) {
         return Tips.alert('您的积分不足')
-
       }
       Tips.loading()
       const json = await api.pointProduct({
@@ -90,10 +86,8 @@ export default class Progress extends wepy.page {
     if (json.success) {
       this.point = json.attributes.point
       this.rank = json.attributes.rank
+      this.$apply()
     }
-    this.point = 102
-    this.rank = 48
-    this.$apply()
   }
 
   // 下拉刷新

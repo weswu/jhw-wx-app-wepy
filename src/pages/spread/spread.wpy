@@ -43,6 +43,17 @@
       this.get()
     }
 
+    async get () {
+      Tips.loading()
+      const json = await api.spread()
+      Tips.loaded()
+      for (var item of json.attributes.data) {
+        item.pic = 'http://img.jihui88.com/' + item.pic
+        this.list.push(item)
+      }
+      this.$apply()
+    }
+
     methods = {
       switchTab (e) {
         this.activeIndex = e
@@ -61,23 +72,12 @@
         Tips.loading()
         const json = await api.posters({
           data: data,
-          method: 'post'
+          method: 'POST'
         })
         Tips.loaded()
         let url = 'https://api.jihui88.net/qrcode_poster/posters/' + p.posterId + '.jpg'
         this.down_file(url)
       }
-    }
-
-    async get () {
-      Tips.loading()
-      const json = await api.spread()
-      Tips.loaded()
-      for (var item of json.attributes.data) {
-        item.pic = 'http://img.jihui88.com/' + item.pic
-        this.list.push(item)
-      }
-      this.$apply()
     }
 
     down_file (url) {
@@ -117,7 +117,6 @@
   }
 </script>
 
-
 <style lang="less">
 .extend_tip{background:#f5f5f5;padding:10px;color:#666;line-height:1.8;font-family:'Microsoft YaHei',Helvetica,Arial,'WenQuanYi Micro Hei'}
 .extend_tip .tip{text-indent:25px;}
@@ -131,5 +130,8 @@
     color: #666;
     padding: 15px 5px;
   }
+}
+.weui-tab .weui-navbar {
+  position:absolute;
 }
 </style>

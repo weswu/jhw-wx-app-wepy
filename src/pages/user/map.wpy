@@ -80,7 +80,8 @@ export default class User extends wepy.page {
       }
     },
     controltap(e) {
-      this.$parent.globalData.enterprise.mapaddress = this.longitude + ',' + this.latitude
+      // 保存
+      this.$parent.globalData.enterprise.mapaddress = this.markers[0].longitude + ',' + this.markers[0].latitude
       this.submit()
     }
   }
@@ -88,7 +89,7 @@ export default class User extends wepy.page {
   async submit () {
     const json = await api.enterprise({
       data: this.$parent.globalData.enterprise,
-      method: 'put'
+      method: 'PUT'
     })
     if (json.success) {
       tip.success("保存成功");

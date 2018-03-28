@@ -98,34 +98,6 @@
       if (json.success) {
         this.input = json.attributes.data
       }
-      this.input = {
-        memberId: "ff808181596ed2a001598b1645cb041f",
-        addTime: "2017-01-11 09:13:29",
-        updateTime: null,
-        deposit: 0,
-        email: "1@qq.com",
-        lockedDate: null,
-        loginDate: null,
-        loginFailureCount: 0,
-        loginIp: null,
-        password: "e10adc3949ba59abbe56e057f20f883e",
-        passwordRecoverKey: null,
-        point: 0,
-        registerIp: null,
-        safeAnswer: null,
-        safeQuestion: null,
-        username: "???? ??.????",
-        memberrankId: "ff8081814b56f84d014b572385030002",
-        enterpriseId: null,
-        isaccountEnabled: "00",
-        isaccountLocked: null,
-        name: "???? ??.????",
-        img: null,
-        fxstate: null,
-        belongId: null,
-        mobile: null,
-        id: "ff808181596ed2a001598b1645cb041f"
-      }
       this.input.password = ''
       this.$apply()
     }
@@ -135,34 +107,12 @@
       if (json.success) {
         this.category = json.attributes.data
       }
-      this.category = [
-        {
-        name: "jingxiaoshang",
-        preferentialScale: 80,
-        point: 100,
-        isDefault: "00",
-        rdesc: null,
-        rankId: "ff8081814e1ef727014e1efeb5b30002",
-        addTime: null,
-        updateTime: null,
-        enterpriseId: null,
-        id: "ff8081814e1ef727014e1efeb5b30002"
-        },
-        {
-        name: "普通会员",
-        preferentialScale: 100,
-        point: 0,
-        isDefault: "01",
-        rdesc: null,
-        rankId: "ff8081814b56f84d014b572385030002",
-        addTime: null,
-        updateTime: null,
-        enterpriseId: null,
-        id: "ff8081814b56f84d014b572385030002"
-        }
-      ]
       this.category.forEach((item, index) => {
         if (item.id === this.input.memberrankId) {
+          this.memberrankIdIndex = index
+        }
+        if (!this.input.memberrankId && item.isDefault === '01'){
+          this.input.memberrankId = item.id
           this.memberrankIdIndex = index
         }
       })
@@ -183,11 +133,6 @@
           value: this.input.name,
           method: 'required',
           message: '昵称不能为空'
-        },
-        {
-          value: this.input.email,
-          method: 'required',
-          message: '发证机构不能为空'
         }
       ];
       return this.check(rules);
@@ -207,10 +152,10 @@
           memberrankId: this.input.memberrankId,
           isaccountEnabled: this.input.isaccountEnabled
         },
-        method: 'post'
+        method: 'POST'
       }
       if (this.id) {
-        data.method = 'put'
+        data.method = 'PUT'
         data.id = this.id
       } else {
         if (!this.input.username) { return Tips.alert('账号不能为空') }

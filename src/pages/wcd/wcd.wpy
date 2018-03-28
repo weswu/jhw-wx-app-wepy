@@ -2,17 +2,42 @@
   <view class="weui-tab">
     <!--TAB-->
     <Tab :tabs.sync="tabs" @change.user="switchTab"/>
-    <view class="weui-tab__panel" wx:if="!chaxun">
-      <view class="weui-tab__content">
-        <Item :list.sync="list" hidden="{{activeIndex != '0'}}"/>
+    <!-- 分类btn -->
+    <view class="categoryIcon" @tap.stop="open" wx:if="{{activeIndex === '1'}}"><i class="iconfont icon-category"></i></view>
+    <view class="weui-tab__panel">
+      <!--分类-->
+      <view class="page-category" animation="{{animationData}}" wx:if="{{activeIndex === '1'}}">
+        <view class="page-content">
+          <repeat for="{{category}}" key="index" index="index" item="item">
+            <view @tap="getCategoryCase({{item.id}})" class="{{searchData.category_id === item.id ? 'cative' :''}}">
+              <text>{{item.name}}</text>
+            </view>
+          </repeat>
+        </view>
+      </view>
+      <view class="weui-tab__content"  wx:if="{{grade || activeIndex === '1'}}">
+        <!--列表-->
+        <view class="weui-grids">
+            <block wx:for="{{list}}" wx:key="*this">
+                <view @tap="goto({{item.id}})" class="weui-grid" hover-class="weui-grid_active">
+                    <image class="weui-grid__icon" src="{{item.sharepic}}" />
+                    <view class="weui-grid__label">{{item.seo_title}}</view>
+                    <view class="wcd_icon">
+                      <i class="iconfont icon-xianshi"></i>{{item.views}}
+                      <i class="iconfont icon-liuyan"></i>{{item.mviews}}
+                      <i class="iconfont icon-fenxiang"></i>{{item.rviews}}
+                    </view>
+                </view>
+            </block>
+        </view>
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
       </view>
-    </view>
-    <view class="chaxun" hidden="chaxun" style="color:#999">
-      <view>在电脑端输入网址</view>
-      <view>http://wcd.jihui88.com/leaflet/index.html</view>
-      <view>登录即可免费创建微传单</view>
+      <view class="chaxun" hidden="!grade" style="color:#999">
+        <view>在电脑端输入网址</view>
+        <view>http://wcd.jihui88.com/leaflet/index.html</view>
+        <view>登录即可免费创建微传单</view>
+      </view>
     </view>
   </view>
 </template>
@@ -39,7 +64,7 @@
       list: [],
       page: 1,
       more: { loading: true },
-      chaxun: '',
+      grade: false,
       category: [
         { name: '全部', id: '' },
         { name: 'VIP专属', id: 343798 },
@@ -55,27 +80,35 @@
       searchData: {
         page: 1,
         pageSize: 10,
-        category_id: '',
-        recvState: ''
+        category_id: ''
       }
     }
 
     onLoad () {
       if (this.$parent.globalData.user.wcdMember === '01') {
-        this.chaxun = true
+        this.grade = true
         this.get()
       }
     }
 
-    goto (id) {
+    goto (e) {
       wx.navigateTo({
-        url: '/pages/setting/webView?src=http://www.jihui88.com/wcd/html/'+id+'.html?debug=01'
+        url: '/pages/setting/webView?src=http://www.jihuinet.com/wcd/html/'+e.currentTarget.dataset.wpygotoA+'.html'
       })
     }
 
     methods = {
       switchTab (e) {
         this.activeIndex = e
+        this.list = []
+        this.more.loading = true
+        if (this.activeIndex === '0') {
+          this.page = 1
+          this.get()
+        } else {
+          this.searchData.page = 1
+          this.getCase()
+        }
       }
     }
 
@@ -87,23 +120,57 @@
         }
       })
       if (json.success) {
-        return false
+        await Utils.scrollList(this, json)
       }
-      await Utils.scrollList(this, json2)
-      this.$apply()
     }
 
     async getCase () {
       const json = await api.wcdCase({
-        data: {
-          page: this.page,
-          pageSize: 10
-        }
+        data: this.searchData
       })
       if (json.success) {
-        await Utils.scrollList(this, json2)
+        await Utils.scrollList(this, json, null, true)
       }
-      this.$apply()
+    }
+
+
+    open () {
+      this.state = !this.state
+      if (this.state) {
+        this.attrAn(0,200,true,300)
+      } else {
+        this.attrAn(200,0,false,300)
+      }
+    }
+
+
+    async attrAn (anFrom, anTo, modal, duration) {
+      var animation = wx.createAnimation({
+        duration: duration,
+        timingFunction: "linear",
+        delay: 0
+      })
+      this.animation = animation
+      animation.translateX(anFrom).step()
+      this.setData({
+        animationData: animation.export(),
+        showModalStatus: modal
+      })
+      setTimeout(function() {
+        animation.translateX(anTo).step()
+        this.setData({
+          animationData: animation.export()
+        })
+      }.bind(this), 0)
+    }
+
+    getCategoryCase (e) {
+      this.more.loading = true
+      this.list = []
+      this.searchData.page = 1
+      this.searchData.category_id = e.currentTarget.dataset.wpygetcategorycaseA
+      this.open()
+      this.getCase()
     }
 
     // 下拉刷新
@@ -137,3 +204,24 @@
     }
   }
 </script>
+<style lang="less">
+  .weui-grid {
+    float:left;
+    width:50%;
+    padding:10px 10px;
+    image{
+      width: 300rpx;
+      height: 300rpx;
+    }
+    .weui-grid__label{
+      font-size: 12px;
+      text-align:left;
+    }
+    .wcd_icon{
+      color: #666;
+      i{
+        padding-right: 3px;
+      }
+    }
+  }
+</style>

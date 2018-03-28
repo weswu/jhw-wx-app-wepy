@@ -202,7 +202,7 @@
         }
         const json = await api.orderExpress({
           data: this.input,
-          method: 'put'
+          method: 'PUT'
         })
         if (json.success) {
           Tips.success("修改成功");

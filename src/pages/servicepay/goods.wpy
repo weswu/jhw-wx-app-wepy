@@ -18,7 +18,8 @@
   <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{wcdMember === '00' || wcdMember === '01'}}">
     <view class="weui-cell__bd weui-cell_primary">微传单</view>
     <view class="weui-cell__ft">
-      <view class="weui-badge">免费</view>
+      <view class="weui-badge" wx:if="{{wcdMember === '00'}}">免费</view>
+      <view class="weui-badge" wx:if="{{wcdMember === '01'}}">会员</view>
     </view>
   </view>
   <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" wx:if="{{distribution}}">

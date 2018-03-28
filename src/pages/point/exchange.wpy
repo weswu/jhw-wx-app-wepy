@@ -31,7 +31,10 @@ export default class PurchaseAmount extends wepy.page {
   data = {
     list: [],
     point: 0,
-    page: 1,
+    searchData: {
+      page: 1,
+      productId: 1
+    },
     count: 0,
     more: { loading: true, text:'暂无消费记录' }
   }
@@ -42,37 +45,20 @@ export default class PurchaseAmount extends wepy.page {
 
   async get () {
     const json = await api.pointList({
-      data: {
-        page: this.page
-      }
+      data: this.searchData
     })
     if (json.success) {
+      this.point = json.attributes.point
+      for (var item of json.attributes.data) {
+        item.addTime = Utils.formatTime(item.addTime, 'yyyy-MM-dd hh:mm')
+      }
+      await Utils.scrollList(this, json, '兑换记录', true)
     }
-    let json2 = {
-success: true,
-msg: null,
-obj: null,
-attributes: {
-data: [
-],
-point: 102,
-count: 0,
-productTotalQuantity: 4,
-pic: [ ],
-page: 1,
-operator: 3
-}
-}
-    this.point = json2.attributes.point
-    for (var item of json2.attributes.data) {
-      item.addTime = Utils.formatTime(item.addTime, 'yyyy-MM-dd hh:mm')
-    }
-    await Utils.scrollList(this, json2, '兑换记录')
   }
 
   // 下拉刷新
   async onPullDownRefresh () {
-    this.page = 1
+    this.searchData.page = 1
     this.list = []
     this.more.loading = true
     await this.get()
@@ -83,7 +69,7 @@ operator: 3
   async onReachBottom () {
     if (this.more.loading) { return false }
     this.more.loading = true
-    this.page += 1
+    this.searchData.page += 1
     this.get()
   }
 

@@ -70,25 +70,26 @@ export default class Setting extends wepy.page {
       this.model = json.attributes.data
     } else {
       this.model = {
-integralRuleId: "Integralrule_0000000000000000041",
-addTime: 1487145126515,
-updateTime: 1511749948347,
-enterpriseId: "Admin_00000000000000000000000005",
-accountEditPoint: 10,
-productAddPoint: 2,
-productEditPoint: 1,
-newsAddPoint: 5,
-newsEditPoint: 1,
-publishPoint: 1,
-mounthRecordPoint: 1,
-advisePoint: 100,
-orderPoint: 0,
-posterPoint: 100,
-pointType: "0",
-scale: null,
-id: null
-}
+        integralRuleId: "Integralrule_0000000000000000041",
+        addTime: 1487145126515,
+        updateTime: 1511749948347,
+        enterpriseId: "Admin_00000000000000000000000005",
+        accountEditPoint: 10,
+        productAddPoint: 2,
+        productEditPoint: 1,
+        newsAddPoint: 5,
+        newsEditPoint: 1,
+        publishPoint: 1,
+        mounthRecordPoint: 1,
+        advisePoint: 100,
+        orderPoint: 0,
+        posterPoint: 100,
+        pointType: "0",
+        scale: null,
+        id: null
+      }
     }
+    this.$apply()
   }
 }
 </script>

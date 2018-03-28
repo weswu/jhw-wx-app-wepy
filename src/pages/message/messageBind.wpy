@@ -89,9 +89,9 @@ export default class MessageBind extends wepy.page {
     if (!this.validate()) {
       return;
     }
-    let method = 'post'
+    let method = 'POST'
     if (this.input.id) {
-      method = 'put'
+      method = 'PUT'
     }
     const json = await api.messageBind({
       data: this.input,
