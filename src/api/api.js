@@ -20,11 +20,11 @@ const publishMobile = (params) => http(params, wxHost + '/rest/mobileStatic/' + 
 // 留言
 const message = (params) => http(params, host + '/rest/api/message/list')
 const messageDetail = (params) => http(params, host + '/rest/api/message/detail' + (params.id ? '/' + params.id : ''))
-const messageBind = (params) => http(params, host + '/rest/api/message/bind/detail' + (params.data.id ? '/' + params.data.id : ''))
+const messageBind = (params) => http(params, host + '/rest/api/message/bind/detail' + (params.data.enterpriseId ? '/' + params.data.enterpriseId : ''))
 // 设置
 const password = (params) => http(params, host + '/rest/api/user/detail/password')
 const log = (params) => http(params, host + '/rest/api/log/list')
-const serviceFeedback = (params) => http(params, 'http://crmyun.jihui88.com:9500/api/jihuifeedback.php')
+const serviceFeedback = (params) => http(params, host + '/rest/api/crm/feedback/msg_send')
 // 相册
 const album = (params) => http(params, host + '/rest/api/album/attr/list/' + params.id)
 const albumCategory = (params) => http(params, host + '/rest/api/album/list?pageSize=100')
@@ -43,7 +43,7 @@ const cert = (params) => http(params, host + '/rest/api/cert/list')
 const certDetail = (params) => http(params, host + '/rest/api/cert/detail' + (params.id ? '/' + params.id : ''))
 // 友情链接
 const link = (params) => http(params, host + '/rest/api/link/list')
-const linkDetail = (params) => http(params, host + '/rest/api/' + (params.method ? 'updateList' + params.id : 'link') + '/detail' + (params.id ? '/' + params.id : ''))
+const linkDetail = (params) => http(params, host + '/rest/api/link/' + (params.method ? 'detail' : 'updateList') + (params.id ? '/' + params.id : ''))
 // 域名绑定
 const bind = (params) => http(params, host + '/rest/api/bind/list')
 const bindDetail = (params) => http(params, host + '/rest/api/bind/detail' + (params.id ? '/' + params.id : ''))

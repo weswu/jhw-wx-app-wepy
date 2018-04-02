@@ -22,7 +22,7 @@
     </WInput>
 
     <WInput>
-      <view slot="title" class="weui-label">icp备案号：</view>
+      <view slot="title" class="weui-label" style="width:155rpx;">icp备案号：</view>
       <input slot="input" class="weui-input" placeholder="请输入icp备案号" @input="input" id="icp" value="{{input.icp}}"/>
     </WInput>
 
@@ -62,8 +62,6 @@
     mixins = [input]
 
     onLoad () {}
-
-    methods = {}
 
     validate() {
       const rules = [

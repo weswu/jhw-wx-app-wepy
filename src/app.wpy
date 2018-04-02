@@ -30,7 +30,7 @@ export default class extends wepy.app {
       'pages/cert/cert', 'pages/cert/certDetail',
       'pages/link/link', 'pages/link/linkDetail',
       'pages/album/album',
-      'pages/setting/setting', 'pages/setting/account', 'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
+      'pages/setting/setting', 'pages/setting/serviceFeedback', 'pages/setting/account', 'pages/setting/logList','pages/setting/sale',
       'pages/service/service', 'pages/service/faq', 'pages/service/faq1',
       'pages/setting/password','pages/setting/webView',
       'pages/user/user', 'pages/user/map',

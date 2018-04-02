@@ -81,21 +81,6 @@
       if (json.success) {
         this.input = json.attributes.data
       }
-      this.input = {
-        certificateId: "Certificate_00000000000000007799",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        name: "aa",
-        organize: "ba",
-        state: "01",
-        type: "07",
-        attachmentId: "Attach_0000000000000000001384336",
-        attaPic: "upload//g//g2//ggggfj//picture//2017//08//04/69521af9-edbf-4c83-b615-03d53f64c252.png",
-        addTime: 1501814881264,
-        sort: 526,
-        domain: null,
-        updateTime: null,
-        id: "Certificate_00000000000000007799"
-      }
       this.category.forEach((item, index) => {
         if (item.value === this.input.type) {
           this.typeIndex = index
@@ -132,21 +117,17 @@
       if (!this.validate()) {
         return;
       }
-      let data = {
+      Tips.loading()
+      const json = await api.certDetail({
         data: {
           name: this.input.name,
           type: this.input.type,
           organize: this.input.organize,
           attId: this.input.attachmentId
         },
-        method: 'POST'
-      }
-      if (this.id) {
-        data.method = 'PUT'
-        data.id = this.id
-      }
-      Tips.loading()
-      const json = await api.certDetail(data)
+        method: this.id ? 'PUT' : 'POST',
+        id: this.id
+      })
       Tips.loaded()
       if (json.success) {
         Tips.success(this.id ? '修改成功' : '添加成功')

@@ -1,5 +1,29 @@
 import wepy from 'wepy'
 
+const http = async (params = {}, url) => {
+  console.log(url)
+  if (url.indexOf('app.jihui88.com') > -1) {
+    params.data = params.data || {}
+    params.data.skey = wepy.getStorageSync('skey')
+  }
+  if (params.method === 'PUT' || params.method === 'DELETE') {
+    url = url + '?' + urlEncode(params.data).substr(1)
+    params.data = {}
+  }
+  let res = await wepy.request({
+    url: url,
+    method: params.method || 'GET',
+    data: params.data || {},
+    header: {'Content-type': 'application/x-www-form-urlencoded'}
+  })
+  if (res.data.msg === '未登陆1') {
+    wx.navigateTo({
+      url: '/pages/user/login'
+    })
+  }
+  return res.data
+}
+
 /**
  * param 将要转为URL参数字符串的对象
  * key URL参数字符串的前缀
@@ -21,29 +45,5 @@ var urlEncode = function (param, key, encode) {
   }
   return paramStr;
 };
-
-const http = async (params = {}, url) => {
-  console.log(url)
-  if (url.indexOf('app.jihui88.com') > -1) {
-    params.data = params.data || {}
-    params.data.skey = wepy.getStorageSync('skey')
-  }
-  if (params.method === 'PUT') {
-    url = url + '?' + urlEncode(params.data).substr(1)
-    params.data = {}
-  }
-  let res = await wepy.request({
-    url: url,
-    method: params.method || 'GET',
-    data: params.data || {},
-    header: {'Content-type': 'application/x-www-form-urlencoded'}
-  })
-  if (res.data.msg === '未登陆1') {
-    wx.navigateTo({
-      url: '/pages/user/login'
-    })
-  }
-  return res.data
-}
 
 module.exports = { http }

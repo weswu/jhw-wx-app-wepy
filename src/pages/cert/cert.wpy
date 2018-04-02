@@ -45,6 +45,18 @@ export default class Cert extends wepy.page {
     this.get()
   }
 
+  async get () {
+    const json = await api.cert({
+      data: {
+        page: this.page,
+        name: this.name
+      }
+    })
+    if (json.success) {
+      await Utils.scrollList(this, json, '证书管理')
+    }
+  }
+
   methods = {
     // 删除
     async del (e) {
@@ -69,75 +81,6 @@ export default class Cert extends wepy.page {
     }
   }
 
-  async get () {
-    const json = await api.cert({
-      data: {
-        page: this.page,
-        name: this.name
-      },
-      id: this.id
-    })
-    const json2 = {
-      success: true,
-      msg: "操作成功",
-      obj: null,
-      attributes: {
-      per_page: 3,
-      data: [
-      {
-      certificateId: "Certificate_00000000000000007799",
-      enterpriseId: "Enterp_0000000000000000000000039",
-      name: "aa",
-      organize: "ba",
-      state: "01",
-      type: "01",
-      attachmentId: "Attach_0000000000000000001384336",
-      attaPic: "upload//g//g2//ggggfj//picture//2017//08//04/69521af9-edbf-4c83-b615-03d53f64c252.png",
-      addTime: 1501814881264,
-      sort: 526,
-      domain: null,
-      updateTime: null,
-      id: "Certificate_00000000000000007799"
-      },
-      {
-      certificateId: "Certificate_00000000000000007577",
-      enterpriseId: "Enterp_0000000000000000000000039",
-      name: "ä¸3",
-      organize: "33",
-      state: "01",
-      type: "01",
-      attachmentId: "undefined",
-      attaPic: null,
-      addTime: 1493101183132,
-      sort: 525,
-      domain: null,
-      updateTime: null,
-      id: "Certificate_00000000000000007577"
-      },
-      {
-      certificateId: "Certificate_00000000000000006922",
-      enterpriseId: "Enterp_0000000000000000000000039",
-      name: "q",
-      organize: "qq",
-      state: "01",
-      type: "07",
-      attachmentId: "Attach_0000000000000000001238752",
-      attaPic: "upload//g//g2//ggggfj//picture//2016//09//23/469bf576-8ce5-44ec-b32d-7b2f534988da.jpg",
-      addTime: 1474598291622,
-      sort: 524,
-      domain: null,
-      updateTime: null,
-      id: "Certificate_00000000000000006922"
-      }
-      ],
-      count: 14,
-      page: 1
-      }
-    }
-    await Utils.scrollList(this, json2, '证书管理')
-
-  }
-
   // 下拉刷新
   async onPullDownRefresh () {
     this.page = 1
@@ -154,7 +97,5 @@ export default class Cert extends wepy.page {
     this.page += 1
     this.get()
   }
-
-
 }
 </script>

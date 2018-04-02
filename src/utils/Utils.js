@@ -30,17 +30,6 @@ const addAll = (a, b) => {
     a.push(b[i])
   }
 }
-const listTwo = (ctx, json, text) => {
-  ctx.count = json.attributes.count
-  if (json.attributes.data.length === 0) {
-    ctx.more.empty = true
-  } else {
-    ctx.more.empty = false
-  }
-  text && wx.setNavigationBarTitle({
-    title: text + '(' + ctx.count + ')'
-  })
-}
 /*
  * @author: wes
  * @date: 2018-1-17

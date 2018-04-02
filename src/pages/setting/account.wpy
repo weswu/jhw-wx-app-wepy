@@ -33,12 +33,21 @@ export default class Account extends wepy.page {
   config = {
     navigationBarTitleText: '关于机汇网'
   }
-  components = {}
 
-  data = {}
+  data = {
+    user: {}
+  }
 
   async onLoad() {
+    var that = this
     this.user = this.$parent.globalData.user
+    if (!this.user.username) {
+      this.$parent.getInfo(function(json){
+        //更新数据
+        that.user = json.user
+        that.$apply()
+      })
+    }
     this.$apply()
   }
 }

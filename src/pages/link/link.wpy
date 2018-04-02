@@ -37,6 +37,17 @@ export default class Link extends wepy.page {
     this.get()
   }
 
+  async get () {
+    const json = await api.link({
+      data: {
+        page: this.page
+      }
+    })
+    if (json.success) {
+      await Utils.scrollList(this, json, '友情链接')
+    }
+  }
+
   methods = {
     // 删除
     async del (e) {
@@ -52,41 +63,6 @@ export default class Link extends wepy.page {
         Tips.success('删除成功')
       }
     }
-  }
-
-  async get () {
-    const json = await api.link({
-      data: {
-        page: this.page
-      },
-      id: this.id
-    })
-    const json2 = {
-success: true,
-msg: "操作成功",
-obj: null,
-attributes: {
-per_page: 16,
-data: [
-{
-linkId: "Link_000000000000000000000052278",
-enterpriseId: null,
-name: "机汇网",
-url: "http://www.jihui88.com",
-state: null,
-lorder: null,
-userId: null,
-addTime: null,
-updateTime: null,
-id: "Link_000000000000000000000052278"
-}
-],
-count: 1,
-page: 1
-}
-}
-    await Utils.scrollList(this, json2, '友情链接')
-
   }
 
   // 下拉刷新

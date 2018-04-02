@@ -54,20 +54,8 @@
       })
       if (json.success) {
         this.input = json.attributes.data
+        this.$apply()
       }
-      this.input = {
-linkId: "Link_000000000000000000000052278",
-enterpriseId: null,
-name: "机汇网",
-url: "http://www.jihui88.com",
-state: null,
-lorder: null,
-userId: null,
-addTime: null,
-updateTime: null,
-id: "Link_000000000000000000000052278"
-}
-      this.$apply()
     }
 
     methods = {}
@@ -92,19 +80,15 @@ id: "Link_000000000000000000000052278"
       if (!this.validate()) {
         return;
       }
-      let data = {
+      Tips.loading()
+      const json = await api.linkDetail({
         data: {
           name: this.input.name,
           url: this.input.url
         },
-        method: 'POST'
-      }
-      if (this.id) {
-        data.method = 'PUT'
-        data.id = this.id
-      }
-      Tips.loading()
-      const json = await api.linkDetail(data)
+        method: this.id ? 'PUT' : 'POST',
+        id: this.id
+      })
       Tips.loaded()
       if (json.success) {
         Tips.success(this.id ? '修改成功' : '添加成功')

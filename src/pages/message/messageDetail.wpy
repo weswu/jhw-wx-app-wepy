@@ -3,12 +3,14 @@
       <view class="weui-panel__hd">{{input.title}}</view>
       <view class="weui-panel__bd">
           <view class="weui-media-box weui-media-box_text">
-              <view class="weui-media-box__title weui-media-box__title_in-text">{{input.fromName}}</view>
-              <text class="weui-media-box__desc" style="-webkit-line-clamp:20;">{{input.content}}</text>
+              <view class="weui-media-box__title weui-media-box__title_in-text" style="font-size: 12px">
+                <view wx:if="{{input.fromName}}">发件人:{{input.fromName}}</view>
+                <view wx:if="{{input.fromPhone}}">联系电话:{{input.fromPhone}}</view>
+                <view wx:if="{{input.fromEmail}}">电子邮箱:{{input.fromEmail}}</view>
+              </view>
+              <text class="weui-media-box__desc">{{input.content || ''}}</text>
               <view class="weui-media-box__info">
                   <view class="weui-media-box__info__meta">{{input.addTime}}</view>
-                  <view class="weui-media-box__info__meta">{{input.fromPhone||''}}</view>
-                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{input.fromEmail||''}}</view>
               </view>
           </view>
       </view>
@@ -42,7 +44,7 @@
       })
       if (json.success) {
         var data = json.attributes.data
-        if (data.content.indexOf('[{"value":"') > -1) {
+        if (data.content && data.content.indexOf('[{"value":"') > -1) {
           var cList = JSON.parse(data.content)
           data.content = ''
           for (var item of cList) {

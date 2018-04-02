@@ -4,7 +4,7 @@
 
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
-    <Item :id="item.id" :title="item.title" :content="item.addTime" :url="'messageDetail?id='+item.id" :operation="operation" @del.user="del"/>
+    <Item :id="item.id" :title="item.title" :content="item.addTime + (item.recvState === '00' ? '   未读' : '')" :url="'messageDetail?id='+item.id" :operation="operation" @del.user="del"/>
   </repeat>
 
   <!-- 加载提示 -->
@@ -34,6 +34,10 @@ export default class Message extends wepy.page {
     operation: true
   }
 
+  onLoad () {
+    this.get()
+  }
+
   onShow () {
     var recvState = this.$parent.globalData.recvState || ''
     if (this.recvState !== recvState) {
@@ -45,6 +49,16 @@ export default class Message extends wepy.page {
 
   onHide () {
     this.$parent.globalData.recvState = ''
+  }
+
+  async get () {
+    const json = await api.message({
+      data: {
+        page: this.page,
+        recvState: this.recvState || ''
+      }
+    })
+    await Utils.scrollList(this, json, '网站询盘')
   }
 
   methods = {
@@ -64,17 +78,6 @@ export default class Message extends wepy.page {
     }
   }
 
-  async get () {
-    const json = await api.message({
-      data: {
-        page: this.page,
-        recvState: this.recvState || ''
-      },
-      id: this.id
-    })
-    await Utils.scrollList(this, json, '网站询盘')
-
-  }
 
   // 下拉刷新
   async onPullDownRefresh () {

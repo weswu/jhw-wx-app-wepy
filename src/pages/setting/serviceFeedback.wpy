@@ -92,7 +92,7 @@ export default class ServiceFeedback extends wepy.page {
       return;
     }
     let data = {
-      card_no: this.$parent.globalData.user.username,
+      card_no: this.$parent.globalData.user.username || 'ggggfj',
       fdbk_subject64: this.input.fdbk_subject64 + '[小程序]',
       fdbk_intro1k: this.input.fdbk_intro1k,
       fdbk_type: this.input.fdbk_type
@@ -101,11 +101,11 @@ export default class ServiceFeedback extends wepy.page {
       data: data,
       method: 'POST'
     })
-    this.input.fdbk_subject64 = ''
-    if (json.status !== 'ERROR') {
+    if (json.success) {
+      debugger
       Tips.success("反馈成功");
     } else {
-      Tips.error(json.err_code)
+      Tips.error(json.msg === '用户不存在' ? '未关联到机汇云' : json.msg)
     }
   }
 

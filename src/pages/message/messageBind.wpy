@@ -60,6 +60,14 @@ export default class MessageBind extends wepy.page {
     this.get()
   }
 
+  async get () {
+    const json = await api.messageBind({data: {}})
+    if (json.success) {
+       this.input = json.attributes.data[0]
+       this.$apply()
+    }
+  }
+
   methods = {}
 
   validate() {
@@ -78,27 +86,20 @@ export default class MessageBind extends wepy.page {
     return this.check(rules);
   }
 
-  async get () {
-    const json = await api.messageBind({data:{}})
-    if (json.success) {
-      this.input = json.attributes.data[0]
-    }
-  }
-
   async submit () {
     if (!this.validate()) {
       return;
     }
-    let method = 'POST'
-    if (this.input.id) {
-      method = 'PUT'
+    let data = {
+      state: this.input.state,
+      key: this.input.key
     }
     const json = await api.messageBind({
-      data: this.input,
-      method: method
+      data: data,
+      method: this.input.id ? 'PUT' : 'POST'
     })
-    if (json.success) {
-      Tips.success(this.input.id? '添加成功':"修改成功");
+    if (json.status === 'OK' || json.success) {
+      Tips.success(this.input.id? '修改成功':'添加成功');
     } else {
       Tips.error(json.msg)
     }

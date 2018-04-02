@@ -27,7 +27,7 @@
     </view>
   </view>
 
-  <view class="weui-btn-area">
+  <view class="weui-btn-area" hidden>
     <button class="weui-btn" type="primary" @tap="logout">退出账号</button>
   </view>
 </template>
@@ -41,13 +41,7 @@ export default class Setting extends wepy.page {
 
   data = {}
 
-  onLoad() {
-    let ctx = this
-    this.$parent.getUserInfo().then(res => {
-      ctx.userInfo = res
-      ctx.$apply()
-    })
-  }
+  onLoad() {}
 
   async logout () {
     const json = await api.logout({
