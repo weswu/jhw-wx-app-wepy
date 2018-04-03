@@ -2,7 +2,7 @@
   <!-- 添加 -->
   <navigator url="categoryDetail?type={{type}}" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
-  <repeat for="{{list}}" key="index" index="index" item="item" wx:if="{{item.isroot === '01'}}">
+  <repeat for="{{list}}" key="index" index="index" item="item" wx:if="{{item.isroot === '01' && !item.belongId}}">
     <view class="weui-cells">
       <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
@@ -21,7 +21,7 @@
                 <view class="weui-label two"><i class="iconfont icon-more"></i></view>
             </view>
             <view class="weui-cell__bd">
-                <input class="weui-input" value="{{item2.name}}" @input="input" id="{{item.id}}"/>
+                <input class="weui-input" value="{{item2.name}}" @input="input" id="{{item2.id}}"/>
             </view>
             <view class="weui-cell__ft">
                 <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item2.id}})"></icon>
@@ -33,12 +33,25 @@
                   <view class="weui-label three"><i class="iconfont icon-more"></i></view>
               </view>
               <view class="weui-cell__bd">
-                  <input class="weui-input" value="{{item3.name}}" @input="input" id="{{item.id}}"/>
+                  <input class="weui-input" value="{{item3.name}}" @input="input" id="{{item3.id}}"/>
               </view>
               <view class="weui-cell__ft">
                   <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item3.id}})"></icon>
               </view>
           </view>
+          <repeat for="{{item3.sonCate}}" key="index4" index="index4" item="item4">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label four"><i class="iconfont icon-more"></i></view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" value="{{item4.name}}" @input="input" id="{{item4.id}}"/>
+                </view>
+                <view class="weui-cell__ft">
+                    <icon type="cancel" size="23" color="#E64340" @tap.stop="del({{item4.id}})"></icon>
+                </view>
+            </view>
+          </repeat>
         </repeat>
       </repeat>
     </view>
@@ -56,7 +69,8 @@
     config = {}
     data = {
       type:'',
-      list: []
+      list: [],
+      id: ''
     }
 
     onLoad ({type}) {
@@ -109,47 +123,60 @@
           },
           id: e
         })
+        this.id = e
+        var that = this
         Tips.loaded()
         if (json.success) {
           this.list.forEach((item, index, arr) => {
-            if (item.id === id) {
+            if (item.id === that.id) {
               arr.splice(index, 1)
             }
             item.sonCate && item.sonCate.forEach((item2, index2, arr2) => {
-              if (item2.id === id) {
+              if (item2.id === that.id) {
                 arr2.splice(index2, 1)
               }
               item2.sonCate && item2.sonCate.forEach((item3, index3, arr3) => {
-                if (item3.id === id) {
+                if (item3.id === that.id) {
                   arr3.splice(index3, 1)
                 }
+                item3.sonCate && item3.sonCate.forEach((item4, index4, arr4) => {
+                  if (item4.id === that.id) {
+                    arr4.splice(index4, 1)
+                  }
+                })
               })
             })
           })
+          this.$apply()
           this.storage(this.list)
           Tips.success('删除成功')
-        }
-      },
-      storage (e) {
-        if (this.type === 'product') {
-          wepy.setStorageSync('proCategory', e);
         } else {
-          wepy.setStorageSync('newsCategory', e);
+          Tips.error(json.msg)
         }
+      }
+    }
+
+    storage (e) {
+      if (this.type === 'product') {
+        wepy.setStorageSync('proCategory', e);
+      } else {
+        wepy.setStorageSync('newsCategory', e);
       }
     }
 
     async submit () {
       var list = ''
       this.list.forEach(function (item, i) {
-        if (i === 0) { list = 'id=' + item.id + ',name=' + item.name }
-        if (i !== 0) { list = list + ';id=' + item.id + ',name=' + item.name }
-        item.sonCate && item.sonCate.forEach(function (item1, j) {
-          if (i !== 0) { list = list + ';id=' + item1.id + ',name=' + item1.name }
-          item1.sonCate && item1.sonCate.forEach(function (item2, x) {
-            if (i !== 0) { list = list + ';id=' + item2.id + ',name=' + item2.name }
+        if (item.isroot === '01' && !item.belongId) {
+          if (list === '') { list = 'id=' + item.id + ',name=' + item.name }
+          if (list !== '') { list = list + ';id=' + item.id + ',name=' + item.name }
+          item.sonCate && item.sonCate.forEach(function (item1, j) {
+            list = list + ';id=' + item1.id + ',name=' + item1.name
+            item1.sonCate && item1.sonCate.forEach(function (item2, x) {
+              list = list + ';id=' + item2.id + ',name=' + item2.name
+            })
           })
-        })
+        }
       })
       Tips.loading()
       const json = await api.categoryUpdate({
@@ -166,6 +193,13 @@
         Tips.error(json.msg)
       }
     }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.list = []
+      this.get()
+      wepy.stopPullDownRefresh()
+    }
   }
 </script>
 <style lang="less">
@@ -178,6 +212,12 @@
     }
     .three{
       padding-left: 40rpx
+    }
+    .four{
+      padding-left: 60rpx
+    }
+    .five{
+      padding-left: 80rpx
     }
   }
   .addObj {

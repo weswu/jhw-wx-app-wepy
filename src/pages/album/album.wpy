@@ -99,6 +99,23 @@ export default class Album extends wepy.page {
     })
   }
 
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.more.loading = true
+    this.list = []
+    this.page = 1
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.page += 1
+    this.get()
+  }
+
 }
 </script>
 

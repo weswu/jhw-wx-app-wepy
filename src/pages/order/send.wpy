@@ -76,97 +76,15 @@
 
     async get () {
       const json = await api.orderDetail({
-        id: this.id || 'ff8081815156ec210151674174c801b9'
+        id: this.id
       })
-      if (json.success) {}
-      this.middle = [
-        {
-        deliverycorpId: null,
-        name: "远成物流",
-        com: "yuancheng",
-        orderId: null,
-        productQuantity: null,
-        productId: null,
-        price: null,
-        productAttr: null,
-        time: null,
-        username: null,
-        quantity: null,
-        amount: null,
-        memberId: null,
-        id: null,
-        enterpriseId: null
-        },
-        {
-        deliverycorpId: null,
-        name: "恒路物流",
-        com: "henglu",
-        orderId: null,
-        productQuantity: null,
-        productId: null,
-        price: null,
-        productAttr: null,
-        time: null,
-        username: null,
-        quantity: null,
-        amount: null,
-        memberId: null,
-        id: null,
-        enterpriseId: null
-        }
-      ]
-      this.detail =  {
-        orderId: "ff8081815156ec210151674174c801b9",
-        addTime: "2015-12-03 17:52:01",
-        orderSn: "102550",
-        all: null,
-        proName: null,
-        orderStatusInt: 2,
-        paymentStatusInt: 2,
-        shippingStatusInt: 2,
-        orderStatus: "completed",
-        paymentStatus: "paid",
-        shippingStatus: "shipped",
-        invoiceName: null,
-        invoiceAmount: null,
-        deliveryTypeName: "圆通",
-        paymentConfigName: null,
-        productTotalPrice: 0.02,
-        deliveryFee: 600007,
-        paymentFee: 0,
-        totalAmount: 600007.02,
-        paidAmount: 600007.02,
-        productWeight: 500.001007,
-        productWeightUnit: "kg",
-        productTotalQuantity: 2,
-        shipName: "王永进",
-        shipArea: "浙江省杭州市西湖区",
-        shipAreaPath: "402881882ba8753a012ba8da48e000b0,402881882ba8753a012ba8da7d2f00b1,402881e44da29af5014da35e04900331",
-        shipAddress: "文三路",
-        shipZipCode: "310000",
-        shipPhone: "",
-        shipMobile: "13588506961",
-        memo: "",
-        memberId: null,
-        deliveryType: null,
-        paymentConfig: null,
-        paytype: "pc",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        orderStatusTxt: "已完成",
-        deliverytypeId: "ff8081814dc9717e014dd21bc7f3000e",
-        productName: null,
-        com: null,
-        deliverySn: null,
-        deliveryCorpName: null,
-        startDate: null,
-        endDate: null,
-        sorting: null,
-        id: "ff8081815156ec210151674174c801b9"
-        }
-
-      this.input.orderId = this.detail.orderId
-      this.input.com = this.middle[0].com
-      this.$apply()
+      if (json.success) {
+        this.detail = json.attributes.data
+        this.middle = json.attributes.middle
+        this.input.orderId = this.detail.orderId
+        this.input.com = this.middle[0].com
+        this.$apply()
+      }
     }
 
     validate() {
@@ -212,6 +130,11 @@
       }
     }
 
+    // 下拉刷新
+    async onPullDownRefresh () {
+      await this.get()
+      wepy.stopPullDownRefresh()
+    }
   }
 </script>
 <style>

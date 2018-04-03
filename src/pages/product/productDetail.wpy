@@ -1,4 +1,5 @@
 <template>
+  <Tips />
   <view class="weui-tab">
     <!--TAB-->
     <Tab :tabs.sync="tabs" @change.user="switchTab"/>
@@ -46,13 +47,13 @@
 
           <WInput>
             <view slot="title" class="weui-label">产品图片：</view>
-            <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
-                <block wx:for="{{imgArr}}" wx:key="*this">
-                    <view class="weui-uploader__file" @tap="previewImage" id="{{item.id}}">
-                        <image class="weui-uploader__img" src="http://img.jihui88.com/{{item.sourceProductImagePath}}" mode="aspectFill"/>
+            <view slot="input" class="weui-uploader__files" style="padding-top:5px">
+                <block>
+                    <view class="weui-uploader__file">
+                      <Upload :src.sync="src" @change.user="image"/>
                     </view>
                 </block>
-                <view class="weui-uploader__input-box">
+                <view class="weui-uploader__input-box" hidden>
                     <view class="weui-uploader__input" @tap="chooseImage"></view>
                 </view>
             </view>
@@ -63,7 +64,11 @@
         </view>
       </view>
       <view class="weui-tab__content" hidden="{{activeIndex != 1}}" style="padding: 10px">
-        <rich-text nodes="{{input.proddesc}}" @tap="editorTip"/>
+        <rich-text nodes="{{input.proddesc}}" wx:if="{{!proddesc}}" @tap="editorTip"/>
+        <textarea wx:if="{{proddesc}}" @input="input" id="proddesc" value="{{input.proddesc}}" style="height: 600rpx" placeholder="请输入新闻内容" />
+        <view wx:if="{{proddesc}}" class="weui-btn-area">
+            <button class="weui-btn" type="primary" @tap="submit">提交</button>
+        </view>
       </view>
       <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
         <WInput>
@@ -159,8 +164,10 @@
   import wepy from 'wepy';
   import api from '@/api/api'
   import Tips from '@/utils/Tips'
+  import FormTips from '@/components/weui/tips'
   import input from '@/mixins/input'
   import WInput from '@/components/weui/input'
+  import Upload from '@/components/common/upload'
   import Tab from '@/components/weui/tab'
 
   export default class ProductDetail extends wepy.page {
@@ -169,7 +176,9 @@
     }
     components = {
       Tab,
-      WInput
+      Tips: FormTips,
+      WInput,
+      Upload
     }
     data = {
       tabs: ["基本信息", "产品内容", "商城属性"],
@@ -184,14 +193,15 @@
         {id: 'kg', name: '千克'},
         {id: 't', name: '吨'}
       ],
-      weightunitIndex: 0
+      weightunitIndex: 0,
+      proddesc: false,
+      src: ''
     }
     mixins = [input]
 
     onLoad ({id}) {
       this.id = id
       this.get()
-      this.getCate()
     }
 
     async get () {
@@ -200,8 +210,17 @@
       })
       if (json.success) {
         this.input = json.attributes.data
+        if (!this.input.proddesc) {
+          this.proddesc = true
+        }
+        this.src = this.input.picPath
         this.imgArr = JSON.parse(this.input.productimageliststore) || []
-        this.$apply()
+        this.weightunits.forEach((item, index) => {
+          if (item.id === this.input.weightunit) {
+            this.weightunitIndex = index
+          }
+        })
+        this.getCate()
       } else {
         Tips.error(json.msg)
       }
@@ -220,6 +239,11 @@
           wepy.setStorageSync('proCategory', this.category);
         }
       }
+      this.category.forEach((item, index) => {
+        if (item.id === this.input.category) {
+          this.categoryIndex = index
+        }
+      })
       this.$apply()
     }
 
@@ -240,6 +264,19 @@
       },
       editorTip () {
         Tips.success('暂不支持修改')
+      },
+      image (text) {
+        this.input.picPath = text.data
+        if (this.imgArr.length === 0) {
+          this.imgArr.push({
+            id: text.attId,
+            sourceProductImagePath: text.data,
+            type: 'main_pic'
+          })
+        } else {
+          this.imgArr[0].id = text.attId
+        }
+        this.src = text.data
       }
     };
 
@@ -248,12 +285,17 @@
         {
           value: this.input.name,
           method: 'required',
-          message: '昵称不能为空'
+          message: '产品名称不能为空'
         },
         {
-          value: this.input.email,
+          value: this.input.category,
           method: 'required',
-          message: '发证机构不能为空'
+          message: '产品分类不能为空'
+        },
+        {
+          value: this.input.proddesc,
+          method: 'required',
+          message: '产品内容不能为空'
         }
       ];
       return this.check(rules);
@@ -263,33 +305,27 @@
       if (!this.validate()) {
         return;
       }
-      let data = {
-        data: {
-          name: this.input.name,
-          password: this.input.password,
-          email: this.input.email,
-          point: this.input.point,
-          deposit: this.input.deposit,
-          memberrankId: this.input.memberrankId,
-          isaccountEnabled: this.input.isaccountEnabled
-        },
-        method: 'POST'
-      }
-      if (this.id) {
-        data.method = 'PUT'
-        data.id = this.id
-      } else {
-        if (!this.input.username) { return Tips.alert('账号不能为空') }
-        if (!this.input.password) { return Tips.alert('密码不能为空') }
-        if (!this.input.point) { data.data.point = 0 }
-        if (!this.input.deposit) { data.data.deposit = 0 }
-        data.data.username = this.input.username
-      }
+
+      this.input.productimageliststore = JSON.stringify(this.imgArr)
+
+      if (!this.input.loginView) {this.input.loginView = '0'}
+      if (!this.input.ads) {this.input.ads = '0'}
+      // 商城
+      if (!this.input.isMarketable) {this.input.isMarketable = '00'}
+      if (!this.input.isNew) {this.input.isNew = '00'}
+      if (!this.input.isBest) {this.input.isBest = '00'}
+      if (!this.input.isHot) {this.input.isHot = '00'}
+      if (!this.input.isAgent) {this.input.isAgent = '00'}
+
       Tips.loading()
-      const json = await api.memberDetail(data)
+      const json = await api.productDetail({
+        data: this.input,
+        method: this.id ? 'PUT' : 'POST',
+        id: this.id
+      })
       Tips.loaded()
       if (json.success) {
-        Tips.success(this.id ? '修改成功' : '添加成功')
+        Tips.success(this.id ? '修改成功' : '发布成功')
       } else {
         Tips.error(json.msg)
       }

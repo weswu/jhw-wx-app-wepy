@@ -1,5 +1,5 @@
 <template>
-  <image mode="widthFix" src="{{src}}" @tap="chooseImage"/>
+  <image mode="widthFix" src="http://img.jihui88.com/{{src}}" @tap="chooseImage"/>
 </template>
 
 <script>
@@ -7,9 +7,9 @@
   export default class Upload extends wepy.component {
     props = {
       src: {
-        default: '/images/no_image.png'
-      },
-      name: {}
+        type: String,
+        default: 'null'
+      }
     }
     methods = {
       chooseImage () {
@@ -26,11 +26,14 @@
              filePath: res.tempFilePaths[0],//临时路径
              name: 'Filedata',
              formData: {
-               fileLen: res.tempFiles[0].size
+               fileLen: res.tempFiles[0].size,
+               skey: wepy.getStorageSync('skey')
              },
              success: function (res) {
                wx.hideLoading()
-               that.$emit('change', res)
+               if (res.statusCode === 200) {
+                 that.$emit('change', JSON.parse(res.data).attributes)
+               }
              }
            })
           }

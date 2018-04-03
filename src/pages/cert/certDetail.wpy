@@ -21,7 +21,7 @@
       <view slot="title" class="weui-label">证书图片：</view>
       <view slot="input" class="weui-uploader__files" id="uploaderFiles" style="padding-top:5px">
         <view class="weui-uploader__file">
-            <image class="weui-uploader__img" src="http://img.jihui88.com/{{input.attaPic}}" mode="aspectFill"/>
+            <Upload :src.sync="src" @change.user="image"/>
         </view>
       </view>
     </WInput>
@@ -38,12 +38,14 @@
   import input from '@/mixins/input'
   import FormTips from '@/components/weui/tips'
   import WInput from '@/components/weui/input'
+  import Upload from '@/components/common/upload'
 
   export default class CertDetail extends wepy.page {
     config = {}
     components = {
       Tips: FormTips,
-      WInput
+      WInput,
+      Upload
     }
     data = {
       id:'',
@@ -59,7 +61,8 @@
         {text: '组织机构代码证', value: '08'},
         {text: '实地认证', value: '09'},
         {text: '其它证书', value: '05'}
-      ]
+      ],
+      src: ''
     }
     mixins = [input]
 
@@ -80,6 +83,7 @@
       })
       if (json.success) {
         this.input = json.attributes.data
+        this.src = this.input.attaPic
       }
       this.category.forEach((item, index) => {
         if (item.value === this.input.type) {
@@ -94,6 +98,10 @@
         var index = e.detail.value
         this[e.currentTarget.id+'Index'] = index
         this.input[e.currentTarget.id] = this.category[index].value
+      },
+      image (text) {
+        this.input.attachmentId = text.attId
+        this.src = text.data
       }
     }
 
@@ -134,6 +142,12 @@
       } else {
         Tips.error(json.msg)
       }
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      await this.get()
+      wepy.stopPullDownRefresh()
     }
   }
 </script>

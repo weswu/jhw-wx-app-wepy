@@ -32,13 +32,13 @@
 
     methods = {
       detail () {
-        wx.navigateTo({url: '/pages/order/orderDetail?id' + this.item.id})
+        wx.navigateTo({url: '/pages/order/orderDetail?id=' + this.item.id})
       },
       send () {
-        wx.navigateTo({url: '/pages/order/send?id' + this.item.id})
+        wx.navigateTo({url: '/pages/order/send?id=' + this.item.id})
       },
       price () {
-        wx.navigateTo({url: '/pages/order/price?id' + this.item.id})
+        wx.navigateTo({url: '/pages/order/price?id=' + this.item.id})
       }
     }
   }

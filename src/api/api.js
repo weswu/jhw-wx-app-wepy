@@ -38,6 +38,7 @@ const productDetail = (params) => http(params, host + '/rest/api/product/detail/
 // 新闻
 const news = (params) => http(params, host + '/rest/api/news/list')
 const newsDetail = (params) => http(params, host + '/rest/api/news/detail/' + params.id)
+const newsUpdate = (params) => http(params, host + '/rest/api/news/update')
 // 证书
 const cert = (params) => http(params, host + '/rest/api/cert/list')
 const certDetail = (params) => http(params, host + '/rest/api/cert/detail' + (params.id ? '/' + params.id : ''))
@@ -109,7 +110,7 @@ module.exports = {
   // 产品
   product, productDetail,
   // 新闻
-  news, newsDetail,
+  news, newsDetail, newsUpdate,
   // 分类
   category, categoryUpdate, categoryDetail,
   // 证书

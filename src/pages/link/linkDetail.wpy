@@ -65,7 +65,7 @@
         {
           value: this.input.name,
           method: 'required',
-          message: '链接名称为空'
+          message: '链接名称不能为空'
         },
         {
           value: this.input.url,

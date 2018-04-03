@@ -49,8 +49,11 @@ export default class Order extends wepy.page {
 
 
   onLoad ({active}) {
-    this.activeIndex = parseInt(active) || 0
+    this.activeIndex = parseInt(active) || ''
     this.$invoke('Tab', 'init', this.activeIndex)
+    if (this.$parent.globalData.enterprise.mobileSite === '07' || this.$parent.globalData.enterprise.mobileSite === '14' || this.$parent.globalData.user.userType === '电商版') {
+      this.grade = '07'
+    }
     this.get()
   }
 
@@ -74,136 +77,12 @@ export default class Order extends wepy.page {
         flag: this.activeIndex - 1
       }
     })
-    const json2 = {
-success: true,
-msg: "操作成功",
-obj: null,
-attributes: {
-per_page: 16,
-data: [
-  {
-  orderId: "ff8081815156ec210151674174c801b9",
-  addTime: "2015-12-03 17:52:01",
-  orderSn: "102550",
-  all: "0",
-  proName: null,
-  orderStatusInt: 2,
-  paymentStatusInt: 2,
-  shippingStatusInt: 2,
-  orderStatus: "completed",
-  paymentStatus: "paid",
-  shippingStatus: "shipped",
-  invoiceName: null,
-  invoiceAmount: null,
-  deliveryTypeName: "圆通",
-  paymentConfigName: null,
-  productTotalPrice: 0.02,
-  deliveryFee: 600007,
-  paymentFee: 0,
-  totalAmount: 600007.02,
-  paidAmount: 600007.02,
-  productWeight: 500.001007,
-  productWeightUnit: "kg",
-  productTotalQuantity: 2,
-  shipName: "王永进",
-  shipArea: "浙江省杭州市西湖区",
-  shipAreaPath: "402881882ba8753a012ba8da48e000b0,402881882ba8753a012ba8da7d2f00b1,402881e44da29af5014da35e04900331",
-  shipAddress: "文三路",
-  shipZipCode: "310000",
-  shipPhone: "",
-  shipMobile: "13588506961",
-  memo: "",
-  memberId: null,
-  deliveryType: null,
-  paymentConfig: null,
-  paytype: "pc",
-  enterpriseId: "Enterp_0000000000000000000000039",
-  orderStatusTxt: "已完成",
-  deliverytypeId: "ff8081814dc9717e014dd21bc7f3000e",
-  productName: "手机测试",
-  com: null,
-  deliverySn: null,
-  deliveryCorpName: null,
-  startDate: null,
-  endDate: null,
-  sorting: null,
-  id: "ff8081815156ec210151674174c801b9"
-  },
-  {
-  orderId: "402881e64e426d7f014e42bf490c0006",
-  addTime: "2015-06-30 12:35:09",
-  orderSn: "100174",
-  all: "0",
-  proName: null,
-  orderStatusInt: 2,
-  paymentStatusInt: 2,
-  shippingStatusInt: 2,
-  orderStatus: "completed",
-  paymentStatus: "paid",
-  shippingStatus: "shipped",
-  invoiceName: null,
-  invoiceAmount: null,
-  deliveryTypeName: "中通",
-  paymentConfigName: null,
-  productTotalPrice: 0.01,
-  deliveryFee: 0,
-  paymentFee: 0,
-  totalAmount: 0.01,
-  paidAmount: 0.01,
-  productWeight: 0.5,
-  productWeightUnit: "g",
-  productTotalQuantity: 1,
-  shipName: "伟",
-  shipArea: "浙江省杭州市",
-  shipAreaPath: "402881882ba8753a012ba8da48e000b0,402881882ba8753a012ba8da7d2f00b1",
-  shipAddress: "伟地址",
-  shipZipCode: "ä¼é®ç¼",
-  shipPhone: "ä¼çµè¯",
-  shipMobile: "ä¼ææº",
-  memo: "",
-  memberId: null,
-  deliveryType: null,
-  paymentConfig: null,
-  paytype: "pc",
-  enterpriseId: "Enterp_0000000000000000000000039",
-  orderStatusTxt: "已完成",
-  deliverytypeId: "4028818f4b28fdc2014b293a9ef70025",
-  productName: "秒杀产品1",
-  com: null,
-  deliverySn: null,
-  deliveryCorpName: null,
-  startDate: null,
-  endDate: null,
-  sorting: null,
-  id: "402881e64e426d7f014e42bf490c0006"
-  }
-],
-grade: "07",
-count: 1,
-pic: [
-"upload/g/g2/ggggfj/picture/2015/03/29/c64b8086-ba12-4f70-ac0f-44362d7cdb82.png",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/p/p2/pinlz/picture/2015/07/21/b982a2ec-98c4-480c-8a40-5b85809c958c.jpg",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-"upload/g/g2/ggggfj/picture/2016/04/27/1587a3d3-0cbd-409f-8617-3685c2742b69.jpg",
-"upload/g/g2/ggggfj/picture/2016/04/27/1587a3d3-0cbd-409f-8617-3685c2742b69.jpg",
-"upload/g/g2/ggggfj/picture/2016/04/27/1587a3d3-0cbd-409f-8617-3685c2742b69.jpg",
-"upload/g/g2/ggggfj/picture/2016/04/27/1587a3d3-0cbd-409f-8617-3685c2742b69.jpg"
-],
-page: 1
-}
-}
-
-    json2.attributes.pic.forEach(item => {
-      this.pic.push(item)
-    })
-    this.grade = json2.attributes.grade
-    await Utils.scrollList(this, json2, '订单管理')
-
+    if (json.success) {
+      json.attributes.pic.forEach(item => {
+        this.pic.push(item)
+      })
+      await Utils.scrollList(this, json, '订单管理')
+    }
   }
 
   tel () {

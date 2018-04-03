@@ -6,7 +6,7 @@
 
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
-    <Item :title="item.name" :content="'人气：'+item.viewsum" :pic="item.picPath" :url="'productDetail?id='+item.id"/>
+    <Item :id="item.id" :title="item.name" :content="'人气：'+item.viewsum" :pic="item.picPath" :url="'productDetail?id='+item.id" :operation="operation" @del.user="del"/>
   </repeat>
 
   <!-- 加载提示 -->
@@ -16,7 +16,7 @@
 <script>
 import wepy from 'wepy';
 import api from '@/api/api'
-import tips from '@/utils/Tips'
+import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import SearchBar from '@/components/weui/search_bar'
 import Item from '@/components/weui/item'
@@ -39,7 +39,9 @@ export default class Product extends wepy.page {
       name: '',
       category: ''
     },
-    type: 'product'
+    count: 0,
+    type: 'product',
+    operation: true
   }
 
   onLoad () {
@@ -53,7 +55,18 @@ export default class Product extends wepy.page {
     var key = wx.getStorageSync('curCategory')
     if (key !== 'all') {
       this.searchData.category = key
+      this.list = []
+      this.searchData.page = 1
       this.get()
+    }
+  }
+
+  async get () {
+    const json = await api.product({
+      data: this.searchData
+    })
+    if (json.success) {
+      await Utils.scrollList(this, json, '产品管理', true)
     }
   }
 
@@ -78,15 +91,6 @@ export default class Product extends wepy.page {
       this.searchData.page = 1
       this.searchData.name = val
       this.get()
-    }
-  }
-
-  async get () {
-    const json = await api.product({
-      data: this.searchData
-    })
-    if (json.success) {
-      await Utils.scrollList(this, json, '产品管理', true)
     }
   }
 
