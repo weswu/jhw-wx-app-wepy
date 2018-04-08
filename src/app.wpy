@@ -7,10 +7,11 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import { wxapplogin, user, userInfo, enterprise } from './api/api';
+import { wxapplogin, user, userInfo, enterprise, employee } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/user/login',
       'pages/index/index', 'pages/index/my', 'pages/index/data',
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageBind',
@@ -36,8 +37,7 @@ export default class extends wepy.app {
       'pages/user/user', 'pages/user/map',
       'pages/user/enterprise',
       'pages/bind/bind', 'pages/bind/bindDetail',
-      'pages/user/publish',
-      'pages/user/login'
+      'pages/user/publish'
     ],
     window: {
       backgroundColor: '#ffffff',
@@ -85,6 +85,7 @@ export default class extends wepy.app {
     userInfo: null,
     user: {},
     enterprise: {},
+    employee: {},
     appid: 'wx2aba9d238ba02a76',
     secret: 'c7131553b820b07e778d763bac18e259',
     recvState: ''
@@ -98,63 +99,57 @@ export default class extends wepy.app {
 
   async onLaunch() {
     console.log('启动');
+    //用户信息
+    const login = await wepy.login();
+    if (login.code) {
+      let u = await wepy.getUserInfo();
+      const resp =  await wxapplogin({
+        data: {
+          code: login.code,
+          encryptedData: u.encryptedData,
+          iv: u.iv,
+          nickName: u.userInfo.nickName,
+          headimgurl: u.userInfo.avatarUrl,
+          appid: this.globalData.appid,
+          appsecret: this.globalData.secret
+        },
+        method: 'POST'
+      })
+      if (resp.success) {
+        var data = resp.attributes.data;
+        wepy.setStorageSync('skey', data.skey);
+        if (this.skeyCallback){
+           this.skeyCallback(data.skey);
+        }
+      } else {
+        console.log(resp.msg || 'skey获取失败')
+      }
+    }
   }
 
-  async getInfo(cb) {
-    let that = this;
-    let key = wepy.getStorageSync('skey')
-    if (key) {
-      this.globalData.user = wepy.getStorageSync('user')
-      this.globalData.userInfo = wepy.getStorageSync('userInfo')
-      this.globalData.enterprise = wepy.getStorageSync('enterprise')
+  async get (cb) {
+    //用户信息
+    const json = await user()
+    if (json.success) {
+      this.globalData.user = json.attributes.data
+      wepy.setStorageSync('user', json.attributes.data);
     }
-    if (this.globalData.user.username) {
-      typeof cb == 'function' && cb(this.globalData)
-    } else {
-      //用户信息
-      const login = await wepy.login();
-      if (login.code) {
-        let u = await wepy.getUserInfo();
-        const resp =  await wxapplogin({
-          data: {
-            code: login.code,
-            encryptedData: u.encryptedData,
-            iv: u.iv,
-            nickName: u.userInfo.nickName,
-            headimgurl: u.userInfo.avatarUrl,
-            appid: this.globalData.appid,
-            appsecret: this.globalData.secret
-          },
-          method: 'POST'
-        })
-        if (resp.success) {
-          var data = resp.attributes.data;
-          console.log('启动:'+data.username);
-          if (data.username) {
-            wepy.setStorageSync('skey', data.skey);
-          }
-        } else {
-          console.log(resp.msg || '登录失败')
-        }
-      }
-      const json = await user()
-      if (json.success) {
-        console.log('user:'+json.attributes.data.username);
-        this.globalData.user = json.attributes.data
-        wepy.setStorageSync('user', json.attributes.data);
-      }
-      const res = await userInfo()
-      if (res.success) {
-        this.globalData.userInfo = res.attributes
-        wepy.setStorageSync('userInfo', res.attributes);
-      }
-      const enterp = await enterprise()
-      if (enterp.success) {
-        this.globalData.enterprise = enterp.attributes.data
-        wepy.setStorageSync('enterprise', enterp.attributes.data);
-      }
-      typeof cb == 'function' && cb(that.globalData)
+    const res = await userInfo()
+    if (res.success) {
+      this.globalData.userInfo = res.attributes
+      wepy.setStorageSync('userInfo', res.attributes);
     }
+    const enterp = await enterprise()
+    if (enterp.success) {
+      this.globalData.enterprise = enterp.attributes.data
+      wepy.setStorageSync('enterprise', enterp.attributes.data);
+    }
+    const empl = await employee()
+    if (empl.success) {
+      this.globalData.employee = empl.attributes.data
+      wepy.setStorageSync('employee', empl.attributes.data);
+    }
+    typeof cb == 'function' && cb(this.globalData)
   }
 
 }

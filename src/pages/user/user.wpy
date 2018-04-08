@@ -150,6 +150,7 @@ export default class User extends wepy.page {
       method: 'PUT'
     })
     if (json.success) {
+      this.$parent.globalData.user = this.input
       Tips.success("保存成功");
     } else {
       Tips.error(json.msg)

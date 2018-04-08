@@ -33,6 +33,7 @@
 </template>
 <script>
 import wepy from 'wepy';
+import api from '@/api/api'
 export default class Setting extends wepy.page {
   config = {
     navigationBarTitleText: '设置'
@@ -44,10 +45,14 @@ export default class Setting extends wepy.page {
   onLoad() {}
 
   async logout () {
-    const json = await api.logout({
-      data: this.input
-    })
+    const json = await api.logout()
     if (json.success) {
+      wepy.setStorageSync('user', '')
+      wepy.setStorageSync('userInfo', '')
+      wepy.setStorageSync('enterprise', '')
+      wepy.setStorageSync('employee', '')
+      wepy.setStorageSync('proCategory', '')
+      wepy.setStorageSync('newsCategory', '')
       wx.navigateTo({
         url: '/pages/user/login'
       })

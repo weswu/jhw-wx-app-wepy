@@ -9,7 +9,7 @@
         <view wx:if='userInfo.versions'>当前版本：{{userInfo.versions}}</view>
         <view wx:if="userInfo.endTime === '1'">已到期,请续费</view>
         <view wx:elif="userInfo.endTime && userInfo.endTime !== '0'">到期时间：{{userInfo.endTime}}</view>
-        <view>服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
+        <view @tap="tel">服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
       </view>
     </view>
     <navigator url="/pages/setting/setting" style='position: absolute;top: 11px;right: 15px;color:#fff'>
@@ -51,6 +51,7 @@
 <script>
   import wepy from 'wepy'
   import api from '@/api/api'
+  import Tips from '@/utils/Tips'
   export default class Index extends wepy.page {
     data = {
       user: {},
@@ -84,22 +85,53 @@
 
     async onLoad () {
       let that = this
-      this.$parent.getInfo(function(json){
+      let key = wepy.getStorageSync('skey')
+      if (key) {
+        this.get()
+      } else {
+        this.$parent.skeyCallback = skey => {
+          if (skey != '') {
+            this.get()
+          }
+        }
+      }
+    }
+
+    async onShow () {
+      let key = wepy.getStorageSync('init')
+      if (key) {
+        this.get()
+        wepy.setStorageSync('init', '')
+      }
+    }
+
+    async get() {
+      Tips.loading()
+      let that = this
+      this.$parent.get(function(json){
+        Tips.loaded()
         //更新数据
         that.user = json.user
         that.userInfo = json.userInfo
         that.enterprise = json.enterprise
-        that.get()
+        that.employee = json.employee
         console.log('用户数据存入当前页面');
+        that.$apply()
       })
     }
 
-    async get() {
-      const employee = await api.employee()
-      if (employee.success) {
-        this.employee = employee.attributes.data
+    methods = {
+      tel () {
+        wx.makePhoneCall({
+          phoneNumber: this.employee.emp_mobile_phone || '400-7111-011'
+        })
       }
-      this.$apply()
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.get()
+      wepy.stopPullDownRefresh()
     }
 
   }

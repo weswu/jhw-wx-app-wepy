@@ -255,6 +255,7 @@
         var index = e.detail.value
         this[e.currentTarget.id+'Index'] = index
         this.input[e.currentTarget.id] = this.category[index].id
+        this.$apply()
       },
       checkboxChangeOne (e) {
         this.input[e.currentTarget.id] = this.input[e.currentTarget.id] === '1' ? '0' : '1'

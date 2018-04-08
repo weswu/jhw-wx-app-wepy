@@ -2,7 +2,7 @@
   <!-- 添加 -->
   <navigator url="categoryDetail?type={{type}}" class="addObj"><i class="iconfont icon-add"></i></navigator>
 
-  <repeat for="{{list}}" key="index" index="index" item="item" wx:if="{{item.isroot === '01' && !item.belongId}}">
+  <repeat for="{{list}}" key="index" index="index" item="item" wx:if="{{!item.belongId}}">
     <view class="weui-cells">
       <view class="weui-cell weui-cell_input">
           <view class="weui-cell__hd">
@@ -167,7 +167,7 @@
     async submit () {
       var list = ''
       this.list.forEach(function (item, i) {
-        if (item.isroot === '01' && !item.belongId) {
+        if (!item.belongId) {
           if (list === '') { list = 'id=' + item.id + ',name=' + item.name }
           if (list !== '') { list = list + ';id=' + item.id + ',name=' + item.name }
           item.sonCate && item.sonCate.forEach(function (item1, j) {

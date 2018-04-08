@@ -150,6 +150,7 @@ export default class Enterprise extends wepy.page {
       method: 'PUT'
     })
     if (json.success) {
+      this.$parent.globalData.enterprise = this.input
       Tips.success("保存成功");
     } else {
       Tips.error(json.msg)
