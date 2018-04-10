@@ -6,6 +6,7 @@
 
 ### 技术栈
 - [wepy](https://tencent.github.io/wepy/) 开发框架
+- [WeUI](https://weui.io/) UI框架
 - [小程序](http://mp.weixin.qq.com/debug/wxadoc/dev/) 开发文档
 - [阿里图标](http://iconfont.cn) css字体图标
 
@@ -81,4 +82,4 @@ http://wwww.jihui88.com/webview.html?src=xxx
 ### 参考
 [wxYuHanStore](https://github.com/dyq086/wxYuHanStore)
 
-77漫品连江店
+[leshare-shop-wepy](https://github.com/coolhwm/leshare-shop-wepy)
