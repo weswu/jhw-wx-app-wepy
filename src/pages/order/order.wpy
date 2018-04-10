@@ -11,7 +11,7 @@
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
       </view>
-      <view class="chaxun" wx:if="{{grade !== '07'}}">
+      <view class="chaxun" wx:if="{{grade === '01'}}">
         <view><i class="iconfont icon-tishi"></i>
         您还未开通商城，无法查看订单</view>
         咨询请联系：<text @tap="tel">4007111011</text>
@@ -42,7 +42,7 @@ export default class Order extends wepy.page {
     list: [],
     page: 1,
     count: 0,
-    grade: '',
+    grade: '00',
     pic: [],
     more: { loading: true }
   }
@@ -53,8 +53,11 @@ export default class Order extends wepy.page {
     this.$invoke('Tab', 'init', this.activeIndex)
     if (this.$parent.globalData.enterprise.mobileSite === '07' || this.$parent.globalData.enterprise.mobileSite === '14' || this.$parent.globalData.user.userType === '电商版') {
       this.grade = '07'
+      this.get()
+    } else {
+      this.grade = '01'
+      this.$apply()
     }
-    this.get()
   }
 
   methods = {

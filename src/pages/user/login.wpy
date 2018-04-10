@@ -9,6 +9,13 @@
       <view slot="title" class="weui-label">登录密码</view>
       <input slot="input" class="weui-input" placeholder="请输入登录密码" @input="input" id="password" value="{{input.password}}" type="password"/>
     </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">验证码</view>
+      <view slot="input" >
+        <input class="weui-input" placeholder="请输入验证码" @input="input" id="code" value="{{input.code}}"/>
+        <image src="http://www.jihui88.com/alphveriImg{{time}}" class="veriImg" @tap="veriImg">
+      </view>
+    </WInput>
   </view>
   <view class="weui-btn-area">
     <button class="weui-btn" type="primary" @tap="submit">登录</button>
@@ -39,7 +46,10 @@ export default class Login extends wepy.page {
   mixins = [input]
 
   data = {
-    input: {}
+    input: {
+      code: ''
+    },
+    time: ''
   }
 
   onLoad () {}
@@ -49,6 +59,10 @@ export default class Login extends wepy.page {
       wx.makePhoneCall({
         phoneNumber: '4007111011'
       })
+    },
+    veriImg () {
+      this.time = "?time=" + (new Date).getTime()
+      this.$apply()
     }
   }
 
@@ -94,5 +108,13 @@ export default class Login extends wepy.page {
 }
 .copyright {
   text-align: center;clear: both;margin-top: 60px;color: #aaa;line-height: 1.8
+}
+.veriImg{
+  position: absolute;
+  right: 14px;
+  margin-top: -29px;
+  width: 66px;
+  height: 27px;
+  z-index: 999;
 }
 </style>

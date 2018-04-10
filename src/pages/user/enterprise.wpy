@@ -94,7 +94,7 @@ export default class Enterprise extends wepy.page {
       this.get()
     } else {
       this.input = this.$parent.globalData.enterprise
-      this.logo = 'http://img.jihui88.com/' + this.input.logo
+      this.logo = this.input.logo
       this.$apply()
     }
   }

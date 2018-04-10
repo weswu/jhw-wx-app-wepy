@@ -1,5 +1,5 @@
 <template>
-  <view wx:if="{{grade}}">
+  <view wx:if="{{grade === '07'}}">
     <!--搜索-->
     <SearchBar placeholder="请输入用户名" @input.user="input"/>
     <!-- 添加 -->
@@ -9,16 +9,16 @@
     <repeat for="{{list}}" key="index" index="index" item="item">
       <Item :id="item.id" :dx="index+1" :title="item.name || item.username" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
     </repeat>
+    <!-- 加载提示 -->
+    <Loadmore :more.sync="more"/>  
   </view>
 
-  <view class="chaxun" wx:else>
+  <view class="chaxun" wx:if="{{grade === '01'}}">
     <view><i class="iconfont icon-tishi"></i>
     您还未开通商城，无法查看商城客户</view>
     咨询请联系：<text @tap="tel">4007111011</text>
   </view>
 
-  <!-- 加载提示 -->
-  <Loadmore :more.sync="more"/>
 </template>
 
 <script>
@@ -43,14 +43,17 @@ export default class Mmber extends wepy.page {
     name: '',
     count: 0,
     more: { loading: true },
-    grade: false
+    grade: '00'
   }
 
   onLoad () {
     let mobileSite = this.$parent.globalData.enterprise.mobileSite
     if (mobileSite === '7'||mobileSite === '14'||this.$parent.globalData.user.userType === '电商版') {
-      this.grade = true
+      this.grade = '07'
       this.get()
+    } else {
+      this.grade = '01'
+      this.$apply()
     }
   }
 

@@ -8,7 +8,7 @@
     props = {
       src: {
         type: String,
-        default: 'null'
+        default: 'upload/j/j2/jihui88/picture/2018/04/10/37cf0db6-f067-4d24-a95e-2146b95ed5c1.png'
       }
     }
     methods = {

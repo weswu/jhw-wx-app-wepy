@@ -15,7 +15,7 @@
           </repeat>
         </view>
       </view>
-      <view class="weui-tab__content" wx:if="{{grade || activeIndex === '1'}}">
+      <view class="weui-tab__content" wx:if="{{grade === '07' || activeIndex === '1'}}">
         <!--列表-->
         <repeat for="{{list}}" key="index" index="index" item="item">
           <Item :title="item.title" :content="item.state==='0'?'该手机网站暂未开通':item.language === '1'?'中文版':'英文版'" :pic="item.logo"
@@ -24,7 +24,7 @@
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
       </view>
-      <view class="chaxun" wx:else style="color:#999">
+      <view class="chaxun" wx:if="{{grade === '01' && activeIndex === '0'}}" style="color:#999">
         <view>您还未开通手机网站，请联系客服开通</view>
       </view>
     </view>
@@ -53,7 +53,7 @@
       list: [],
       page: 1,
       more: { loading: true },
-      grade: false, //是否开通
+      grade: '00', //是否开通
       category: [
         { name: '全部', id: '' },
         { name: '个人', id: 104 },
@@ -72,8 +72,11 @@
     onLoad () {
       let mobileSite = this.$parent.globalData.enterprise.mobileSite
       if (mobileSite === '01' || mobileSite === '04' || mobileSite === '07' || mobileSite === '14') {
-        this.grade = true
+        this.grade = '07'
         this.get()
+      } else {
+        this.grade = '01'
+        this.$apply()
       }
     }
 

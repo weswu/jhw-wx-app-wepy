@@ -15,7 +15,7 @@
           </repeat>
         </view>
       </view>
-      <view class="weui-tab__content"  wx:if="{{grade || activeIndex === '1'}}">
+      <view class="weui-tab__content"  wx:if="{{grade === '07' || activeIndex === '1'}}">
         <!--列表-->
         <view class="weui-grids">
             <block wx:for="{{list}}" wx:key="*this">
@@ -33,7 +33,7 @@
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
       </view>
-      <view class="chaxun" hidden="!grade" style="color:#999">
+      <view class="chaxun" wx:if="{{grade === '01' && activeIndex === '0'}}" style="color:#999">
         <view>在电脑端输入网址</view>
         <view>http://wcd.jihui88.com/leaflet/index.html</view>
         <view>登录即可免费创建微传单</view>
@@ -64,7 +64,7 @@
       list: [],
       page: 1,
       more: { loading: true },
-      grade: false,
+      grade: '00',
       category: [
         { name: '全部', id: '' },
         { name: 'VIP专属', id: 343798 },
@@ -86,8 +86,11 @@
 
     onLoad () {
       if (this.$parent.globalData.user.wcdMember === '01') {
-        this.grade = true
+        this.grade = '07'
         this.get()
+      } else {
+        this.grade = '01'
+        this.$apply()
       }
     }
 

@@ -11,8 +11,8 @@ import { wxapplogin, user, userInfo, enterprise, employee } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-    'pages/user/login',
       'pages/index/index', 'pages/index/my', 'pages/index/data',
+      'pages/user/login',
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageBind',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
@@ -142,6 +142,9 @@ export default class extends wepy.app {
     const enterp = await enterprise()
     if (enterp.success) {
       this.globalData.enterprise = enterp.attributes.data
+      if (!this.globalData.enterprise.logo) {
+        this.globalData.enterprise.logo = 'upload/j/j2/jhtest/picture/2017/12/13/5f08c692-f8f2-4c5c-b49c-1874303461d4.jpg'
+      }
       wepy.setStorageSync('enterprise', enterp.attributes.data);
     }
     const empl = await employee()
