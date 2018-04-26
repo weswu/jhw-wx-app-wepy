@@ -98,8 +98,8 @@
     }
 
     async onShow () {
-      let key = wepy.getStorageSync('init')
-      if (key) {
+      let init = wepy.getStorageSync('init')
+      if (init) {
         this.get()
         wepy.setStorageSync('init', '')
       }

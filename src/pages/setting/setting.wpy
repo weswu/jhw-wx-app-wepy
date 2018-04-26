@@ -53,6 +53,7 @@ export default class Setting extends wepy.page {
       wepy.setStorageSync('employee', '')
       wepy.setStorageSync('proCategory', '')
       wepy.setStorageSync('newsCategory', '')
+      wepy.setStorageSync('init', true)
       this.$parent.globalData.userInfo = {}
       this.$parent.globalData.user = {}
       this.$parent.globalData.enterprise = {}

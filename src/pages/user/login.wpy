@@ -6,7 +6,7 @@
       <input class="username" placeholder="手机号/帐号" @input="input" id="username" value="{{input.username}}"/>
       <input class="password" placeholder="请输入密码" @input="input" id="password" value="{{input.password}}" type="password"/>
     </view>
-    <button class="submit" type="primary" @tap="submit">登录</button>
+    <button class="weui-btn submit" type="primary" @tap="submit">登录</button>
   </view>
   <view class="other">
     <view class="other-text"><text>其他登录方式</text></view>
@@ -38,7 +38,10 @@ export default class Login extends wepy.page {
     time: ''
   }
 
-  onLoad () {}
+  onLoad () {
+    this.input.username = wepy.getStorageSync('username')
+    this.input.password = wepy.getStorageSync('password')
+  }
 
   methods = {
     weixin () {
@@ -65,6 +68,8 @@ export default class Login extends wepy.page {
   }
 
   async submit (e) {
+    wepy.setStorageSync('username', this.input.username)
+    wepy.setStorageSync('password', this.input.password)
     if (!this.validate()) {
       return;
     }
@@ -81,35 +86,13 @@ export default class Login extends wepy.page {
     Tips.loaded()
     if (json.success) {
       wepy.setStorageSync('init', true)
+      wepy.setStorageSync('username', this.input.username)
+      wepy.setStorageSync('password', this.input.password)
       wx.switchTab({
         url: '/pages/index/index'
       })
     } else {
-      if (json.msg === 'skey无效' && e && e.type === 'tap1') {
-        let u = await wepy.getUserInfo();
-        const login2 = await wepy.login();
-        const resp =  await api.wxapplogin({
-          data: {
-            code: login2.code,
-            encryptedData: u.encryptedData,
-            iv: u.iv,
-            nickName: u.userInfo.nickName,
-            headimgurl: u.userInfo.avatarUrl,
-            appid: this.$parent.globalData.appid,
-            appsecret: this.$parent.globalData.secret
-          },
-          method: 'POST'
-        })
-        if (resp.success) {
-          var data = resp.attributes.data;
-          wepy.setStorageSync('skey', data.skey);
-          this.submit()
-        } else {
-          console.log(resp.msg || 'skey获取失败')
-        }
-      } else {
-        Tips.error(json.msg)
-      }
+      Tips.error(json.msg)
     }
   }
 }
@@ -156,24 +139,6 @@ export default class Login extends wepy.page {
   }
   .password{
     border-top: 1px solid #d9d9d9;
-  }
-  .submit {
-    background: #ff6700;
-    border-radius: 5px;
-    border: 0 none;
-    cursor: pointer;
-    display: block;
-    width: 260px;
-    margin: 0 auto;
-    text-align: center;
-    height: 38px;
-    color: #fff;
-    font-size: 14px;
-    transition: all .3s ease 0s;
-    margin-top: 15px;
-  }
-  .submit:hover {
-    background: #ff4800;
   }
 }
 .other {

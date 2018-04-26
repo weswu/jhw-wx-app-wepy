@@ -1,7 +1,7 @@
 <template>
   <navigator url="{{url}}" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{pic}}">
-          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}" bindload="imageLoad" style="{{height}}"/>
+          <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{pic}}" bindload="imageLoad" style="{{height}}" binderror="errorImage"/>
       </view>
       <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
           {{dx}}
@@ -26,6 +26,7 @@
       url: {},
       title: {},
       content: {},
+      showPic: {},
       pic: {},
       time: {},
       height: {},
@@ -48,6 +49,12 @@
         var viewHeight = viewWidth / ratio;    //计算的高度值
         var height = 'height:' + viewHeight + 'px'
         this.$emit('height', height, this.$index)
+      },
+      errorImage (e) {
+        this.$parent.list[e.target.dataset.comIndex].picPath = 'upload/j/j2/jhtest/picture/2017/12/13/5f08c692-f8f2-4c5c-b49c-1874303461d4.jpg'
+        this.$parent.list[e.target.dataset.comIndex].attaPic = 'upload/j/j2/jhtest/picture/2017/12/13/5f08c692-f8f2-4c5c-b49c-1874303461d4.jpg'
+        this.$parent.list[e.target.dataset.comIndex].logo = 'upload/j/j2/jhtest/picture/2017/12/13/5f08c692-f8f2-4c5c-b49c-1874303461d4.jpg'
+        this.$parent.$apply()
       }
     }
   }
