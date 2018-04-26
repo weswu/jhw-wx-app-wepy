@@ -1,29 +1,19 @@
 <template>
   <Tips />
-  <view class="weui-cells weui-cells_after-title">
-    <WInput>
-      <view slot="title" class="weui-label">用户帐号</view>
-      <input slot="input" class="weui-input" placeholder="请输入用户帐号" @input="input" id="username" value="{{input.username}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">登录密码</view>
-      <input slot="input" class="weui-input" placeholder="请输入登录密码" @input="input" id="password" value="{{input.password}}" type="password"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">验证码</view>
-      <view slot="input" >
-        <input class="weui-input" placeholder="请输入验证码" @input="input" id="code" value="{{input.code}}"/>
-        <image src="http://www.jihui88.com/alphveriImg{{time}}" class="veriImg" @tap="veriImg">
-      </view>
-    </WInput>
+  <view class="logo"><image src="http://www.jihui88.com/member/static/images/f-logo.png" alt=""></view>
+  <view class="login">
+    <view class="form">
+      <input class="username" placeholder="手机号/帐号" @input="input" id="username" value="{{input.username}}"/>
+      <input class="password" placeholder="请输入密码" @input="input" id="password" value="{{input.password}}" type="password"/>
+    </view>
+    <button class="submit" type="primary" @tap="submit">登录</button>
   </view>
-  <view class="weui-btn-area">
-    <button class="weui-btn" type="primary" @tap="submit">登录</button>
-  </view>
-  <view class="question" @tap="tel">登录遇到问题</view>
-  <view class="copyright">
-    浙江机汇网络科技有限公司版权所有
-    <view>服务热线：<a href="javascript:;" @tap="tel">400-7111-011</a></view>
+  <view class="other">
+    <view class="other-text"><text>其他登录方式</text></view>
+    <view class="other-icon">
+      <view @tap="weixin"><i class="iconfont icon-weixin"></i></view>
+      <view @tap="weixin" class="text">微信</view>
+    </view>
   </view>
 </template>
 <script>
@@ -31,7 +21,6 @@ import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import FormTips from '@/components/weui/tips'
-import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 export default class Login extends wepy.page {
   config = {
@@ -39,30 +28,23 @@ export default class Login extends wepy.page {
   }
 
   components = {
-    Tips: FormTips,
-    WInput
+    Tips: FormTips
   }
 
   mixins = [input]
 
   data = {
-    input: {
-      code: ''
-    },
+    input: {},
     time: ''
   }
 
   onLoad () {}
 
   methods = {
-    tel () {
-      wx.makePhoneCall({
-        phoneNumber: '4007111011'
+    weixin () {
+      wx.switchTab({
+        url: '/pages/index/index'
       })
-    },
-    veriImg () {
-      this.time = "?time=" + (new Date).getTime()
-      this.$apply()
     }
   }
 
@@ -82,39 +64,174 @@ export default class Login extends wepy.page {
     return this.check(rules);
   }
 
-  async submit () {
+  async submit (e) {
     if (!this.validate()) {
       return;
     }
+    const login = await wepy.login();
+    this.input.code = login.code
+    this.input.skey = wepy.getStorageSync('skey')
+    this.input.appid = this.$parent.globalData.appid
+    this.input.appsecret = this.$parent.globalData.secret
+    Tips.loading()
     const json = await api.login({
       data: this.input,
       method: 'POST'
     })
+    Tips.loaded()
     if (json.success) {
       wepy.setStorageSync('init', true)
       wx.switchTab({
         url: '/pages/index/index'
       })
     } else {
-      Tips.error(json.msg)
+      if (json.msg === 'skey无效' && e && e.type === 'tap1') {
+        let u = await wepy.getUserInfo();
+        const login2 = await wepy.login();
+        const resp =  await api.wxapplogin({
+          data: {
+            code: login2.code,
+            encryptedData: u.encryptedData,
+            iv: u.iv,
+            nickName: u.userInfo.nickName,
+            headimgurl: u.userInfo.avatarUrl,
+            appid: this.$parent.globalData.appid,
+            appsecret: this.$parent.globalData.secret
+          },
+          method: 'POST'
+        })
+        if (resp.success) {
+          var data = resp.attributes.data;
+          wepy.setStorageSync('skey', data.skey);
+          this.submit()
+        } else {
+          console.log(resp.msg || 'skey获取失败')
+        }
+      } else {
+        Tips.error(json.msg)
+      }
     }
   }
 }
 </script>
 
 <style lang="less">
-.question {
-  float:right;color:#333;padding: 40rpx
+.logo{
+  text-align:center;
+  image{
+    margin: 70px auto 28px;
+    width: 80px;
+    height: 80px;
+  }
+  .weui-cell_inpu{
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+  }
 }
-.copyright {
-  text-align: center;clear: both;margin-top: 60px;color: #aaa;line-height: 1.8
+.login{
+  width: 260px;
+  margin: 0 auto;
+  position: relative;
+  .form{
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    .veriImg{
+      position: absolute;
+      right: 10px;
+      margin-top: -31px;
+      width: 66px;
+      height: 27px;
+      z-index: 999;
+    }
+  }
+  input {
+    border: none;
+    width: 228px;
+    height: 17px;
+    padding: 10px 15px;
+    outline: 0 none;
+    min-height: auto;
+    font-size: 14px;
+  }
+  .password{
+    border-top: 1px solid #d9d9d9;
+  }
+  .submit {
+    background: #ff6700;
+    border-radius: 5px;
+    border: 0 none;
+    cursor: pointer;
+    display: block;
+    width: 260px;
+    margin: 0 auto;
+    text-align: center;
+    height: 38px;
+    color: #fff;
+    font-size: 14px;
+    transition: all .3s ease 0s;
+    margin-top: 15px;
+  }
+  .submit:hover {
+    background: #ff4800;
+  }
 }
-.veriImg{
+.other {
+  padding-top: 50px;
+  text-align: center;
+  .other-text {
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    clear: both;
+    position: relative;
+  }
+  .other-icon {
+    padding-top: 5px;
+  }
+  .iconfont {
+    width: 39px;
+    height: 39px;
+    line-height: 39px;
+    display: inline-block;
+    margin: 0 8px;
+    border: 1px solid #eee;
+    color: #787878;
+    font-size: 24px;
+    border-radius: 100%;
+  }
+}
+.other .other-text:after {
+  content: "";
+  background: url(http://www.jihui88.com/member/static/images/f-border.png) no-repeat;
+  width: 85px;
+  height: 3px;
+  margin: 14px 0 0 -175px;
+  display: inline-block;
   position: absolute;
-  right: 14px;
-  margin-top: -29px;
-  width: 66px;
-  height: 27px;
-  z-index: 999;
+}
+.other .other-text:before {
+  content: "";
+  background: url(http://www.jihui88.com/member/static/images/f-border.png) no-repeat 0 -3px;
+  width: 85px;
+  height: 3px;
+  margin: 14px 0 0 90px;
+  display: inline-block;
+  position: absolute;
+}
+.other .other-text text {
+  width: 90px;
+  display: inline-block;
+  background: #fff;
+  color: #5b5b5b;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+.other .other-icon .text {
+  display: inline-block;
+  width: 50px;
+  color: #9b9b9b;
+  font-size: 12px;
+  margin: 0 5px;
 }
 </style>

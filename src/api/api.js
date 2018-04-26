@@ -4,10 +4,10 @@ const host = 'https://app.jihui88.com'
 
 const wxHost = 'https://wx.jihui88.net'
 
-//微信的code换取sessionKey
+// 微信登录
 const wxapplogin = (params) => http(params, wxHost + "/rest/api/user/wxapplogin");
-// 登录
-const login = (params) => http(params, host + '/rest/api/user/login')
+// 账号登录
+const login = (params) => http(params, wxHost + '/rest/api/user/wxAppLoginByUsernameAndPassword')
 const logout = (params) => http(params, host + '/rest/api/user/logout')
 // 基本数据
 const user = (params) => http(params, host + '/rest/api/user/detail')

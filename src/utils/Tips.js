@@ -9,7 +9,7 @@ export default class Tips {
    * 弹出提示框
    */
 
-  static success (title, duration = 500) {
+  static success (title, duration = 1000) {
     wx.showToast({
       title: title,
       icon: 'success',
@@ -72,7 +72,7 @@ export default class Tips {
       title: title,
       icon: icon,
       mask: true,
-      duration: 500
+      duration: 1000
     });
     // 隐藏结束回调
     if (onHide) {
@@ -90,7 +90,7 @@ export default class Tips {
       title: title,
       image: '/images/tips/alert.png',
       mask: true,
-      duration: 500
+      duration: 1000
     });
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -108,7 +108,7 @@ export default class Tips {
       title: title,
       image: '/images/tips/error.png',
       mask: true,
-      duration: 500
+      duration: 1000
     });
     // 隐藏结束回调
     if (onHide) {

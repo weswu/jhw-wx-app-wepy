@@ -27,7 +27,7 @@
     </view>
   </view>
 
-  <view class="weui-btn-area" hidden>
+  <view class="weui-btn-area">
     <button class="weui-btn" type="primary" @tap="logout">退出账号</button>
   </view>
 </template>
@@ -53,6 +53,10 @@ export default class Setting extends wepy.page {
       wepy.setStorageSync('employee', '')
       wepy.setStorageSync('proCategory', '')
       wepy.setStorageSync('newsCategory', '')
+      this.$parent.globalData.userInfo = {}
+      this.$parent.globalData.user = {}
+      this.$parent.globalData.enterprise = {}
+      this.$parent.globalData.employee = {}
       wx.navigateTo({
         url: '/pages/user/login'
       })
