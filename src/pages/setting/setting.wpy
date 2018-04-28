@@ -45,7 +45,12 @@ export default class Setting extends wepy.page {
   onLoad() {}
 
   async logout () {
-    const json = await api.logout()
+    const json = await api.logout({
+      data: {
+        skey: wepy.getStorageSync('skey')
+      },
+      method: 'POST'
+    })
     if (json.success) {
       wepy.setStorageSync('user', '')
       wepy.setStorageSync('userInfo', '')
@@ -53,6 +58,7 @@ export default class Setting extends wepy.page {
       wepy.setStorageSync('employee', '')
       wepy.setStorageSync('proCategory', '')
       wepy.setStorageSync('newsCategory', '')
+      wepy.setStorageSync('skey', '');
       wepy.setStorageSync('init', true)
       this.$parent.globalData.userInfo = {}
       this.$parent.globalData.user = {}
@@ -61,6 +67,29 @@ export default class Setting extends wepy.page {
       wx.navigateTo({
         url: '/pages/user/login'
       })
+      const login = await wepy.login();
+      if (login.code) {
+        let u = await wepy.getUserInfo();
+        const resp =  await api.wxapplogin({
+          data: {
+            code: login.code,
+            encryptedData: u.encryptedData,
+            iv: u.iv,
+            nickName: u.userInfo.nickName,
+            headimgurl: u.userInfo.avatarUrl,
+            appid: this.$parent.globalData.appid,
+            appsecret: this.$parent.globalData.secret
+          },
+          method: 'POST'
+        })
+        if (resp.success) {
+          var data = resp.attributes.data;
+          wepy.setStorageSync('skey', data.skey);
+
+        } else {
+          console.log(resp.msg || 'skey获取失败')
+        }
+      }
     } else {
       Tips.error(json.msg)
     }

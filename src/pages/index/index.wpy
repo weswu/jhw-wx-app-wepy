@@ -108,6 +108,7 @@
     async get() {
       Tips.loading()
       let that = this
+      wepy.setStorageSync('init', false)
       this.$parent.get(function(json){
         Tips.loaded()
         //更新数据

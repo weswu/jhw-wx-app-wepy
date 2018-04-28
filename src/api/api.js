@@ -8,7 +8,7 @@ const wxHost = 'https://wx.jihui88.net'
 const wxapplogin = (params) => http(params, wxHost + "/rest/api/user/wxapplogin");
 // 账号登录
 const login = (params) => http(params, wxHost + '/rest/api/user/wxAppLoginByUsernameAndPassword')
-const logout = (params) => http(params, host + '/rest/api/user/logout')
+const logout = (params) => http(params, wxHost + '/rest/api/user/wxappLogout')
 // 基本数据
 const user = (params) => http(params, host + '/rest/api/user/detail')
 const userInfo = (params) => http(params, host + '/rest/api/order/home/list')
