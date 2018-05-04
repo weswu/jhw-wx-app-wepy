@@ -11,9 +11,9 @@
       </view>
       <view class="fr" style="width:70%">
         <view><text>提现单号：</text><br>{{dis.mch_billno}}</view>
-        <view><text>提现状态：</text>{{dis.result_code}}</view>
+        <view><text>提现状态：</text>{{dis.result_code === 'SUCCESS' ? '成功' : '失败'}}</view>
         <view><text>提现金额：</text>￥{{dis.total_amount}}</view>
-        <view><text>提现时间：</text>{{dis.send_time}}</view>
+        <view><text>提现时间：</text>{{dis.send_time || ''}}</view>
       </view>
     </view>
   </repeat>

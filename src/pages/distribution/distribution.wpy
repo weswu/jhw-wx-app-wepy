@@ -2,7 +2,7 @@
   <view class="weui-tab">
     <!--TAB-->
     <Tab :tabs.sync="tabs" @change.user="switchTab"/>
-    <view class="weui-tab__panel" wx:if="!chaxun">
+    <view class="weui-tab__panel" wx:if="{{!chaxun}}">
       <view class="weui-tab__content" hidden="{{activeIndex != '0'}}">
         <!--搜索-->
         <SearchBar placeholder="请输入会员编号" @input.user="input"/>
@@ -19,11 +19,13 @@
         <Loadmore :more.sync="more"/>
       </view>
     </view>
-  </view>
-  <view class="chaxun" hidden="chaxun">
-    <view><i class="iconfont icon-tishi"></i>
-    您还未开通微分销，无法查看数据</view>
-    咨询请联系：<text @tap="tel">4007111011</text>
+    <view class="weui-tab__panel" wx:if="{{chaxun}}">
+      <view class="chaxun">
+        <view><i class="iconfont icon-tishi"></i>
+        您还未开通微分销，无法查看数据</view>
+        咨询请联系：<text @tap="tel">4007111011</text>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -106,6 +108,8 @@
       var data = JSON.parse(json.substring(1, json.length - 1))
       if (!data.success) {
         if (this.page === 1) {this.chaxun = true} else { this.more.reachBottom = true }
+        this.more.loading = false
+        this.$apply()
         return false
       }
       if (this.page === 1) {
@@ -146,6 +150,7 @@
         }
       }
       data.attributes.data.forEach(item => {
+        item.nickname = JSON.parse(item.userinfo).nickname
         this.bList.push(item)
       })
       this.more.loading = false

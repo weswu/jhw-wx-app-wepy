@@ -307,7 +307,7 @@ export default class Pay extends wepy.page {
   }
   .journal{
     .weui-media-box__title{
-      font-size: 12px;white-space:normal;
+      font-size: 14px;white-space:normal;
     }
   }
   .weui-tab .weui-navbar {
