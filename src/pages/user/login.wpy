@@ -95,6 +95,8 @@ export default class Login extends wepy.page {
       Tips.error(json.msg)
     }
   }
+
+  onShareAppMessage () {}
 }
 </script>
 
