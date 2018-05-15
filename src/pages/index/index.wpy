@@ -7,8 +7,7 @@
       <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
         <view>账号：{{user.username}}</view>
         <view wx:if='{{userInfo.versions}}'>当前版本：{{userInfo.versions}}</view>
-        <view wx:if="{{userInfo.endTime === '1'}}">已到期,请续费</view>
-        <view wx:elif="{{userInfo.endTime && userInfo.endTime !== '0'}}">到期时间：{{userInfo.endTime}}</view>
+        <view>注册时间：{{user.addTime}}</view>
         <view @tap="tel">服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
       </view>
     </view>
@@ -52,6 +51,7 @@
   import wepy from 'wepy'
   import api from '@/api/api'
   import Tips from '@/utils/Tips'
+  import Utils from '@/utils/Utils'
   export default class Index extends wepy.page {
     data = {
       user: {},
@@ -112,6 +112,7 @@
       this.$parent.get(function(json){
         Tips.loaded()
         //更新数据
+        json.user.addTime = Utils.formatTime(json.user.addTime, 'yyyy-MM-dd hh:mm')
         that.user = json.user
         that.userInfo = json.userInfo
         that.enterprise = json.enterprise
