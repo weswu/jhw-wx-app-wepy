@@ -8,7 +8,7 @@
                 <view wx:if="{{input.fromPhone}}">联系电话:{{input.fromPhone}}</view>
                 <view wx:if="{{input.fromEmail}}">电子邮箱:{{input.fromEmail}}</view>
               </view>
-              <text class="weui-media-box__desc">{{input.content || ''}}</text>
+              <text class="weui-media-box__desc" style="display:block;overflow:visible;line-height:1.4;">{{input.content || ''}}</text>
               <view class="weui-media-box__info">
                   <view class="weui-media-box__info__meta">{{input.addTime}}</view>
               </view>
@@ -67,6 +67,5 @@
       }
       this.$apply()
     }
-
   }
 </script>
