@@ -1,0 +1,245 @@
+<template>
+  <view style="text-align:right;padding:7px 15px;color:#999;font-size:12px;">
+    按住拖动排序
+  </view>
+  <view style="position: relative; z-index: 199;">
+  	<view class="touchView" style="height:{{scrollPosition.scrollViewHeight}}px;"  catchtouchstart="scrollTouchStart"
+  		  catchtouchmove="scrollTouchMove" catchtouchend="scrollTouchEnd">
+  	</view>
+  	<movable-area class="moveable_row {{movableViewPosition.className}}"
+  				  style="height: {{scrollPosition.scrollViewHeight}}px;">
+  		<movable-view style="height: {{scrollPosition.everyOptionCell}}px; width: 100%; background-color: #fff;"
+  					  direction="vertical" x="{{movableViewPosition.x}}" y="{{movableViewPosition.y}}"
+  					  inertia="false" damping="9999"  friction="9999">
+              <label class="weui-cell weui-check__label">
+                  <checkbox class="weui-check" value="{{movableViewPosition.data.value}}" checked="{{movableViewPosition.data.checked}}"/>
+                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!movableViewPosition.data.checked}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{movableViewPosition.data.checked}}"></icon>
+                  </view>
+                  <view class="weui-cell__bd">{{movableViewPosition.data.name}}</view>
+                  <view class="weui-cell__ft">
+                      <i class="iconfont icon-tuozhuaicaidandaohang"></i>
+                  </view>
+              </label>
+  		</movable-view>
+  	</movable-area>
+  	<scroll-view class="edit_row_holder" scroll-y="{{scrollPosition.scrollY}}" style="height: {{scrollPosition.scrollViewHeight}}px;" bindscroll="bindscroll">
+      <view class="weui-cells  weui-cells_after-title">
+        <checkbox-group @change="checkboxChange">
+            <label class="weui-cell weui-check__label {{item.selectClass}}" wx:for="{{optionsListData}}" wx:key="*this">
+                <checkbox class="weui-check" value="{{item.value}}" checked="{{item.checked}}"/>
+                <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                    <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!item.checked}}"></icon>
+                    <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{item.checked}}"></icon>
+                </view>
+                <view class="weui-cell__bd">{{item.name}}</view>
+                <view class="weui-cell__ft">
+                    <i class="iconfont icon-tuozhuaicaidandaohang"></i>
+                </view>
+            </label>
+        </checkbox-group>
+      </view>
+  	</scroll-view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Module extends wepy.page {
+  config = {
+    navigationBarTitleText: '所有模块',
+    enablePullDownRefresh: false
+  }
+  components = {}
+
+  data = {
+    scrollPosition:{
+      everyOptionCell:43,
+      top:33,
+      scrollTop:0,
+      scrollY:true,
+      scrollViewHeight:1000,
+      scrollViewWidth:375,
+      windowViewHeight:1000
+    },
+    movableViewPosition:{
+      x:0,
+      y:0,
+      className:"none",
+      data:{}
+    },
+    selectItemInfo:{
+        value:"",
+        selectIndex: -1,
+        selectPosition:0,
+    },
+    optionsListData: [
+      {name: '我的产品', value:'product', checked: true},
+      {name: '订单管理', value:'order', checked: false},
+      {name: '常用工具', value:'tool', checked: true},
+      {name: '数据管理中心', value:'data', checked: true}
+    ]
+  }
+
+  onLoad () {
+    // 开始加载页面
+    var systemInfo= wx.getSystemInfoSync()
+    this.optionsListData = this.optionsDataTranlate(this.optionsListData, '')
+    this.scrollPosition.scrollViewWidth= systemInfo.windowHeight-33
+    this.scrollPosition.scrollViewHeight= systemInfo.windowWidth
+    this.scrollPosition.windowViewHeight= systemInfo.windowHeight
+    this.$apply()
+  }
+
+
+  optionsDataTranlate (optionsList,selectClass) {
+      for(var i=0,j=optionsList.length;i<j;i++){
+          optionsList[i].selectClass = selectClass;
+      }
+      return optionsList;
+  }
+
+
+
+  getOptionInfo (code) {
+      for(var i=0,j=this.data.optionsListData.length;i<j;i++){
+          var optionData= this.data.optionsListData[i];
+          if(optionData.value == code){
+              optionData.selectIndex = i;
+              return optionData;
+          }
+      }
+      return {};
+  }
+  getPositionDomByXY (potions) {
+      var y = potions.y-this.scrollPosition.top+this.scrollPosition.scrollTop;
+      var optionsListData = this.optionsListData;
+      var everyOptionCell = this.scrollPosition.everyOptionCell;
+      for(var i=0,j=optionsListData.length;i<j;i++){
+          if(y>=i*everyOptionCell&&y<(i+1)*everyOptionCell){
+              return optionsListData[i];
+          }
+      }
+      return optionsListData[0];
+  }
+
+  scrollTouchStart (event) {
+      var firstTouchPosition = {
+          x:event.changedTouches[0].pageX,
+          y:event.changedTouches[0].pageY,
+      }
+      var domData = this.getPositionDomByXY(firstTouchPosition);
+      console.log("domData:",domData);
+
+      //movable-area滑块位置处理
+      var movableX = 0;
+      var movableY = firstTouchPosition.y-this.scrollPosition.top-this.scrollPosition.everyOptionCell/2;
+
+      this.movableViewPosition = {
+          x:movableX,
+          y:movableY,
+          className:"",
+          data:domData
+      }
+      var secCode = domData.value;
+      var secInfo = this.getOptionInfo(secCode);
+      secInfo.selectPosition =  event.changedTouches[0].clientY;
+      secInfo.selectClass = "dragSelected";
+
+      this.optionsListData[secInfo.selectIndex].selectClass = "dragSelected";
+
+      this.selectItemInfo = secInfo
+      this.scrollPosition.scrollY = false
+      this.scrollPosition.selectIndex = secInfo.selectIndex
+      this.$apply()
+  }
+  scrollTouchMove (event) {
+      var selectItemInfo = this.selectItemInfo;
+      var selectPosition = selectItemInfo.selectPosition;
+      var moveDistance   = event.changedTouches[0].clientY;
+      var everyOptionCell = this.scrollPosition.everyOptionCell;
+      var optionsListData = this.optionsListData;
+      var selectIndex = selectItemInfo.selectIndex;
+
+      console.log("event.changedTouches:",event.changedTouches);
+      //movable-area滑块位置处理
+      var movableX = 0;
+      var movableY = event.changedTouches[0].pageY-this.data.scrollPosition.top-this.data.scrollPosition.everyOptionCell/2;
+
+
+      this.movableViewPosition = {
+          x:movableX,
+          y:movableY,
+          className:"",
+          data:this.data.movableViewPosition.data
+      }
+
+      if(moveDistance - selectPosition > 0 && selectIndex < optionsListData.length - 1){
+          if (optionsListData[selectIndex].value == selectItemInfo.value) {
+              optionsListData.splice(selectIndex, 1);
+              optionsListData.splice(++selectIndex, 0, selectItemInfo);
+              selectPosition += everyOptionCell;
+          }
+      }
+
+      if (moveDistance - selectPosition < 0 && selectIndex > 0) {
+          if (optionsListData[selectIndex].value == selectItemInfo.value) {
+              optionsListData.splice(selectIndex, 1);
+              optionsListData.splice(--selectIndex, 0, selectItemInfo);
+              selectPosition -= everyOptionCell;
+          }
+      }
+      this.selectItemInfo.selectPosition = selectPosition
+      this.selectItemInfo.selectIndex = selectIndex
+      this.optionsListData = optionsListData
+      this.$apply()
+  }
+  scrollTouchEnd (event) {
+      console.log(event);
+      var optionsListData = this.optionsDataTranlate(this.data.optionsListData,"");
+
+      this.scrollPosition.scrollY = true
+      this.movableViewPosition.className = 'none'
+      this.optionsListData = optionsListData
+      this.$apply()
+  }
+
+
+  checkboxChange (e) {
+    var checkboxItems = this.data.optionsListData, values = e.detail.value
+    for (var i = 0, lenI = checkboxItems.length; i < lenI; ++i) {
+        checkboxItems[i].checked = false
+        for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
+            if(checkboxItems[i].value == values[j]){
+                checkboxItems[i].checked = true
+                break
+            }
+        }
+    }
+    this.checkboxItems = checkboxItems
+    this.$apply()
+  }
+
+}
+</script>
+<style lang="less">
+page {
+  background-color: #f1f1f1;
+}
+
+.touchView{z-index: 200; width: 100px;position: absolute;top: 0;left:275px; top: 0;}
+
+.moveable_row{
+  height: 0px;
+  width: 100%; position: absolute;top: 0;left: 0; z-index: 100;
+  &.none{
+    display: none !important;
+  }
+  .weui-cell{
+    background:#fff;
+    box-shadow: 0 0 12px rgba(0,0,0,.2)
+  }
+}
+
+.dragSelected{  background-color: #ccc;}
+</style>

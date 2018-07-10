@@ -1,48 +1,117 @@
 <template>
-  <view class="header">
-    <view class="weui-media-box weui-media-box_appmsg">
-      <navigator url="/pages/user/enterprise" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-        <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{enterprise.logo}}"/>
-      </navigator>
-      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-        <view>账号：{{user.username}}</view>
-        <view>注册时间：{{user.addTime}}</view>
-        <view @tap="tel">服务热线：{{employee.emp_mobile_phone || '400-7111-011'}}</view>
-      </view>
+
+  <!-- 轮播 -->
+  <view class="swiper-container">
+    <swiper class="swiper_box" bindchange="swiperChange" style="{{swiperHeight}}"
+       autoplay="{{swiperTrue}}" circular="{{swiperTrue}}" interval="3000" duration="500">
+        <block wx:for="{{images}}" wx:key="item.attId" wx:for-index="index">
+            <swiper-item>
+                <image mode="widthFix" src="http://img.jihui88.com/{{item.serverPath}}" bindload="imageLoad"/>
+            </swiper-item>
+        </block>
+    </swiper>
+    <view class="dots" wx:if="{{images.length > 1}}">
+      <block wx:for="{{images}}" wx:key="item.attId" wx:for-index="idx">
+        <view class="dot{{idx == swiperCurrent ? ' active' : ''}}"></view>
+      </block>
     </view>
-    <navigator url="/pages/setting/setting" style='position: absolute;top: 11px;right: 15px;color:#fff'>
-      <i class="iconfont icon-circularset" style="color:#fff;font-size:50rpx"></i>
-    </navigator>
+  </view>
+  <!-- 签到 -->
+  <view class="signIn">
+    <i class="iconfont icon-qiandao"></i>
+    <button type="primary" plain="true" size="mini">签到</button>
+  </view>
+  <!-- 认识 -->
+  <view class="weui-grids grids1">
+    <block>
+      <view class="weui-grid" hover-class="weui-grid_active">
+        <view class="image"><image mode="widthFix" src="../../images/index/logo.png"/></view>
+        <view class="weui-grid__label">认识机汇网</view>
+      </view>
+    </block>
+    <block>
+      <view class="weui-grid" hover-class="weui-grid_active" @tap="toMiniProgram" style="border-right:none;">
+        <view class="image images"><i class="iconfont icon-chanpin" style="color:{{item.color}}"></i></view>
+        <view class="weui-grid__label">机汇网所有产品</view>
+      </view>
+    </block>
+  </view>
+  <view class="hr"/>
+  <!-- 头条 -->
+  <view class="weui-article">
+      <view class="weui-article__h3">机汇头条</view>
+      <view class="weui-article__banner">
+          <view class="title">10分钟入门</view>
+          <view class="content">
+            快速了解机汇网产品
+          </view>
+      </view>
+  </view>
+  <view class="hr"/>
+  <view class="weui-cell weui-cells_in-small-appmsg gonggao">
+    <view class="weui-cell__hd">
+      <i class="iconfont icon-gonggao"></i>
+    </view>
+    <view class="weui-cell__bd">
+      <view>机汇网后台界面全新改版上线，敬请期待！</view>
+      <view>机汇网小程序后台界面全新改版上线，敬请期待！</view>
+    </view>
   </view>
 
-  <view class='status'>
-    <view class="ul">
-      <navigator url="/pages/order/order?active=1" class='li'>
-        <view class='status_num'>{{userInfo.unpaid || 0}}</view><view class='status_txt'>待付款</view>
-      </navigator>
-      <navigator url="/pages/order/order?active=2" class='li' >
-        <view class='status_num op'>{{userInfo.unshipped || 0}}</view> <view class='status_txt'>待发货</view>
-      </navigator>
-      <navigator url="/pages/order/order?active=3" class='li' >
-        <view class='status_num'> {{userInfo.shipped || 0}}</view><view class='status_txt'>待收货</view>
-      </navigator>
-      <view  @tap="goMessage" class='li'>
-        <view class='status_num'>{{userInfo.unread || 0}}</view><view class='status_txt'>未读询盘</view>
-      </view>
-    </view>
-    <navigator url="/pages/order/order?active=0" class="weui-cell weui-cell_access weui-cells_in-small-appmsg">
-      <view class="weui-cell__bd">已卖出的货品</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access">全部订单</view>
-    </navigator>
+  <!-- 服务市场 -->
+  <view class="hr"/>
+  <view class="weui-cell weui-cells_in-small-appmsg">
+    <view class="weui-cell__bd">服务市场</view>
+    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
   </view>
-
-  <view class="weui-grids">
-    <block wx:for="{{grids}}" wx:key="*this">
+  <view class="weui-grids market">
+    <block wx:for="{{market}}" wx:key="*this">
       <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
-        <i class="iconfont icon-{{item.icon}}" style="color:{{item.color}}"></i>
-        <view class="weui-grid__label">{{item.name}}</view>
+        <view class="weui-grid__icon">
+          <i class="iconfont {{item.icon}}"></i>
+        </view>
+        <view class="weui-grid__label">
+          {{item.name}}
+          <view class="content">
+            {{item.content}}
+          </view>
+        </view>
       </navigator>
     </block>
+  </view>
+
+    <!-- 玩转机汇网 -->
+  <view class="hr"/>
+  <view class="weui-cell weui-cells_in-small-appmsg">
+    <view class="weui-cell__bd">玩转机汇网</view>
+    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  </view>
+  <view class="weui-grids market play">
+    <block wx:for="{{grids}}" wx:key="*this">
+      <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
+        <view class="weui-grid__icon">
+          <i class="iconfont {{item.icon}}"></i>
+        </view>
+        <view class="weui-grid__label">
+          {{item.name}}
+          <view class="content">
+            {{item.content}}
+          </view>
+        </view>
+      </navigator>
+    </block>
+  </view>
+  <view class="weui-article" style="padding-top:0">
+      <view class="weui-article__banner">
+          <view class="title">建站教程</view>
+          <view class="content">
+            轻松搭建网站
+          </view>
+      </view>
+      <view class="news">
+        <view><text>精选</text>机汇网后台界面全新改版上线，敬请期待！</view>
+        <view><text>精选</text>机汇网小程序后台界面全新改版上线，敬请期待！</view>
+      </view>
   </view>
 </template>
 
@@ -53,23 +122,22 @@
   import Utils from '@/utils/Utils'
   export default class Index extends wepy.page {
     data = {
-      user: {},
-      userInfo: {},
-      enterprise: {},
-      employee: {},
+      // 轮播
+      images: [
+        {}, {}, {}, {}
+      ],
+      swiperTrue: true,
+      swiperHeight: 0,
+      swiperCurrent: 0,
+      market: [
+        {url: '', name: '全民建站', icon: 'icon-wangzhan', content: '海量模板供应'},
+        {url: '', name: '企业应用', icon: 'icon-qiye', content: '助力企业成长'},
+        {url: '', name: '微信端', icon: 'icon-weixin', content: '小程序海量模板'},
+        {url: '', name: '企业大脑', icon: 'icon-danao', content: '让企业智能办公'}
+      ],
       grids: [
-        {url: '/pages/data/data', name: '商城数据', icon: 'tongji', color: '#5bba19'},
-        {url: '/pages/mobile/mobile', name: '微网站', icon: 'weiwangzhan', color: '#8da5cb'},
-        {url: '/pages/wcd/wcd', name: '微传单', icon: 'weizhan', color: '#FF6000'},
-        {url: '/pages/distribution/distribution', name: '微分销', icon: 'fenxiao', color: '#8da5cb'},
-        {url: '/pages/member/member', name: '会员管理', icon: 'huiyuan', color: '#52abec'},
-        {url: '/pages/service/video', name: '视频教程', icon: 'shipin', color: '#FF6000'},
-        {url: '/pages/service/cnzz', name: '流量分析', icon: 'fenxi', color: '#8da5cb'},
-        {url: '/pages/service/seoHelp', name: 'SEO帮助', icon: 'seo', color: '#5bba19'},
-        {url: '/pages/servicepay/pay', name: '服务缴费', icon: 'jiaofei', color: '#FF6000'},
-        {url: '/pages/service/progress', name: '服务进度', icon: 'f12', color: '#8da5cb'},
-        {url: '/pages/point/point', name: '我的积分', icon: 'xinwen', color: '#5bba19'},
-        {url: '/pages/spread/spread', name: '参与推广', icon: 'pengyou', color: '#f69215'}
+        {url: '', name: '建站快速入门', icon: 'icon-beginnerguide', content: '按步骤指导操作'},
+        {url: '', name: '常见问题', icon: 'icon-kuaisurumen', content: '自助排除故障'}
       ]
     }
 
@@ -124,9 +192,33 @@
     }
 
     methods = {
-      tel () {
-        wx.makePhoneCall({
-          phoneNumber: this.employee.emp_mobile_phone || '400-7111-011'
+      // 轮播
+      imageLoad (e) {
+        var $width = e.detail.width,    //获取图片真实宽度
+          $height = e.detail.height,
+          ratio = $width / $height;    //图片的真实宽高比例
+
+        var viewWidth = wx.getSystemInfoSync().windowWidth;    //窗口宽度
+        var viewHeight = viewWidth / ratio;    //计算的高度值
+        this.swiperHeight = 'height:' + viewHeight + 'px'
+        this.$apply()
+      },
+      swiperChange (e){
+        this.swiperCurrent = e.detail.current
+        this.$apply()
+      },
+      // 跳转
+      toMiniProgram () {
+        wx.navigateToMiniProgram({
+          appId: 'wx031271ed9d1f909f',
+          path: 'pages/index/index',
+          extraData: {
+            foo: 'bar'
+          },
+          envVersion: 'develop',
+          success(res) {
+            // 打开成功
+          }
         })
       }
     }
@@ -140,33 +232,125 @@
   }
 </script>
 <style lang="less">
-.header {
-  position: relative;
-  background: url(http://app.jihui88.com/static/img/user-bg.jpg) no-repeat;
-  background-size: cover;
-  overflow: hidden;
-  color: #fff;
-  .weui-media-box__hd_in-appmsg {
-    width:70px;
-    height:70px;
-    image{
-      border-radius: 100%;
+/* 轮播 */
+.swiper_box{
+  background: #22252a
+}
+swiper-item image{width:750rpx;}
+/* 自定义轮播小圆点 */
+.swiper-container{position:relative}
+.swiper-container .dots{position:absolute;left:0;right:0;bottom:20rpx;display:flex;justify-content:center}
+.swiper-container .dots .dot{margin:0 5rpx;width:24rpx;height:4rpx;background: rgba(255, 255, 255, .3);transition:all .6s}
+.swiper-container .dots .dot.active{background:#fff;}
+/* 签到 */
+.signIn{
+  position:absolute;
+  right:32rpx;
+  margin-top:-80px;
+  text-align: center;
+  .iconfont{
+    color: #12bedb;
+    font-size: 28px;
+    display: block;
+  }
+  button{
+    background: #2f333b;
+    font-size: 12px;
+    padding:0 10rpx;
+    line-height:36rpx;
+    border-radius:18rpx;
+  }
+}
+/*  认识  */
+.weui-grids{
+  border-left:none;
+  .weui-grid{
+    width: 50%;
+    &:nth-child(2n+0){
+      border-right: none;
     }
   }
 }
-.weui-grid {
-  width:25%;text-align:center;
-  background: #fff;
-  i {
-    font-size: 50rpx;
+.grids1{
+  border-top:none;
+  .weui-grid{
+    text-align: center;
+    border-bottom: none;
+  }
+  image,.image{
+    width: 94rpx;
+    height: 94rpx;
+    margin: 0 auto;
+  }
+  .images{
+    background: #00c1de;
+    line-height: 94rpx;
+    .iconfont{
+      font-size: 50rpx;
+      color: #fff;
+    }
   }
 }
-.status{background: #fff;margin-bottom: 30rpx}
-.status>.ul{overflow: hidden;margin: 0;padding:.3rem 0;border-bottom:1px solid #e5e5e5;display: -webkit-flex;display:-moz-box;display:-webkit-box;display:-moz-flex;display:-ms-flexbox;display:-ms-flex}
-.status>.ul>.li{width: 25%;-webkit-box-flex:1;-moz-box-flex:1;-webkit-flex:1 1 0%;-moz-flex:1 1 0;-ms-flex:1 1 0%;flex:1 1 0%;display:block;padding:.3rem 0}
-.status_num,.status_txt{display:block;line-height:1.5;text-align:center;color:#bbb}
-.status_txt{color:#999}.status_num{font-size:.8rem}
-.weui-grids{
-  margin-bottom: 20rpx
+/*  banner  */
+.weui-article{
+  padding:36rpx 15px;
+}
+.weui-article__banner{
+  height: 166rpx;
+  background: #5d5d5d;
+  text-align: center;
+  .title{
+    color: #fff;
+    padding-top: 40rpx;
+  }
+  .content{
+    color: #b6b6b6;
+  }
+}
+/*  头条  */
+.gonggao{
+  .weui-cell__bd view{
+    color: #4e4e4e;
+    font-size: 12px;
+  }
+  .weui-cell__hd .iconfont{
+    font-size:28px;
+    color: #ffbb04;
+    margin-right:20rpx;
+  }
+}
+/*  服务市场  */
+.market{
+  .weui-grid__icon{
+    display: inline-block;vertical-align:45%;
+    padding: 0 20rpx 0 30rpx;
+    i{color: #02c1e0;font-size: 28px}
+  }
+  .weui-grid__label{
+    display: inline-block;
+    color: #565656;
+    text-align: left;
+    .content{
+      color: #9999a4;
+    }
+  }
+  &.play{
+    .weui-grid{
+      border:none;
+    }
+  }
+}
+.news{
+  margin-top: 32rpx;
+  text{
+    border: 1px solid #f4785e;color: #f4785e;
+    margin-right: 10rpx;
+    padding:0 6rpx;
+    font-size: 12px;
+  }
+  view{
+    font-size: 12px;
+    color: #4e4e4e;margin-bottom:3px;
+  }
 }
 </style>

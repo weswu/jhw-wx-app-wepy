@@ -6,7 +6,7 @@
       <input class="username" placeholder="手机号/帐号" @input="input" id="username" value="{{input.username}}"/>
       <input class="password" placeholder="请输入密码" @input="input" id="password" value="{{input.password}}" type="password"/>
     </view>
-    <button class="weui-btn submit" type="primary" @tap="submit">登录</button>
+    <button class="weui-btn submit" type="primary" @tap="submit" style="background:#ff6700">登录</button>
   </view>
   <view class="other">
     <view class="other-text"><text>其他登录方式</text></view>

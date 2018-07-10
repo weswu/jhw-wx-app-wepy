@@ -2,6 +2,36 @@
 @import "variable";
 
 //******weui fix******/
+
+// 面板
+.weui-panel{
+  margin-top: 32rpx;
+}
+.weui-panel:before,.weui-panel:after{
+  border: none
+}
+.weui-panel__hd:after{
+  left: 0;
+}
+// 列表
+.weui-cells{
+  &:before{
+    border: none;
+  }
+  &:after{
+    border: none;
+  }
+}
+.weui-cell{
+  &:before{
+    left: 0;
+  }
+}
+.weui-cell__hd .iconfont{
+  color: #12bedb;font-size:20px;margin-right: 7px;
+}
+
+
 .form{
   .weui-vcode-btn {
     color:@color-primary;
@@ -19,10 +49,7 @@
     vertical-align:middle;
   }
 }
-// 列表去右边15px
-.weui-cell::before,.weui-media-box::before,.weui-panel__hd:after{
-  right: 15px;
-}
+
 // 列表顶部去top边框
 .weui-media-box:nth-child(0)::before{
   border-top: none

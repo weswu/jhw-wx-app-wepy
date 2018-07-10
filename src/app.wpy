@@ -11,10 +11,11 @@ import { wxapplogin, user, userInfo, enterprise, employee } from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/message/message', 'pages/message/messageList', 'pages/message/messageDetail', 'pages/message/messageBind',
+      'pages/index/index', 'pages/index/my',
       'pages/user/login',
-      'pages/index/index', 'pages/index/my', 'pages/index/data',
+      'pages/console/module', 'pages/console/console',
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
-      'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageBind',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
       'pages/wcd/wcd',
@@ -40,16 +41,16 @@ export default class extends wepy.app {
       'pages/user/publish'
     ],
     window: {
-      backgroundColor: '#ffffff',
+      backgroundColor: '#fff',
       backgroundTextStyle: 'dark',
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#373d40',
       navigationBarTitleText: '全网营销云',
-      navigationBarTextStyle: 'black',
+      navigationBarTextStyle: 'white',
       enablePullDownRefresh: true
     },
     "tabBar": {
-      "color": "#9b9b9b",
-      "selectedColor": "#ff6214",
+      "color": "#9f9f9f",
+      "selectedColor": "#12bedb",
       "backgroundColor": "#fff",
       "borderStyle": "black",
       "list": [
@@ -57,19 +58,19 @@ export default class extends wepy.app {
           "iconPath": "images/tabBar/home.png",
           "selectedIconPath": "images/tabBar/home_active.png",
           "pagePath": "pages/index/index",
-          "text": "首页"
+          "text": "机汇网"
         },
         {
-          "iconPath": "images/tabBar/data.png",
-          "selectedIconPath": "images/tabBar/data_active.png",
-          "pagePath": "pages/index/data",
-          "text": "数据"
+          "iconPath": "images/tabBar/console.png",
+          "selectedIconPath": "images/tabBar/console_active.png",
+          "pagePath": "pages/console/console",
+          "text": "控制台"
         },
         {
           "iconPath": "images/tabBar/message.png",
           "selectedIconPath": "images/tabBar/message_active.png",
           "pagePath": "pages/message/message",
-          "text": "询盘"
+          "text": "消息"
         },
         {
           "iconPath": "images/tabBar/my.png",
@@ -82,7 +83,9 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: {},
+    userInfo: {
+      noReaderMsg: 0
+    },
     user: {},
     enterprise: {},
     employee: {},
@@ -101,7 +104,7 @@ export default class extends wepy.app {
     console.log('启动');
     //用户信息
     const login = await wepy.login();
-    if (login.code) {
+    if (!login.code) {
       let u = await wepy.getUserInfo();
       const resp =  await wxapplogin({
         data: {

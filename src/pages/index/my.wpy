@@ -1,30 +1,95 @@
 <template>
-  <view class="weui-cells weui-cells_in-small-appmsg">
-    <navigator url="/pages/user/user" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">账号资料</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-    <navigator url="/pages/user/enterprise" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">企业资料</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-    <navigator url="/pages/bind/bind" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">域名绑定</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-    <navigator url="/pages/user/publish" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">一键发布</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-  </view>
+  <view class="bg-gray j_my">
+    <view class="weui-panel">
+      <view class="weui-media-box weui-media-box_appmsg">
+          <navigator url="" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <i class="iconfont icon-huiyuan1 weui-media-box__thumb"></i>
+          </navigator>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">Hi，您未登录
+              <navigator url="/pages/user/login" class="login-btn">
+                <button class="weui-btn" type="primary" plain="true" size="mini">登录\n/\n注册</button>
+              </navigator>
+            </view>
+          </view>
+      </view>
 
-  <view class="weui-panel weui-panel_access">
-    <view class="weui-panel__ft">
+      <navigator url="/pages/message/message" style='position: absolute;top: 11px;right: 15px;color:#fff'>
+        <i class="iconfont icon-mail" style="color:#fff;font-size:45rpx"></i>
+      </navigator>
+    </view>
+    <view class="weui-panel weui-panel_access" style="margin-top:0;">
+      <navigator url="" class="weui-cell weui-cell_access">
+          <view class="weui-cell__hd">
+            <i class="iconfont icon-price" style="color:#f67d73"></i>
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">费用中心</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+    </view>
+
+    <view class="weui-panel">
+      <navigator url="/pages/point/point" class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-qiandao"></i>
+        </view>
+        <view class="weui-cell__bd">每日签到</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="/pages/point/point" class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-jifen"></i>
+        </view>
+        <view class="weui-cell__bd">积分管理</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="/pages/user/user" class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-web-icon-"></i>
+        </view>
+        <view class="weui-cell__bd">推荐奖励</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+    </view>
+
+    <view class="weui-panel">
+      <navigator url="/pages/setting/serviceFeedback"  class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-erji"></i>
+        </view>
+        <view class="weui-cell__bd">服务反馈</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+      <navigator url="/pages/service/service"  class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-paimaizixun"></i>
+        </view>
+        <view class="weui-cell__bd">咨询与建议</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+    </view>
+
+    <view class="weui-panel">
+      <navigator url="/pages/user/user"  class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-account-only"></i>
+        </view>
+        <view class="weui-cell__bd">账号信息</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+      </navigator>
+    </view>
+
+    <view class="weui-panel">
       <navigator url="/pages/setting/setting"  class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd">
+          <i class="iconfont icon-shezhi"></i>
+        </view>
         <view class="weui-cell__bd">设置</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
+
+    <view class="crpt">技术支持：机汇网</view>
   </view>
 </template>
 <script>
@@ -40,3 +105,34 @@ export default class My extends wepy.page {
   onLoad() {}
 }
 </script>
+
+<style lang="less">
+  .j_my{
+    .weui-media-box{
+      padding: 36px 22px 24px 22px;
+    }
+    .weui-media-box_appmsg{
+      background:#373d40;color:#fff;
+      .weui-media-box__title{
+        font-size: 14px;
+      }
+      .login-btn{
+        margin-left: 16rpx;
+        display: inline-block;
+        button{
+          vertical-align:bottom
+        }
+      }
+      .iconfont{
+        background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
+      }
+    }
+    .crpt{
+      margin:0 auto;
+      padding: 20px 0;
+      text-align:center;
+      color:#c6c6cd;
+      font-size:12px;background-color:#f1f1f1;
+    }
+  }
+</style>

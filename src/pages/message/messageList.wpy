@@ -1,0 +1,100 @@
+<template>
+  <!-- 添加 -->
+  <navigator url="messageBind" class="addObj"><i class="iconfont icon-appicon06"></i></navigator>
+
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <Item :id="item.id" :title="item.title" :content="item.addTime + (item.recvState === '00' ? '   未读' : '')" :url="'messageDetail?id='+item.id" :operation="operation" @del.user="del"/>
+  </repeat>
+
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Item from '@/components/weui/item'
+import Loadmore from '@/components/weui/loadmore'
+export default class Message extends wepy.page {
+  config = {}
+  components = {
+    Item,
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    page: 1,
+    recvState: '',
+    count: 0,
+    more: { loading: true },
+    operation: true
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  onShow () {
+    var recvState = this.$parent.globalData.recvState || ''
+    if (this.recvState !== recvState) {
+      this.list = []
+      this.recvState = recvState
+      this.get()
+    }
+  }
+
+  onHide () {
+    this.$parent.globalData.recvState = ''
+  }
+
+  async get () {
+    const json = await api.message({
+      data: {
+        page: this.page,
+        recvState: this.recvState || ''
+      }
+    })
+    await Utils.scrollList(this, json, '网站询盘')
+  }
+
+  methods = {
+    // 删除
+    async del (e) {
+      await Tips.confirm('确认删除吗？')
+      Tips.loading()
+      const json = await api.messageDetail({
+        method: 'DELETE',
+        id: e
+      })
+      Tips.loaded()
+      if (json.success) {
+        await Utils.del(this, e, '网站询盘')
+        Tips.success('删除成功')
+      }
+    }
+  }
+
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.page = 1
+    this.list = []
+    this.more.loading = true
+    await this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.page += 1
+    this.get()
+  }
+
+}
+</script>

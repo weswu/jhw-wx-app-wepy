@@ -1,100 +1,100 @@
 <template>
-  <!-- 添加 -->
-  <navigator url="messageBind" class="addObj"><i class="iconfont icon-appicon06"></i></navigator>
-
-  <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item">
-    <Item :id="item.id" :title="item.title" :content="item.addTime + (item.recvState === '00' ? '   未读' : '')" :url="'messageDetail?id='+item.id" :operation="operation" @del.user="del"/>
-  </repeat>
-
-  <!-- 加载提示 -->
-  <Loadmore :more.sync="more"/>
+  <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell" wx:for="{{list}}" wx:key="*this">
+          <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+            <view class="icon" style="background:#{{item.color}}"><i class="iconfont {{item.icon}}"></i></view>
+            <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{item.count !== 0}}">{{item.count}}</view>
+          </view>
+          <view class="weui-cell__bd">
+              <view>{{item.name}}</view>
+              <view class="content">{{item.content}}</view>
+          </view>
+          <view class="weui-cell__ft">{{item.time}}</view>
+      </view>
+  </view>
 </template>
 
 <script>
 import wepy from 'wepy';
 import api from '@/api/api'
-import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
-import Item from '@/components/weui/item'
-import Loadmore from '@/components/weui/loadmore'
 export default class Message extends wepy.page {
-  config = {}
-  components = {
-    Item,
-    Loadmore
+  config = {
+    navigationBarTitleText: '消息'
   }
 
   data = {
-    list: [],
-    page: 1,
-    recvState: '',
-    count: 0,
-    more: { loading: true },
-    operation: true
+    list: [
+      {
+        name: '客户消息', count: '80', icon: 'icon-kehu', color: '59b5f9', content: '我想购买关于这个产品，请问下价格，请相关负责人联系', time: 1467289082007
+      },
+      {
+        name: '产品消息', count: 0, icon: 'icon-product', color: 'a3d253', content: '我想', time: 1467289082007
+      },
+      {
+        name: '安全消息', count: 0, icon: 'icon-anquan', color: 'ff8902', content: '我想', time: 1467289082007
+      },
+      {
+        name: '服务消息', count: '7', icon: 'icon-fuwu', color: '7d65f6', content: '我想', time: 1467289082007
+      },
+      {
+        name: '活动消息', count: '2', icon: 'icon-huodong', color: '02c1de', content: '我想', time: 1467289082007
+      }
+    ]
   }
 
   onLoad () {
     this.get()
   }
 
-  onShow () {
-    var recvState = this.$parent.globalData.recvState || ''
-    if (this.recvState !== recvState) {
-      this.list = []
-      this.recvState = recvState
-      this.get()
-    }
-  }
-
-  onHide () {
-    this.$parent.globalData.recvState = ''
-  }
-
   async get () {
-    const json = await api.message({
-      data: {
-        page: this.page,
-        recvState: this.recvState || ''
-      }
-    })
-    await Utils.scrollList(this, json, '网站询盘')
+    const json = await api.message()
+    this.list[0].time = Utils.formatTime(1467289082007, 'yyyy-MM-dd')
+    debugger
+    this.apply()
   }
 
   methods = {
     // 删除
-    async del (e) {
-      await Tips.confirm('确认删除吗？')
-      Tips.loading()
-      const json = await api.messageDetail({
-        method: 'DELETE',
-        id: e
-      })
-      Tips.loaded()
-      if (json.success) {
-        await Utils.del(this, e, '网站询盘')
-        Tips.success('删除成功')
-      }
-    }
   }
-
 
   // 下拉刷新
   async onPullDownRefresh () {
-    this.page = 1
-    this.list = []
-    this.more.loading = true
     await this.get()
     wepy.stopPullDownRefresh()
   }
-
-  // 加载更多
-  async onReachBottom () {
-    if (this.more.loading) { return false }
-    this.more.loading = true
-    this.page += 1
-    this.get()
-  }
-
 }
 </script>
+<style>
+  .weui-cell__ft{
+    position: absolute;right:15px;
+    top:11px;
+  }
+  .content{
+    font-size: 13px;color: #888888;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;width:91%;
+  }
+  .icon{
+    width: 50px; height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 13rpx
+  }
+  .weui-cell__hd .icon .iconfont{
+    font-size: 32px;
+    color: #fff;margin-right:0px;
+  }
+  .weui-badge{
+    background: #f44236;min-width:10px;
+    border-radius:8px;
+  }
+  .weui-cell:before {
+    left: 70px
+  }
+  .weui-cells:last-child:after{
+     border-bottom: 1px solid #e5e5e5;
+    left: 70px
+  }
+</style>
