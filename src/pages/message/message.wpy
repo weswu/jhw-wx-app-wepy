@@ -50,8 +50,7 @@ export default class Message extends wepy.page {
   async get () {
     const json = await api.message()
     this.list[0].time = Utils.formatTime(1467289082007, 'yyyy-MM-dd')
-    debugger
-    this.apply()
+    this.$apply()
   }
 
   methods = {
