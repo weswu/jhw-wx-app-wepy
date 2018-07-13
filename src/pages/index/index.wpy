@@ -1,4 +1,5 @@
 <template>
+  <!-- 导航 -->
 
   <!-- 轮播 -->
   <view class="swiper-container">
@@ -16,6 +17,7 @@
       </block>
     </view>
   </view>
+
   <!-- 签到 -->
   <view class="signIn">
     <i class="iconfont icon-qiandao"></i>
@@ -37,6 +39,7 @@
     </block>
   </view>
   <view class="hr"/>
+
   <!-- 头条 -->
   <view class="weui-article">
       <view class="weui-article__h3">机汇头条</view>
@@ -50,7 +53,7 @@
   <view class="hr"/>
   <view class="weui-cell weui-cells_in-small-appmsg gonggao">
     <view class="weui-cell__hd">
-      <i class="iconfont icon-gonggao"></i>
+      <image mode="widthFix" src="../../images/index/gonggao.png" style="width:40px;margin-right: 5px;"/>
     </view>
     <view class="weui-cell__bd">
       <view>机汇网后台界面全新改版上线，敬请期待！</view>
@@ -80,7 +83,7 @@
     </block>
   </view>
 
-    <!-- 玩转机汇网 -->
+  <!-- 玩转机汇网 -->
   <view class="hr"/>
   <view class="weui-cell weui-cells_in-small-appmsg">
     <view class="weui-cell__bd">玩转机汇网</view>
@@ -121,6 +124,9 @@
   import Tips from '@/utils/Tips'
   import Utils from '@/utils/Utils'
   export default class Index extends wepy.page {
+    config = {
+      navigationStyle: 'custom'
+    }
     data = {
       // 轮播
       images: [
@@ -141,15 +147,6 @@
       ]
     }
 
-    methods = {
-      goMessage () {
-        this.$parent.globalData.recvState = '00'
-        wx.switchTab({
-          url: '/pages/message/message'
-        })
-      }
-    }
-
     async onLoad () {
       let that = this
       let key = wepy.getStorageSync('skey')
@@ -163,6 +160,7 @@
         }
       }
     }
+
 
     async onShow () {
       let init = wepy.getStorageSync('init')

@@ -7,14 +7,16 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import { wxapplogin, user, userInfo, enterprise, employee } from './api/api';
+import api from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
-    'pages/message/message', 'pages/message/messageList', 'pages/message/messageDetail', 'pages/message/messageBind',
-      'pages/index/index', 'pages/index/my',
+    'pages/index/index', 'pages/index/my',
+    'pages/point/point', 'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
+    'pages/console/tools', 'pages/console/console', 'pages/console/module',
+      'pages/message/messageDetail', 'pages/message/messageList', 'pages/message/message', 'pages/message/messageBind',
       'pages/user/login',
-      'pages/console/module', 'pages/console/console',
+      // 其它
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
@@ -24,7 +26,6 @@ export default class extends wepy.app {
       'pages/service/video', 'pages/service/cnzz','pages/service/seoHelp',
       'pages/servicepay/pay', 'pages/servicepay/mypay',
       'pages/service/progress', 'pages/service/progressDetail',
-      'pages/point/point', 'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
       'pages/spread/spread', 'pages/spread/friend', 'pages/spread/rank',
       'pages/product/product', 'pages/product/productDetail',
       'pages/news/news', 'pages/news/newsDetail',
@@ -83,15 +84,22 @@ export default class extends wepy.app {
   }
 
   globalData = {
+    user: {
+      name: '未登录',
+      username: '未登录',
+      addTime: 1272102123858,
+      enterprise: {}
+    },
     userInfo: {
       noReaderMsg: 0
     },
-    user: {},
-    enterprise: {},
-    employee: {},
+    accountInfo: {},
+    // 站点
+    staticList: [],
+    layoutId: '',
+    // 其它
     appid: 'wx2aba9d238ba02a76',
-    secret: 'c7131553b820b07e778d763bac18e259',
-    recvState: ''
+    secret: 'c7131553b820b07e778d763bac18e259'
   }
 
   constructor () {
@@ -103,9 +111,9 @@ export default class extends wepy.app {
   async onLaunch() {
     console.log('启动');
     //用户信息
-    const login = await wepy.login();
+    const login = await wepy.login()
     if (!login.code) {
-      let u = await wepy.getUserInfo();
+      let u = await wepy.getUserInfo()
       const resp =  await wxapplogin({
         data: {
           code: login.code,
@@ -119,9 +127,9 @@ export default class extends wepy.app {
         method: 'POST'
       })
       if (resp.success) {
-        var data = resp.attributes.data;
-        wepy.setStorageSync('skey', data.skey);
-        if (this.skeyCallback){
+        var data = resp.attributes.data
+        wepy.setStorageSync('skey', data.skey)
+        if (this.skeyCallback) {
            this.skeyCallback(data.skey);
         }
       } else {
@@ -132,30 +140,37 @@ export default class extends wepy.app {
 
   async get (cb) {
     //用户信息
-    const json = await user()
+    const json = await api.user()
     if (json.success) {
       this.globalData.user = json.attributes.data
-      wepy.setStorageSync('user', json.attributes.data);
-    }
-    const res = await userInfo()
-    if (res.success) {
-      this.globalData.userInfo = res.attributes
-      wepy.setStorageSync('userInfo', res.attributes);
-    }
-    const enterp = await enterprise()
-    if (enterp.success) {
-      this.globalData.enterprise = enterp.attributes.data
-      if (!this.globalData.enterprise.logo) {
-        this.globalData.enterprise.logo = 'upload/j/j2/jhtest/picture/2017/12/13/5f08c692-f8f2-4c5c-b49c-1874303461d4.jpg'
+      // 头像
+      const accountInfo = await api.accountInfo({
+        id: json.attributes.data.userId
+      })
+      if (accountInfo.success) {
+        this.globalData.accountInfo = accountInfo.attributes.data
       }
-      wepy.setStorageSync('enterprise', enterp.attributes.data);
     }
-    const empl = await employee()
-    if (empl.success) {
-      this.globalData.employee = empl.attributes.data
-      wepy.setStorageSync('employee', empl.attributes.data);
+    const res = await api.userInfo()
+    if (res.success) {
+      this.globalData.userInfo = res.attributes.data
     }
     typeof cb == 'function' && cb(this.globalData)
+  }
+
+  async getStaticList () {
+    const res = await api.staticList()
+    if (res.success) {
+      this.globalData.staticList = res.attributes.data
+      if (res.attributes.data.length > 0) {
+        let layoutId = wepy.getStorageSync('layoutId')
+        if (!layoutId) {
+          layoutId = res.attributes.data[0].layoutId
+        }
+        this.globalData.layoutId = layoutId
+        wepy.setStorageSync('layoutId', parseInt(layoutId))
+      }
+    }
   }
 
 }

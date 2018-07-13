@@ -1,10 +1,27 @@
 <template>
-  <!-- 添加 -->
-  <navigator url="messageBind" class="addObj"><i class="iconfont icon-appicon06"></i></navigator>
-
+  <!-- 选择 -->
+  <Select :list="select" :active.sync="active" :placeholder="placeholder" @change.user="change"/>
+  <view style="height: 43px"/>
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
-    <Item :id="item.id" :title="item.title" :content="item.addTime + (item.recvState === '00' ? '   未读' : '')" :url="'messageDetail?id='+item.id" :operation="operation" @del.user="del"/>
+    <view class="weui-panel">
+        <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_text">
+                <view class="weui-media-box__title weui-media-box__title_in-text">标题一</view>
+                <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view>
+                <view class="weui-media-box__info">
+                    时间
+                </view>
+            </view>
+        </view>
+        <view class="weui-panel__ft">
+            <navigator url="messageDetail?id={{item.messageId}}" class="weui-cell weui-cell_access weui-cell_link">
+                <view class="weui-cell__bd">查看更多</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </navigator>
+        </view>
+    </view>
+    <view class="hr">
   </repeat>
 
   <!-- 加载提示 -->
@@ -16,49 +33,50 @@ import wepy from 'wepy';
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
-import Item from '@/components/weui/item'
+import Select from '@/components/weui/select'
 import Loadmore from '@/components/weui/loadmore'
 export default class Message extends wepy.page {
   config = {}
   components = {
-    Item,
+    Select,
     Loadmore
   }
 
   data = {
-    list: [],
-    page: 1,
-    recvState: '',
+    placeholder: '全部消息',
+    select: [
+      { text: '全部消息', value: '' },
+      { text: '未读消息', value: '00' },
+      { text: '已读消息', value: '01' }
+    ],
+    active: '',
+    list: [
+      {
+        messageId: '555'
+      }
+    ],
+    params: {
+      page: 1,
+      recvState: '',
+      type: ''
+    },
+    title: '消息',
     count: 0,
     more: { loading: true },
     operation: true
   }
 
-  onLoad () {
+  onLoad (e) {
+    this.params.type = e.type
+    this.title = e.title
     this.get()
-  }
-
-  onShow () {
-    var recvState = this.$parent.globalData.recvState || ''
-    if (this.recvState !== recvState) {
-      this.list = []
-      this.recvState = recvState
-      this.get()
-    }
-  }
-
-  onHide () {
-    this.$parent.globalData.recvState = ''
   }
 
   async get () {
     const json = await api.message({
-      data: {
-        page: this.page,
-        recvState: this.recvState || ''
-      }
+      data: this.params
     })
-    await Utils.scrollList(this, json, '网站询盘')
+    await Utils.scrollList(this, json, this.title)
   }
 
   methods = {
@@ -75,6 +93,11 @@ export default class Message extends wepy.page {
         await Utils.del(this, e, '网站询盘')
         Tips.success('删除成功')
       }
+    },
+    change (e) {
+      this.active = e
+      this.params.recvState = e
+      this.get()
     }
   }
 
@@ -98,3 +121,21 @@ export default class Message extends wepy.page {
 
 }
 </script>
+
+<style media="screen">
+  .hr{
+    height: 16rpx;
+  }
+  .weui-media-box__info{
+    position: absolute;
+    right: 15px;
+    top: 0;
+  }
+  .j-select{
+    position:fixed;
+    width:100%;
+    height:43px;
+    top:0;
+    background:#fff;
+  }
+</style>

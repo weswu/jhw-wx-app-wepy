@@ -1,31 +1,56 @@
 <template>
-  <view class="point-info">
-    <view class="point-username"><text class="iconfont icon-person2"></text>{{enterprise.name}}</view>
-    <view class="point-use">{{user.username}} 可用积分</view>
-    <navigator url="pointDetail" class="point-detail"><text class="point-value">{{point}}</text></navigator>
-    <navigator url="rule" class="point-rule">积分规则<i class="iconfont icon-tishi" style="padding-left:0.2rem;font-size: 0.7rem;"></i></navigator>
-    <navigator url="ranking" class="ranking">当前积分排行：{{rank}}</navigator>
-  </view>
-  <view class="point-exchange">
-    <view class="point-title"><view><i class="iconfont icon-lipin"></i>积分兑换</view></view>
-    <view class="weui-grids">
-        <block wx:for="{{grids}}" wx:key="*this">
-            <view class="weui-grid" hover-class="weui-grid_active" @tap="exchange" id="{{item.id}}" data-point="{{item.point}}">
-                <view class="weui-grid__label">{{item.title}}</view>
-                <view class="desc">{{item.desc}}</view>
-                <i class="iconfont icon-{{item.icon}}"></i>
-            </view>
-        </block>
+  <view class="header">
+    <view class="point">
+      <text class="number">{{point}}</text>积分
     </view>
-    <view class="point-title"><view><i class="iconfont icon-remen"></i>热门兑换</view></view>
-    <view class="weui-grids weui-grids2">
-        <block wx:for="{{grids2}}" wx:key="*this">
-            <view class="weui-grid" hover-class="weui-grid_active" @tap="exchange" id="{{item.id}}" data-point="{{item.point}}">
-                <view class="weui-grid__label">{{item.title}}</view>
-                <view class="desc">{{item.desc}}</view>
-                <view class="content">{{item.content}}</view>
-            </view>
-        </block>
+    <!-- 签到 -->
+    <view class="signIn">
+      <i class="iconfont icon-qiandao"></i>
+      <button type="primary" plain="true" size="mini">每日签到领积分</button>
+    </view>
+  </view>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" hidden="{{activeIndex != '0'}}">
+        <!--列表-->
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+              <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+                  <view class="weui-media-box__title">{{item.desc}}</view>
+                  <view class="weui-media-box__desc">{{item.addTime}}</view>
+              </view>
+              <view class="weui-media-box__ft">
+                <span class="plus" wx:if="{{item.income>0}}">+{{item.income}}</span>
+                <span class="minus" wx:if="{{item.out>0}}">-{{item.out}}</span>
+              </view>
+          </view>
+        </repeat>
+        <!-- 加载提示 -->
+        <Loadmore :more.sync="more"/>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != '1'}}">
+        <view style="padding: 15px;">暂无兑换商品</view>
+      </view>
+      <view class="weui-tab__content rule" hidden="{{activeIndex != '2'}}">
+        <view>1、积分专属机汇网，仅限机汇网内使用；</view>
+        <view>2、在机汇网后台、微信公众号【机汇网络】和APP进行以下操作时，均可获得积分；</view>
+        <view class="table">
+          <view class="weui-flex">
+              <view class="weui-flex__item">操作行为</view>
+              <view class="weui-flex__item">获得数量</view>
+          </view>
+          <view class="weui-flex" wx:for="{{rule}}" wx:key="*this">
+              <view class="weui-flex__item">
+                  {{item.name}}
+                  <navigator url="/pages/setting/serviceFeedback" style="color: #da4747;" wx:if="{{item.name === '改进意见'}}">马上发送</navigator>
+              </view>
+              <view class="weui-flex__item">{{item.point}}积分</view>
+          </view>
+        </view>
+        <view>3、积分不能兑现，不可转让。</view>
+      </view>
     </view>
   </view>
 </template>
@@ -33,60 +58,191 @@
 <script>
 import wepy from 'wepy';
 import api from '@/api/api'
-import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
+import Tab from '@/components/weui/tab'
+import Item from '@/components/order/orderItem'
+import Loadmore from '@/components/weui/loadmore'
 export default class Progress extends wepy.page {
   config = {
-    navigationBarTitleText: '我的积分'
+    navigationBarTitleText: '积分管理'
+  }
+  components = {
+    Tab,
+    Item,
+    Loadmore
   }
 
   data = {
-    user: {},
-    enterprise: {},
-    point: 0,
-    rank: 0,
-    grids: [
-      { title: '兑换软文', desc: '500积分兑软文', icon: 'xinwen', point: 500, id: 'Integralpro_00000000000000000201' },
-      { title: '移动办公布属', desc: '1000积分兑丁丁、微信布属', icon: 'shangpin', point: 1000, id: 'Integralpro_00000000000000000221' },
-      { title: '兑换流量', desc: '国内通用流量100MB兑', icon: 'liuliang', point: 5000, id: 'Integralpro_00000000000000000081' }
+    tabs: ['积分列表', '积分兑换', '积分规则'],
+    activeIndex: '0',
+    list: [
+      {
+        out: 0,
+        state: "init",
+        desc: "用户后台产品修改",
+        enterpriseId: "Enterp_0000000000000000000000039",
+        productId: null,
+        memberId: null,
+        orderId: null,
+        addTime: 1531461265727,
+        integralRecordId: "Interalr_00000000000000000229621",
+        useable: 410,
+        updateTime: null,
+        interalRuleId: "Integralrule_0000000000000000041",
+        auditId: null,
+        income: 1,
+        integralRuleType: "productEditPoint"
+      },
+      {
+        out: 0,
+        state: "init",
+        desc: "用户后台产品修改",
+        enterpriseId: "Enterp_0000000000000000000000039",
+        productId: null,
+        memberId: null,
+        orderId: null,
+        addTime: 1531372312208,
+        integralRecordId: "Interalr_00000000000000000229101",
+        useable: 409,
+        updateTime: null,
+        interalRuleId: "Integralrule_0000000000000000041",
+        auditId: null,
+        income: 1,
+        integralRuleType: "productEditPoint"
+      }
     ],
-    grids2: [
-      { title: '软文', desc: '引流，传播品牌', content:'500积分', point: 500, id: 'Integralpro_00000000000000000201' },
-      { title: '国内通用流量', desc: '2/3/4G通用', content:'兑100MB', point: 5000, id: 'Integralpro_00000000000000000081' }
+    params: {
+      page: 1
+    },
+    count: 120,
+    more: { loading: true },
+    point: 18,
+    // 积分规则
+    rule: [
+      {
+      cate: "2",
+      condition: "0/1",
+      name: "新闻编辑",
+      count: 1,
+      state: 2,
+      point: 1,
+      desc: "进入“<a href="#/news">新闻管理</a>”页面，点击“新闻修改“按钮，修改1个新闻， 即可完成任务"
+      },
+      {
+      cate: "2",
+      condition: "0/1",
+      name: "静态发布",
+      count: 1,
+      state: 2,
+      point: 1,
+      desc: "进入“<a href="#/static">网站管理</a>”页面，点击“发布管理“按钮，发布随意选项，即可完成任务"
+      },
+      {
+      cate: "4",
+      condition: "无限制",
+      name: "推广注册",
+      count: 99999999,
+      state: 0,
+      point: 100,
+      desc: "进入“<a href="#/index">首页</a>”，点击“<a href="#/poster_list">推广赚积分活动</a>“图片，选择其中一个活动发送给朋友，你的朋友注册成功后， 即可获得积分。当你的朋友购买付费产品时，你将获取等比例金额的积分"
+      },
+      {
+      cate: "1",
+      condition: "0/1",
+      name: "改进意见",
+      count: 1,
+      state: 2,
+      point: 100,
+      desc: "进入“<a href="#/index">首页</a>”，点击顶部的“服务反馈“按钮，选择服务类型为建议，提交后即可完成任务"
+      },
+      {
+      cate: "3",
+      condition: "0/1",
+      name: "账号资料修改",
+      count: 1,
+      state: 2,
+      point: 10,
+      desc: "进入“首页”，点击“<a href="#/user">用户资料</a>“按钮，完善资料即可完成任务"
+      },
+      {
+      cate: "5",
+      condition: "无限制",
+      name: "每月操作15次",
+      count: 99999999,
+      state: 0,
+      point: 1,
+      desc: "每个月操作次数15次， 即可完成任务"
+      },
+      {
+      cate: "1",
+      condition: "0/6",
+      name: "普通微传单",
+      count: 6,
+      state: 2,
+      point: 10,
+      desc: "进入“<a href="http://wcd.jihui88.com/leaflet/index.html#/home_my" target="_blank">微传单管理</a>”，点击“<a href="javascript:;">创建空白微传单</a>“制作一个微传单，允许众包。（注：复制过来并改下不算在内）"
+      },
+      {
+      cate: "2",
+      condition: "0/1",
+      name: "新闻添加",
+      count: 1,
+      state: 2,
+      point: 5,
+      desc: "进入“<a href="#/news">新闻管理</a>”页面，点击“<a href="#/news_add">新闻添加</a>“按钮，添加1个新闻， 即可完成任务"
+      },
+      {
+      cate: "2",
+      condition: "0/1",
+      name: "产品添加",
+      count: 1,
+      state: 2,
+      point: 2,
+      desc: "进入“<a href="#/product">产品管理</a>”页面，点击“<a href="#/product_add">产品添加</a>“按钮，添加1个产品， 即可完成任务"
+      },
+      {
+      cate: "2",
+      condition: "1/1",
+      name: "产品编辑",
+      count: 0,
+      state: 1,
+      point: 1,
+      desc: "进入“<a href="#/product">产品管理</a>”页面，点击“产品修改“按钮，修改0个产品， 即可完成任务"
+      }
     ]
   }
 
   onLoad () {
-    this.user = this.$parent.globalData.user
-    this.enterprise = this.$parent.globalData.enterprise
     this.get()
   }
 
-  methods = {
-    async exchange (e) {
-      if (e.currentTarget.dataset.point > this.point) {
-        return Tips.alert('您的积分不足')
-      }
-      Tips.loading()
-      const json = await api.pointProduct({
-        id: e.currentTarget.id
-      })
-      Tips.loaded()
-      if (json.success) {
-        Tips.success('兑换成功')
-      } else {
-        Tips.error(json.msg)
-      }
-    }
-  }
   async get () {
-    Tips.loading()
-    const json = await api.point()
-    Tips.loaded()
-    if (json.success) {
-      this.point = json.attributes.point
-      this.rank = json.attributes.rank
-      this.$apply()
+    const res = await api.point({
+      data: this.params
+    })
+    res.attributes.data.forEach(item => {
+      irem.addTime = Utils.formatTime(item.addTime)
+    })
+    await Utils.scrollList(this, res)
+  }
+
+  async getRule () {
+    const res = await api.pointRule()
+    this.rule = res.attributes.data
+  }
+
+  methods = {
+    switchTab (e) {
+      this.activeIndex = e
+      if (e === '0') {
+        this.params.page = 1
+        this.list = []
+        this.more.loading = true
+        this.get()
+      }
+      if (e === '2') {
+        this.getRule()
+      }
     }
   }
 
@@ -99,57 +255,73 @@ export default class Progress extends wepy.page {
 }
 </script>
 <style lang="less">
-page{
-  background:#f5f5f5;
-}
-.weui-grids{
-  background: #fff;
-  .weui-grid{
-    padding:10px 10px 5px 10px;
-    text-align:center;
-  }
-  .desc{
+.header{
+  background: #2f333b;
+  height: 300rpx;
+  width: 750rpx;
+  .point{
+    color: #ccb27b;
+    width:375rpx;
+    float:left;
+    text-align:center;line-height:300rpx;
     font-size: 12px;
-    color: #999;
-    padding: 5px 0;
-    height: 30px;
+    .number{
+      font-size: 42px;
+      padding-right: 5rpx;
+    }
   }
-  i{
-    font-size:34px;
-    color:#43aee2;
+  .signIn{
+    width:375rpx;
+    float:right;
+    text-align:center;padding-top:60rpx;
+    .iconfont{
+      color: #12bedb;
+      font-size: 28px;
+      display: block;
+    }
+    button{
+      background: #2f333b;
+      font-size: 12px;
+      padding:0 10rpx;
+      line-height:36rpx;
+      border-radius:18rpx;
+    }
+  }
+}
+.weui-tab .weui-navbar {
+  position:absolute;
+}
+.weui-navbar__item.weui-bar__item_on {
+  color:#ccb27b;
+}
+.weui-navbar__slider {
+  background-color:#ccb27b;
+}
+.plus{color:#ff8500;}
+.minus{color:#30992e;}
+
+// 积分规则
+.rule{
+  padding: 10px;
+  line-height: 2;
+  .table{
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
     text-align: center;
-    display:block;
+    .weui-flex__item{
+      padding: 3px 0;
+      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  navigator{
+    display:inline
+  }
+  .btn {
+    margin-top: 10px;
+    navigator{
+      margin-right: 20px
+    }
   }
 }
-.weui-grids2{
-  margin: 0 20px 20px 20px;
-  .weui-grid{
-    width: 50%;
-    padding-bottom: 20px;
-  }
-  .content{
-    border-radius: 20px;
-    border: 1px solid #b6b1ae;
-    height: 20px;
-    line-height: 20px;
-    width: 80%;
-    padding: 0 5px;
-    margin: 0 auto;
-    font-size: 12px;
-    color: #999;
-  }
-}
-.point-info{position:relative;text-align:center;color:#fff;padding:1rem 0 0.5rem 0;line-height:1.2rem;background:#ff7300;background:-moz-linear-gradient(left,#ea3062,#f8386b 30%,#ea3062);background:-webkit-gradient(linear,left top,right top,from(rgba(253,114,0,.93)),color-stop(.3,#ff7300),to(#ff6a00));background:-webkit-linear-gradient(left,rgba(253,114,0,.93),#ff7300 30%,#ff6a00);background:-o-linear-gradient(left,rgba(253,114,0,.93),#ff7300 30%,#ff6a00)}
-.point-username{font-size:16px}
-.point-use{padding-bottom:.8rem;}
-.point-value{font-size:2rem}
-.point-detail{display:block}
-.point-rule{position:absolute;top:.2rem;right:.35rem}
-.point-view{position:absolute;padding-left:1rem}
-.icon-person2{font-size:.8rem;padding-right:.2rem}
-.icon-lipin{color:#ffcc15;padding-right:10px}
-.icon-remen{color:#ff6315;padding-right:10px}
-.point-title{text-align:center;line-height:1.5rem;height:2rem;clear:both;padding: 10px 0 3px 0;}
-.point-title:after{content:'';background:#ddd;width:80%;height:1px;margin:0 10%;display:block;margin-top:-.73rem}
-.point-title view{padding:0 20px;display:inline-block;background:#f5f5f5;box-sizing:border-box}
 </style>

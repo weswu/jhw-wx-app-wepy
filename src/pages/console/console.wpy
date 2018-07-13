@@ -1,5 +1,6 @@
 <template>
-  <view class="bg-gray j_console">
+  <!-- 模块编辑 -->
+  <view class="j_console">
     <view class="header">
       <navigator url="/pages/console/module">
         <button class="weui-btn" type="primary" plain="true" size="mini">模块编辑</button>
@@ -8,18 +9,28 @@
     <view class="weui-panel" style="margin-top: 16rpx;">
       <view class="weui-cell weui-cell_access">
         <view class="weui-cell__bd">我的产品</view>
-        <view class="weui-cell__ft"><text class="info">编辑</text></view>
+        <view class="weui-cell__ft">
+          <text class="info" @tap="edit('0')" wx:if="{{!productTools}}">编辑</text>
+          <text class="info" @tap="edit('0')" wx:if="{{productTools}}">完成</text>
+        </view>
       </view>
     </view>
     <view class="weui-grids">
-      <block wx:for="{{grids}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
+      <block wx:for="{{product}}" wx:key="*this">
+        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.url === 'add'}}">
           <i class="iconfont {{item.icon}}"></i>
           <view class="weui-grid__label">{{item.name}}</view>
         </navigator>
+        <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.url !== 'add'}}">
+          <i class="iconfont icon-jianhao" @tap="jian('0', index)"></i>
+          <i class="iconfont {{item.icon}}"></i>
+          <view class="weui-grid__label">{{item.name}}</view>
+        </view>
       </block>
     </view>
 
+    <!-- 订单管理 -->
+    <view class="hr"/>
     <view class="weui-panel">
       <view class="weui-cell weui-cell_access">
         <view class="weui-cell__bd">订单管理</view>
@@ -35,27 +46,39 @@
       </block>
     </view>
 
+    <!-- 常用工具 -->
+    <view class="hr"/>
     <view class="weui-panel">
       <view class="weui-cell weui-cell_access">
         <view class="weui-cell__bd">常用工具</view>
-        <view class="weui-cell__ft"><text class="info">编辑</text></view>
+        <view class="weui-cell__ft">
+          <text class="info" @tap="edit('1')" wx:if="{{!toggleTools}}">编辑</text>
+          <text class="info" @tap="edit('1')" wx:if="{{toggleTools}}">完成</text>
+        </view>
       </view>
     </view>
     <view class="weui-grids">
       <block wx:for="{{tools}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
+        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.icon === 'icon-jia'}}">
           <i class="iconfont {{item.icon}}"></i>
           <view class="weui-grid__label">{{item.name}}</view>
         </navigator>
+        <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.icon !== 'icon-jia'}}">
+          <i class="iconfont icon-jianhao" @tap="jian('1', index)"></i>
+          <i class="iconfont {{item.icon}}"></i>
+          <view class="weui-grid__label">{{item.name}}</view>
+        </view>
       </block>
     </view>
 
+    <!-- 数据管理中心 -->
+    <view class="hr"/>
     <view class="weui-panel">
       <view class="weui-cell weui-cell_access">
         <view class="weui-cell__bd">数据管理中心</view>
       </view>
     </view>
-    <view class="weui-grids" style="margin-bottom:32rpx">
+    <view class="weui-grids">
       <block wx:for="{{dataManageCenter}}" wx:key="*this">
         <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
           <i class="iconfont {{item.icon}}"></i>
@@ -63,6 +86,7 @@
         </navigator>
       </block>
     </view>
+    <view class="hr"/>
   </view>
 </template>
 <script>
@@ -75,12 +99,13 @@ export default class Console extends wepy.page {
   components = {}
 
   data = {
-    grids: [
-      {url: '/pages/user/user', name: '我的网站', icon: 'icon-diannao-tianchong'},
-      {url: '/pages/user/user', name: '我的小程序', icon: 'icon-xiaochengxu'},
+    product: [
+      {url: '/pages/user/user', name: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
+      {url: '/pages/user/user', name: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
       {url: 'add', name: '添加', icon: 'icon-jia'},
       {url: '', name: 'text', icon: 'icon-jia'}
     ],
+    productTools: false,
     orders: [
       {url: '/pages/order/order?active=1', name: '待付款', icon: 'icon-fukuan'},
       {url: '/pages/order/order?active=2', name: '待发货', icon: 'icon-fahuo1'},
@@ -88,11 +113,12 @@ export default class Console extends wepy.page {
       {url: '/pages/mobile/mobile', name: '退换/售后', icon: 'icon-shouhou1'}
     ],
     tools: [
-      {url: '/pages/order/order?active=0', name: '订单管理', icon: 'icon-dingdandaifukuan'},
-      {url: '/pages/member/member', name: '会员管理', icon: 'icon-Group'},
-      {url: 'add', name: '添加', icon: 'icon-jia'},
+      {url: '/pages/order/order?active=0', name: '订单管理', icon: 'icon-dingdandaifukuan', editting: false},
+      {url: '/pages/member/member', name: '会员管理', icon: 'icon-Group', editting: false},
+      {url: '/pages/console/toods', name: '添加', icon: 'icon-jia'},
       {url: '', name: 'text', icon: 'icon-jia'}
     ],
+    toggleTools: false,
     dataManageCenter: [
       {url: '/pages/data/data', name: '站点管理', icon: 'icon-qiu'},
       {url: '/pages/user/enterprise', name: '公司信息', icon: 'icon-kujialeqiyezhan_gongsishili'},
@@ -105,7 +131,54 @@ export default class Console extends wepy.page {
     ]
   }
 
-  onLoad() {}
+  onLoad () {}
+
+  methods = {
+    edit (e) {
+      if (e === '1') {
+        this.toggleTools = !this.toggleTools
+        this.tools.forEach(item => {
+          item.editting = this.toggleTools
+        })
+      } else {
+        this.productTools = !this.productTools
+        this.product.forEach(item => {
+          item.editting = this.productTools
+        })
+      }
+    },
+    jian (idx, e) {
+      let index = 0
+      let data = []
+      if (idx === '1') {data = this.toods} else {data = this.product}
+      data.forEach(item => {
+        if (item.name === 'text') {
+          index += 1
+        }
+      })
+      if (idx === '1') {
+        this.tools.splice(e, 1)
+        let len = this.tools.length
+        if (index === 3) {
+          this.tools.splice(len, 1)
+          this.tools.splice(len - 1, 1)
+          this.tools.splice(len - 2, 1)
+        } else {
+          this.tools.push({url: '', name: 'text', icon: 'icon-jia'})
+        }
+      } else {
+        this.product.splice(e, 1)
+        let len = this.product.length
+        if (index === 3) {
+          this.product.splice(len, 1)
+          this.product.splice(len - 1, 1)
+          this.product.splice(len - 2, 1)
+        } else {
+          this.product.push({url: '', name: 'text', icon: 'icon-jia'})
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -129,6 +202,13 @@ export default class Console extends wepy.page {
         }
         .icon-jia{
           color: #b1b2b7;
+        }
+        .icon-jianhao{
+          position:absolute;
+          right:9px;
+          top:4px;
+          color:#ddd;
+          font-size:20px;
         }
         &.opacity{
           i,view{

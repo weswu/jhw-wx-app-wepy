@@ -1,16 +1,14 @@
 <template>
-  <view class="weui-panel">
-      <view class="weui-panel__hd">{{input.title}}</view>
-      <view class="weui-panel__bd">
-          <view class="weui-media-box weui-media-box_text">
-              <view class="weui-media-box__title weui-media-box__title_in-text" style="font-size: 12px">
-                <view wx:if="{{input.fromName}}">发件人:{{input.fromName}}</view>
-                <view wx:if="{{input.fromPhone}}">联系电话:{{input.fromPhone}}</view>
-                <view wx:if="{{input.fromEmail}}">电子邮箱:{{input.fromEmail}}</view>
-              </view>
-              <view style="font-size:12px;color:#777;">{{input.content || ''}}</view>
-              <view class="weui-media-box__info">
-                  <view class="weui-media-box__info__meta">{{input.addTime}}</view>
+  <view class="weui-article">
+      <view class="weui-article__h1">{{detail.title}}</view>
+      <view class="weui-article__section">
+          <view class="weui-article__section">
+              <view class="weui-article__h3" style="font-size:14px;color:#777;">{{detail.addTime}}</view>
+              <view class="weui-article__p">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat.
               </view>
           </view>
       </view>
@@ -23,13 +21,14 @@
 
   export default class MessageDetail extends wepy.page {
     config = {
-      navigationBarTitleText: '询盘查看'
+      navigationBarTitleText: '消息详情'
     }
 
     data = {
       id:'',
-      input: {
-        title: '标题'
+      detail: {
+        addTime: '2015-3-5',
+        title: '小程序'
       }
     }
 

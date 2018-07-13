@@ -14,8 +14,8 @@
               <label class="weui-cell weui-check__label">
                   <checkbox class="weui-check" value="{{movableViewPosition.data.value}}" checked="{{movableViewPosition.data.checked}}"/>
                   <view class="weui-cell__hd weui-check__hd_in-checkbox">
-                      <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!movableViewPosition.data.checked}}"></icon>
-                      <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{movableViewPosition.data.checked}}"></icon>
+                      <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!movableViewPosition.data.checked}}"></icon>
+                      <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{movableViewPosition.data.checked}}"></icon>
                   </view>
                   <view class="weui-cell__bd">{{movableViewPosition.data.name}}</view>
                   <view class="weui-cell__ft">
@@ -30,8 +30,8 @@
             <label class="weui-cell weui-check__label {{item.selectClass}}" wx:for="{{optionsListData}}" wx:key="*this">
                 <checkbox class="weui-check" value="{{item.value}}" checked="{{item.checked}}"/>
                 <view class="weui-cell__hd weui-check__hd_in-checkbox">
-                    <icon class="weui-icon-checkbox_circle" type="circle" size="23" wx:if="{{!item.checked}}"></icon>
-                    <icon class="weui-icon-checkbox_success" type="success" size="23" wx:if="{{item.checked}}"></icon>
+                    <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!item.checked}}"></icon>
+                    <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{item.checked}}"></icon>
                 </view>
                 <view class="weui-cell__bd">{{item.name}}</view>
                 <view class="weui-cell__ft">

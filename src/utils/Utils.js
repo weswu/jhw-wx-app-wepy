@@ -87,24 +87,34 @@ const price = (v) => {
  * @date: 2017-7-28
  * @desc: 时间格式化
 */
-function formatTime(date, format) {
+function formatTime(date, format, week) {
   date = new Date(date)
   format = format || 'yyyy-MM-dd hh:mm:ss'
-  var o = {
-    'M+': date.getMonth() + 1, // 月份
-    'd+': date.getDate(), // 日
-    'h+': date.getHours(), // 小时
-    'm+': date.getMinutes(), // 分
-    's+': date.getSeconds(), // 秒
-    'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
-    'S': date.getMilliseconds() // 毫秒
-  }
-  if (/(y+)/.test(format)) {
-    format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-  }
-  for (var k in o) {
-    if (new RegExp('(' + k + ')').test(format)) {
-      format = format.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+  var weekday = new Date(new Date() - 1000 * 60 * 60 * 24 * 6)
+  if (week && date.getFullYear() === new Date().getFullYear() && date > weekday) {
+    var show_day = new Array('星期一','星期二','星期三','星期四','星期五','星期六','星期日')
+    format = show_day[date.getDay() - 1]
+    var yesterday = new Date(new Date() - 1000 * 60 * 60 * 24)
+    if (date > yesterday) {
+      format = (Array(2).join(0) + date.getHours()).slice(-2) + ':' + (Array(2).join(0) + date.getMinutes()).slice(-2)
+    }
+  } else {
+    var o = {
+      'M+': date.getMonth() + 1, // 月份
+      'd+': date.getDate(), // 日
+      'h+': date.getHours(), // 小时
+      'm+': date.getMinutes(), // 分
+      's+': date.getSeconds(), // 秒
+      'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+      'S': date.getMilliseconds() // 毫秒
+    }
+    if (/(y+)/.test(format)) {
+      format = format.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    }
+    for (var k in o) {
+      if (new RegExp('(' + k + ')').test(format)) {
+        format = format.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+      }
     }
   }
   return format

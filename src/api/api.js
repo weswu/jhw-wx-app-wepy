@@ -11,12 +11,11 @@ const login = (params) => http(params, wxHost + '/rest/api/user/wxAppLoginByUser
 const logout = (params) => http(params, wxHost + '/rest/api/user/wxappLogout')
 // 基本数据
 const user = (params) => http(params, host + '/rest/api/user/detail')
-const userInfo = (params) => http(params, host + '/rest/api/order/home/list')
+const userInfo = (params) => http(params, host + '/rest/api/user/index')
+const accountInfo = (params) => http(params, host + '/rest/api/user/accountInfo/' + params.id)
 const enterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
-const employee = (params) => http(params, host + '/rest/api/crm/friend_emp')
-// 静态化
-const publish = (params) => http(params, wxHost + '/rest/static1/' + params.username + '/publish?type=' + params.type)
-const publishMobile = (params) => http(params, wxHost + '/rest/mobileStatic/' + params.username + '/publish?type=page')
+// 站点数据
+const staticList = (params) => http(params, host + '/rest/pc/api/baseLayout/list?page=1&pageSize=100&sortType=desc')
 // 留言
 const message = (params) => http(params, host + '/rest/api/message/list')
 const messageDetail = (params) => http(params, host + '/rest/api/message/detail' + (params.id ? '/' + params.id : ''))
@@ -74,9 +73,9 @@ const journal = (params) => http(params, host + '/rest/api/crm/feedback/journal'
 const progress = (params) => http(params, host + '/rest/api/crm/feedback/list')
 const progressDetail = (params) => http(params, host + '/rest/api/crm/feedback/detail/' + params.id)
 // 积分
-const point = (params) => http(params, host + '/rest/api/point/info')
+const point = (params) => http(params, host + '/rest/api/integral_record/list')
+const pointRule = (params) => http(params, host + '/rest/api/integral_rule/list?page=1&pageSize=99')
 const pointProduct = (params) => http(params, host + '/rest/api/point_product/detail/' + params.id)
-const pointRule = (params) => http(params, host + '/rest/api/point_rule/info')
 const pointList = (params) => http(params, host + '/rest/api/point/list')
 const pointRank = (params) => http(params, host + '/rest/api/point/rank')
 // 推广
@@ -93,12 +92,10 @@ const mobileCase = (params) => http(params, host + '/rest/api/mobile/case')
 module.exports = {
   wxapplogin,
   // 基本数据
-  user, userInfo,
-  enterprise,
-  employee,
+  user, userInfo, accountInfo, enterprise,
   login, logout,
-  // 静态化
-  publish, publishMobile,
+  // 站点
+  staticList,
   // 留言
   message, messageDetail, messageBind,
   // 设置
