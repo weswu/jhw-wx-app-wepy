@@ -11,11 +11,12 @@ import api from './api/api';
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/user/login',
+    'pages/cost/detail', 'pages/cost/order',
+    'pages/index/my', 'pages/index/index',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
-    'pages/index/index', 'pages/index/my',
     'pages/point/point', 'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
       'pages/message/messageDetail', 'pages/message/messageList', 'pages/message/message', 'pages/message/messageBind',
-      'pages/user/login',
       // 其它
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
@@ -93,6 +94,7 @@ export default class extends wepy.app {
     userInfo: {
       noReaderMsg: 8
     },
+    accountInfo: {},
     customData: {},
     // 站点
     staticList: [],
@@ -175,7 +177,7 @@ export default class extends wepy.app {
           let content = JSON.parse(data.content)
           if (!content.linkMobile) {
             content.linkMobile = [
-              {url: '/pages/order/order?active=0', text: '订单管理', icon: 'icon-dingdandaifukuan',
+              {url: '/pages/order/order?active=0', text: '订单管理', icon: 'icon-dingdandaifukuan'},
               {url: '/pages/member/member', text: '会员管理', icon: 'icon-Group'}
             ]
           }
@@ -192,6 +194,16 @@ export default class extends wepy.app {
       }
     }
     typeof cb == 'function' && cb(this.globalData.customData)
+  }
+
+  async getAccountInfo (cb) {
+    const res = await api.accountInfo({
+      id: this.globalData.user.userId
+    })
+    if (res.success) {
+      this.globalData.accountInfo = res.attributes.data
+    }
+    typeof cb == 'function' && cb(this.globalData)
   }
 
 }

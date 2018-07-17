@@ -88,8 +88,9 @@ const price = (v) => {
  * @desc: 时间格式化
 */
 function formatTime(date, format, week) {
+  if (!date) return ''
   date = new Date(date)
-  format = format || 'yyyy-MM-dd hh:mm:ss'
+  format = format || 'yyyy-MM-dd hh:mm'
   var weekday = new Date(new Date() - 1000 * 60 * 60 * 24 * 6)
   if (week && date.getFullYear() === new Date().getFullYear() && date > weekday) {
     var show_day = new Array('星期一','星期二','星期三','星期四','星期五','星期六','星期日')

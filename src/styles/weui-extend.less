@@ -33,13 +33,17 @@
 }
 // 列表右图标
 .weui-cell__ft_in-access{
+  padding-right: 25px;
   font-family: "iconfont" !important;
-  font-size: 24px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  &:after{
+  &::before{
+    font-size: 24px;
     content: "\e735";
+    position: absolute;
+    right: 15px;
+    top: 7px;
   }
 }
 

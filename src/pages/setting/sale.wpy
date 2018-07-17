@@ -193,7 +193,7 @@
 
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 export default class Sale extends wepy.page {
   config = {
     navigationBarTitleText: '门业客户12月促销'

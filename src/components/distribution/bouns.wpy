@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 export default class DBouns extends wepy.component {
   props = {
     list: {}

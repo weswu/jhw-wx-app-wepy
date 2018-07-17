@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 export default class SeoHelp extends wepy.page {
   config = {
     navigationBarTitleText: 'SEO帮助'

@@ -28,7 +28,7 @@
   </view>
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 import api from '@/api/api'
 export default class ShopData extends wepy.page {
   config = {

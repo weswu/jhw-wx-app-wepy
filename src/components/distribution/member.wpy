@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 export default class DMember extends wepy.component {
   props = {
     list: {}

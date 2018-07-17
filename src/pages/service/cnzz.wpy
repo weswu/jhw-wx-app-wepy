@@ -17,7 +17,7 @@
   </view>
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 import tip from '@/utils/Tips'
 import Loading from "@/components/common/loading"
 export default class Cnzz extends wepy.page {

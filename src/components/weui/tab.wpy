@@ -1,7 +1,7 @@
 <template>
   <view class="weui-navbar" style="background:#fff">
       <block wx:for="{{tabs}}" wx:key="*this">
-          <view id="{{index}}" class="weui-navbar__item {{activeIndex == index ? 'weui-bar__item_on' : ''}}" @tap="tabClick">
+          <view id="{{index}}" class="weui-navbar__item {{active === index ? 'weui-bar__item_on' : ''}}" @tap="tabClick">
               <view class="weui-navbar__title">{{item}}</view>
           </view>
       </block>
@@ -10,12 +10,12 @@
 </template>
 
 <script>
-  import wepy from 'wepy';
+  import wepy from 'wepy'
   export default class Tab extends wepy.component {
     props = {
       tabs: {},
-      activeIndex: {
-        default: 0
+      active: {
+        default: '0'
       }
     };
 
@@ -29,11 +29,12 @@
     }
 
     init (e) {
-      let ctx = this
+      let that = this
       wx.getSystemInfo({
         success: function(res) {
-          ctx.sliderLeft = (res.windowWidth / ctx.tabs.length - 72) / 2
-          ctx.sliderOffset = res.windowWidth / ctx.tabs.length * (e ||ctx.activeIndex)
+          that.sliderLeft = (res.windowWidth / that.tabs.length - 84) / 2
+          that.sliderOffset = res.windowWidth / that.tabs.length * (e ||that.active)
+          that.$apply()
         }
       })
     }
@@ -41,9 +42,9 @@
     methods = {
       tabClick(e) {
         this.sliderOffset = e.currentTarget.offsetLeft
-        this.activeIndex = e.currentTarget.id
+        this.active = e.currentTarget.id
         // 发射事件
-        this.$emit('change', this.activeIndex);
+        this.$emit('change', this.active);
       }
     }
   }

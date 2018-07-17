@@ -3,11 +3,12 @@
     <view class="weui-panel">
       <view class="weui-media-box weui-media-box_appmsg">
           <navigator url="" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <i class="iconfont icon-huiyuan1 weui-media-box__thumb"></i>
+            <i class="iconfont icon-huiyuan1 weui-media-box__thumb" wx:if="{{!user.username}}"></i>
+            <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" wx:if="{{user.username}}"/>
           </navigator>
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">Hi，您未登录
-              <navigator url="/pages/user/login" class="login-btn">
+            <view class="weui-media-box__title">{{accountInfo.nickName || user.username || 'Hi，您未登录'}}
+              <navigator url="/pages/user/login" class="login-btn" wx:if="{{!user.username}}">
                 <button class="weui-btn" type="primary" plain="true" size="mini">登录\n/\n注册</button>
               </navigator>
             </view>
@@ -16,10 +17,11 @@
 
       <navigator url="/pages/message/message" style='position: absolute;top: 11px;right: 15px;color:#fff'>
         <i class="iconfont icon-mail" style="color:#fff;font-size:45rpx"></i>
+        <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
       </navigator>
     </view>
     <view class="weui-panel">
-      <navigator url="" class="weui-cell weui-cell_access">
+      <navigator url="/pages/cost/order" class="weui-cell weui-cell_access">
           <view class="weui-cell__hd">
             <i class="iconfont icon-price" style="color:#f67d73"></i>
           </view>
@@ -93,16 +95,29 @@
   </view>
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 export default class My extends wepy.page {
   config = {
     navigationBarTitleText: '我的'
   }
   components = {}
 
-  data = {}
+  data = {
+    user: {},
+    userInfo: {},
+    accountInfo: {}
+  }
 
-  onLoad() {}
+  onLoad () {
+    let that = this
+    this.$parent.getAccountInfo(function(json){
+      //更新数据
+      that.user = json.user
+      that.userInfo = json.userInfo
+      that.accountInfo = json.accountInfo
+      that.$apply()
+    })
+  }
 }
 </script>
 
@@ -125,6 +140,9 @@ export default class My extends wepy.page {
       }
       .iconfont{
         background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
+      }
+      .weui-media-box__thumb{
+        border-radius:8rpx;
       }
     }
     .crpt{

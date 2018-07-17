@@ -1,0 +1,226 @@
+<template>
+  <view class="weui-form-preview">
+      <view class="weui-form-preview__ft">
+        <view class="weui-form-preview__btn">
+          <text style="color:#666"><text wx:if="{{type === '0'}}">订单</text>状态：</text>
+          <text class="red" wx:if="{{detail.paymentType === 'UN_PAY'}}">未支付</text>
+          <text class="green" wx:if="{{detail.paymentType === 'PAID'}}">已支付</text>
+          <text wx:if="{{detail.paymentType === 'PART_PAY'}}">部分支付</text>
+        </view>
+      </view>
+      <view class="weui-form-preview__hd">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label"><text wx:if="{{type === '0'}}">订单</text><text wx:else>产品</text>摘要</view>
+              <view class="weui-form-preview__value_in-hd"></view>
+          </view>
+      </view>
+      <view class="weui-form-preview__bd" wx:if="{{type === '0'}}">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">订单编号：</view>
+              <view class="weui-form-preview__value">{{detail.outTradeNo}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">标记：</view>
+              <view class="weui-form-preview__value">
+                <text wx:if="{{!detail.agentId}}">
+                  <text wx:if="{{detail.paymentType === 'UN_PAY'}}">待付款</text>
+                  <text wx:else>线上订单</span>
+                </text>
+                <text wx:if="{{detail.agentId}}">线下订单</text>
+              </view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">订单创建时间：</view>
+              <view class="weui-form-preview__value">{{detail.addTime}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">使用年限：</view>
+              <view class="weui-form-preview__value">{{detail.year}}年</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">到期时间：</view>
+              <view class="weui-form-preview__value">{{detail.endTime}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">支付来源：</view>
+              <view class="weui-form-preview__value">
+                <text wx:if="{{detail.payType === 'WX'}}">微信支付</text>
+                <text wx:elif="{{detail.payType === 'ALI'}}">支付宝支付</text>
+                <text wx:elif="{{detail.payType === 'BANK'}}">银行卡支付</text>
+                <text wx:elif="{{detail.payType === 'PFA'}}">代付</text>
+                <text wx:elif="{{detail.payType === 'OFFLINE'}}">线下支付</text>
+                <text wx:else>-</text>
+              </view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">总计：</view>
+              <view class="weui-form-preview__value">￥{{detail.totalPrice}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">客户应付金额：</view>
+              <view class="weui-form-preview__value price">￥{{detail.paidPrice || '-'}}</view>
+          </view>
+      </view>
+      <view class="weui-form-preview__bd" wx:if="{{type === '1'}}">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">原价：</view>
+              <view class="weui-form-preview__value price">￥{{detail.totalPrice || '-'}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">应付金额：</view>
+              <view class="weui-form-preview__value price">￥{{detail.paidPrice || '-'}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">数量：</view>
+              <view class="weui-form-preview__value">1</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">使用年限：</view>
+              <view class="weui-form-preview__value">{{detail.year}}年</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">购买时间：</view>
+              <view class="weui-form-preview__value">{{detail.addTime}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">到期时间：</view>
+              <view class="weui-form-preview__value">{{detail.endTime}}</view>
+          </view>
+      </view>
+      <view class="weui-form-preview__hd">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label"><text wx:if="{{type === '0'}}">订单</text><text wx:else>产品</span>明细</view>
+              <view class="weui-form-preview__value_in-hd"></view>
+          </view>
+      </view>
+      <view class="weui-form-preview__bd" wx:for="{{detail.orderItemList}}" wx:key="*this">
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__value">{{item.name}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">数量：</view>
+              <view class="weui-form-preview__value">1个</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">使用年限：</view>
+              <view class="weui-form-preview__value">{{item.year}}年</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">原价：</view>
+              <view class="weui-form-preview__value">￥{{item.price}}x{{item.year}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">网站编号：</view>
+              <view class="weui-form-preview__value">{{detail.layoutId || '-'}}</view>
+          </view>
+          <view class="weui-form-preview__item">
+              <view class="weui-form-preview__label">小计：</view>
+              <view class="weui-form-preview__value">￥{{item.totalPrice}}</view>
+          </view>
+      </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+export default class CostDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '产品详情'
+  }
+
+  data = {
+    id: '8a9e457e6348a2f801634959e98a0005',
+    tip: '',
+    type: '0',
+    detail: {}
+  }
+
+  onLoad (e) {
+    this.id = e.id
+    this.type = e.active
+    this.get()
+  }
+
+  async get () {
+    const res = await api.costDetail({
+      data: {
+        orderId: this.id
+      }
+    })
+    if (res.code === 0) {
+      this.detail = res.data
+      let title = '产品详情'
+      if (this.type === '0') {
+        title = '订单编号：' + this.detail.outTradeNo
+        this.tip = '订单状态：' + this.tip
+      } else {
+        this.tip = '状态：' + this.tip
+      }
+      wx.setNavigationBarTitle({
+        title: title
+      })
+    } else {
+      Tips.error(res.msg)
+      let detail = {
+        addTime: 1525944019000,
+        agentCellphone: null,
+        agentEntName: null,
+        agentId: "Admin_00000000000000000000000037",
+        agentName: null,
+        agentPrice: null,
+        auditId: "Admin_00000000000000000000000037",
+        comment: null,
+        endTime: 1557342142653,
+        layoutId: "625↵",
+        name: "展示型网站,中文",
+        orderId: "8a9e457e6348a2f801634959e98a0005",
+        orderItemList: [
+          {name: "展示型网站,中文", price: 6800, year: 1, totalPrice: 6800}
+        ],
+        name: "展示型网站,中文",
+        price: 6800,
+        totalPrice: 6800,
+        year: 1,
+        outTradeNo: "1000121935913",
+        paidPrice: 6800,
+        payType: "OFFLINE",
+        paymentType: "PAID",
+        totalPrice: 6800,
+        userCellphone: "2",
+        userEntName: "1234e",
+        userLegalPre: "fhffhhhvvbbb",
+        username: "ggggfj",
+        year: 1
+      }
+      this.detail = detail
+      let title = '产品详情'
+      if (this.type === '0') {
+        title = '订单编号：' + this.detail.outTradeNo
+      }
+      wx.setNavigationBarTitle({
+        title: title
+      })
+      this.detail.addTime = Utils.formatTime(this.detail.addTime)
+      this.detail.endTime = Utils.formatTime(this.detail.endTime)
+    }
+    debugger
+    this.$apply()
+  }
+
+
+
+  methods = {}
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
+}
+</script>
+
+<style lang="less">
+
+</style>

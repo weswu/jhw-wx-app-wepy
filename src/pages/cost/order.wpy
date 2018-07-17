@@ -1,0 +1,214 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" :active.sync="active" @change.user="switchTab"/><view class="weui-tab__panel">
+      <view class="weui-tab__content">
+        <!--列表-->
+        <repeat for="{{list}}" key="index" index="index" item="item">
+          <navigator url="detail?id={{item.orderId}}&active={{active}}" class="weui-media-box weui-media-box_text">
+              <view class="weui-media-box__title weui-media-box__title_in-text">订单编号：{{item.outTradeNo}}</view>
+              <view class="weui-media-box__desc">{{item.name}}</view>
+              <view class="weui-media-box__info">
+                <view style="overflow:hidden">
+                  <view class="weui-media-box__info__meta price">￥{{item.paidPrice}}</view>
+                  <view class="weui-media-box__info__meta totalPrice" wx:if="{{item.totalPrice}}">(￥{{item.totalPrice}})</view>
+                </view>
+                <view style="overflow:hidden">
+                  <view class="weui-media-box__info__meta addTime">{{item.addTime}}</view>
+                  <view class="weui-media-box__info__meta" wx:if="{{item.endTime}}">~ {{item.endTime}}</view>
+                </view>
+              </view>
+          </navigator>
+          <view class="hr"/>
+        </repeat>
+        <!-- 加载提示 -->
+        <Loadmore :more.sync="more"/>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Tab from '@/components/weui/tab'
+import Item from '@/components/order/orderItem'
+import Loadmore from '@/components/weui/loadmore'
+export default class CostOrder extends wepy.page {
+  config = {
+    navigationBarTitleText: '费用中心'
+  }
+  components = {
+    Tab,
+    Item,
+    Loadmore
+  }
+
+  data = {
+    tabs: ['消费记录', '已购产品'],
+    active: '0',
+    list: [],
+    params: {
+      size: 10,
+      page: 0,
+      sort: 'addTime,desc'
+    },
+    more: { loading: true }
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    const res = await api.costOrder({
+      data: this.params
+    })
+    if (res.code === 0) {
+      res.data.content.forEach(item => {
+        item.addTime = Utils.formatTime(item.addTime)
+        this.list.push(item)
+      })
+    } else {
+      Tips.error(res.msg)
+      let list = [
+        {
+          addTime: 1525944019000,
+          name: "展示型网站,中文",
+          orderId: "8a9e457e6348a2f801634959e98a0005",
+          orderType: null,
+          outTradeNo: "1000121935913",
+          paidPrice: 6800,
+          totalPrice: 6800
+        },
+        {
+          addTime: 1521623121000,
+          name: "定制设计,网站群建设,定位策划,页面成交逻辑,栏目规划,首页定制,产品布局,广告图设计,按钮图标制作,商品图片修图,小程序",
+          orderId: "8a9e457e62476b8e016247ce3d840039",
+          orderType: null,
+          outTradeNo: "10001998699745",
+          paidPrice: 25800,
+          totalPrice: 25800,
+        }
+      ]
+      list.forEach(item => {
+        item.addTime = Utils.formatTime(item.addTime)
+        this.list.push(item)
+      })
+    }
+    this.$apply()
+  }
+
+  async getPaid () {
+    const res = await api.costPaid({
+      data: this.params
+    })
+    if (res.code === 0) {
+      res.data.content.forEach(item => {
+        item.addTime = Utils.formatTime(item.addTime)
+        this.list.push(item)
+      })
+    } else {
+      Tips.error(res.msg)
+      let list = [
+        {
+          addTime: 1525944019000,
+          endTime: 1557350490000,
+          integral: 0,
+          isDiscount: null,
+          layoutId: null,
+          name: "展示型网站,中文",
+          orderBuyTypeEnum: null,
+          orderId: "8a9e457e6348a2f801634959e98a0005",
+          orderType: null,
+          outTradeNo: "1000121935913",
+          paidPrice: 6800,
+          payType: "OFFLINE",
+          paymentType: "PAID",
+          priceItemIds: "2c9080ce60f7b2650160f7c2e3910025,8a9e457e62dd48000162e13bfaa90040",
+          qrcode: null,
+          totalPrice: 6800,
+          year: 1
+        },
+        {
+          addTime: 1521623121000,
+          endTime: null,
+          integral: 0,
+          isDiscount: null,
+          layoutId: null,
+          name: "定制设计,网站群建设,定位策划,页面成交逻辑,栏目规划,首页定制,产品布局,广告图设计,按钮图标制作,商品图片修图,小程序",
+          orderBuyTypeEnum: null,
+          orderId: "8a9e457e62476b8e016247ce3d840039",
+          orderType: null,
+          outTradeNo: "10001998699745",
+          paidPrice: 25800,
+          payType: "WX",
+          paymentType: "PAID",
+          priceItemIds: "297e2669600191860160021c49970083,297e2669600191860160021c7c1c0086,297e2669600191860160021ca3080088,297e2669600191860160021cf065008d,297e2669600191860160021ccaad008b,297e2669600191860160021d84ac0091,297e2669600191860160021dffbe0094,297e2669600191860160021ea3df009c,297e2669600191860160021ed7fd009f,297e2669600191860160021efcaf00a1,297e2669600191860160021f845900a7",
+          qrcode: null,
+          totalPrice: 25800,
+          year: 1
+        }
+      ]
+      list.forEach(item => {
+        item.addTime = Utils.formatTime(item.addTime)
+        item.endTime = Utils.formatTime(item.endTime)
+        this.list.push(item)
+      })
+    }
+    this.$apply()
+  }
+
+  methods = {
+    switchTab (e) {
+      this.active = e
+      this.params.page = 0
+      this.list = []
+      this.more.loading = true
+      if (e === '0') {
+        this.get()
+      }
+      if (e === '1') {
+        this.getPaid()
+      }
+    }
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.params.page = 0
+    this.list = []
+    this.more.loading = true
+    if (this.active === '0') {
+      this.get()
+    }
+    if (this.active === '1') {
+      this.getPaid()
+    }
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.params.page += 1
+    if (this.active === '0') {
+      this.get()
+    }
+    if (this.active === '1') {
+      this.getPaid()
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.totalPrice{
+  text-decoration: line-through;
+}
+.addTime{
+  padding-right: 3px;
+}
+</style>

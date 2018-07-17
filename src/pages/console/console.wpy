@@ -101,7 +101,8 @@
   </view>
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
+import api from '@/api/api'
 export default class Console extends wepy.page {
   config = {
     navigationBarTitleText: '控制台',
@@ -172,27 +173,6 @@ export default class Console extends wepy.page {
         })
       }
     },
-    save () {
-      this.edit('1')
-      let tools = []
-      this.tools.forEach(item => {
-        if (item.icon !== 'icon-jia') {
-          tools.push({url: item.url, text: item.text, icon: item.icon})
-        }
-      })
-      const json = await api.customUpdate({
-        data: {
-          content: JSON.stringify(tools)
-        },
-        method: 'post'
-      })
-      if (json.success) {
-        this.$parent.globalData.customData.linkMobile = tools
-        Tips.success("保存成功");
-      } else {
-        Tips.error(json.msg)
-      }
-    },
     jian (idx, e) {
       let index = 0
       let data = []
@@ -223,6 +203,29 @@ export default class Console extends wepy.page {
           this.product.push({url: '', text: 'text', icon: 'icon-jia'})
         }
       }
+    }
+  }
+
+
+  async save () {
+    this.edit('1')
+    let tools = []
+    this.tools.forEach(item => {
+      if (item.icon !== 'icon-jia') {
+        tools.push({url: item.url, text: item.text, icon: item.icon})
+      }
+    })
+    const json = await api.customUpdate({
+      data: {
+        content: JSON.stringify(tools)
+      },
+      method: 'post'
+    })
+    if (json.success) {
+      this.$parent.globalData.customData.linkMobile = tools
+      Tips.success("保存成功");
+    } else {
+      Tips.error(json.msg)
     }
   }
 }

@@ -4,22 +4,33 @@ const http = async (params = {}, url) => {
   console.log(url)
   if (url.indexOf('www.jihui88.com') > -1) {
     params.data = params.data || {}
-    params.data.skey = wepy.getStorageSync('skey')
+    params.data.skey = wx.getStorageSync('skey')
   }
   if (params.method === 'PUT' || params.method === 'DELETE') {
     url = url + '?' + urlEncode(params.data).substr(1)
     params.data = {}
   }
+  let header = {'Content-type': 'application/x-www-form-urlencoded'}
+  let token = wx.getStorageSync('token')
+  if (url.indexOf('/rest/pc/api/') > -1 || url.indexOf('/rest/buy/api/') > -1) {
+    header['X-CSRF-Token'] = token
+  }
   let res = await wepy.request({
     url: url,
     method: params.method || 'GET',
     data: params.data || {},
-    header: {'Content-type': 'application/x-www-form-urlencoded'}
+    header: header
   })
   if (res.data.msg === '未登陆1') {
     wx.navigateTo({
       url: '/pages/user/login'
     })
+  } else {
+    if (url === 'https://www.jihui88.com/rest/api/user/detail') {
+      if (res.data.attributes.data) {
+        wx.setStorageSync('token', res.header['X-CSRF-Token'])
+      }
+    }
   }
   return res.data
 }

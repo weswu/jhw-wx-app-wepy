@@ -11,9 +11,9 @@
   </view>
   <view class="weui-tab">
     <!--TAB-->
-    <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
+    <Tab :tabs.sync="tabs" :active.sync="active" @change.user="switchTab"/>
     <view class="weui-tab__panel">
-      <view class="weui-tab__content" hidden="{{activeIndex != '0'}}">
+      <view class="weui-tab__content" hidden="{{active != '0'}}">
         <!--列表-->
         <repeat for="{{list}}" key="index" index="index" item="item">
           <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
@@ -30,10 +30,10 @@
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
       </view>
-      <view class="weui-tab__content" hidden="{{activeIndex != '1'}}">
+      <view class="weui-tab__content" hidden="{{active != '1'}}">
         <view style="padding: 15px;">暂无兑换商品</view>
       </view>
-      <view class="weui-tab__content rule" hidden="{{activeIndex != '2'}}">
+      <view class="weui-tab__content rule" hidden="{{active != '2'}}">
         <view>1、积分专属机汇网，仅限机汇网内使用；</view>
         <view>2、在机汇网后台、微信公众号【机汇网络】和APP进行以下操作时，均可获得积分；</view>
         <view class="table">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 import api from '@/api/api'
 import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
@@ -74,7 +74,7 @@ export default class Progress extends wepy.page {
 
   data = {
     tabs: ['积分列表', '积分兑换', '积分规则'],
-    activeIndex: '0',
+    active: '0',
     list: [
       {
         out: 0,
@@ -125,8 +125,7 @@ export default class Progress extends wepy.page {
       name: "新闻编辑",
       count: 1,
       state: 2,
-      point: 1,
-      desc: "进入“<a href="#/news">新闻管理</a>”页面，点击“新闻修改“按钮，修改1个新闻， 即可完成任务"
+      point: 1
       },
       {
       cate: "2",
@@ -134,8 +133,7 @@ export default class Progress extends wepy.page {
       name: "静态发布",
       count: 1,
       state: 2,
-      point: 1,
-      desc: "进入“<a href="#/static">网站管理</a>”页面，点击“发布管理“按钮，发布随意选项，即可完成任务"
+      point: 1
       },
       {
       cate: "4",
@@ -143,18 +141,15 @@ export default class Progress extends wepy.page {
       name: "推广注册",
       count: 99999999,
       state: 0,
-      point: 100,
-      desc: "进入“<a href="#/index">首页</a>”，点击“<a href="#/poster_list">推广赚积分活动</a>“图片，选择其中一个活动发送给朋友，你的朋友注册成功后， 即可获得积分。当你的朋友购买付费产品时，你将获取等比例金额的积分"
-      },
+      point: 100},
       {
       cate: "1",
       condition: "0/1",
       name: "改进意见",
       count: 1,
       state: 2,
-      point: 100,
-      desc: "进入“<a href="#/index">首页</a>”，点击顶部的“服务反馈“按钮，选择服务类型为建议，提交后即可完成任务"
-      },
+      point: 100
+    },
       {
       cate: "3",
       condition: "0/1",
@@ -162,7 +157,6 @@ export default class Progress extends wepy.page {
       count: 1,
       state: 2,
       point: 10,
-      desc: "进入“首页”，点击“<a href="#/user">用户资料</a>“按钮，完善资料即可完成任务"
       },
       {
       cate: "5",
@@ -180,7 +174,6 @@ export default class Progress extends wepy.page {
       count: 6,
       state: 2,
       point: 10,
-      desc: "进入“<a href="http://wcd.jihui88.com/leaflet/index.html#/home_my" target="_blank">微传单管理</a>”，点击“<a href="javascript:;">创建空白微传单</a>“制作一个微传单，允许众包。（注：复制过来并改下不算在内）"
       },
       {
       cate: "2",
@@ -189,8 +182,7 @@ export default class Progress extends wepy.page {
       count: 1,
       state: 2,
       point: 5,
-      desc: "进入“<a href="#/news">新闻管理</a>”页面，点击“<a href="#/news_add">新闻添加</a>“按钮，添加1个新闻， 即可完成任务"
-      },
+    },
       {
       cate: "2",
       condition: "0/1",
@@ -198,8 +190,7 @@ export default class Progress extends wepy.page {
       count: 1,
       state: 2,
       point: 2,
-      desc: "进入“<a href="#/product">产品管理</a>”页面，点击“<a href="#/product_add">产品添加</a>“按钮，添加1个产品， 即可完成任务"
-      },
+    },
       {
       cate: "2",
       condition: "1/1",
@@ -207,7 +198,6 @@ export default class Progress extends wepy.page {
       count: 0,
       state: 1,
       point: 1,
-      desc: "进入“<a href="#/product">产品管理</a>”页面，点击“产品修改“按钮，修改0个产品， 即可完成任务"
       }
     ]
   }
@@ -221,7 +211,7 @@ export default class Progress extends wepy.page {
       data: this.params
     })
     res.attributes.data.forEach(item => {
-      irem.addTime = Utils.formatTime(item.addTime)
+      item.addTime = Utils.formatTime(item.addTime)
     })
     await Utils.scrollList(this, res)
   }
@@ -233,7 +223,7 @@ export default class Progress extends wepy.page {
 
   methods = {
     switchTab (e) {
-      this.activeIndex = e
+      this.active = e
       if (e === '0') {
         this.params.page = 1
         this.list = []

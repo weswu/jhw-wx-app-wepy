@@ -15,7 +15,7 @@
   <Loadmore :more.sync="more"/>
 </template>
 <script>
-import wepy from 'wepy';
+import wepy from 'wepy'
 import api from '@/api/api'
 import Utils from '@/utils/Utils'
 import Loadmore from '@/components/weui/loadmore'

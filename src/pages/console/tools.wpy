@@ -137,33 +137,33 @@ export default class Tools extends wepy.page {
           })
         })
       })
-    },
-    submit () {
-      let tools = []
-      this.list.forEach(row => {
-        row.children.forEach(item => {
-          values.forEach(value => {
-            if (item.checked) {
-              tools.push({url: item.url, text: item.text, icon: item.icon})
-            }
-          })
-        })
-      })
-      const json = await api.customUpdate({
-        data: {
-          content: JSON.stringify(tools)
-        },
-        method: 'post'
-      })
-      if (json.success) {
-        this.$parent.globalData.customData.linkMobile = tools
-        Tips.success("保存成功");
-      } else {
-        Tips.error(json.msg)
-      }
     }
   }
-
+  
+  async submit () {
+    let tools = []
+    this.list.forEach(row => {
+      row.children.forEach(item => {
+        values.forEach(value => {
+          if (item.checked) {
+            tools.push({url: item.url, text: item.text, icon: item.icon})
+          }
+        })
+      })
+    })
+    const json = await api.customUpdate({
+      data: {
+        content: JSON.stringify(tools)
+      },
+      method: 'post'
+    })
+    if (json.success) {
+      this.$parent.globalData.customData.linkMobile = tools
+      Tips.success("保存成功");
+    } else {
+      Tips.error(json.msg)
+    }
+  }
 }
 </script>
 <style lang="less">

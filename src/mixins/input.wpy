@@ -1,5 +1,5 @@
 <script>
-  import wepy from 'wepy';
+  import wepy from 'wepy'
   import Lang from '../utils/Lang';
   import v from '../utils/Validate';
   export default class input extends wepy.mixin {
