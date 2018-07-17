@@ -6,87 +6,98 @@
         <button class="weui-btn" type="primary" plain="true" size="mini">模块编辑</button>
       </navigator>
     </view>
-    <view class="weui-panel" style="margin-top: 16rpx;">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">我的产品</view>
-        <view class="weui-cell__ft">
-          <text class="info" @tap="edit('0')" wx:if="{{!productTools}}">编辑</text>
-          <text class="info" @tap="edit('0')" wx:if="{{productTools}}">完成</text>
+    <view wx:for="{{mobileSort}}" wx:key="*this">
+      <block wx:if="{{item.value === 'product'}}">
+        <view class="weui-panel" style="margin-top: 16rpx;">
+          <view class="weui-cell weui-cell_access">
+            <view class="weui-cell__bd">我的产品</view>
+            <view class="weui-cell__ft">
+              <text class="info" @tap="edit('0')" wx:if="{{!productTools}}">编辑</text>
+              <text class="info" @tap="edit('0')" wx:if="{{productTools}}">完成</text>
+            </view>
+          </view>
         </view>
-      </view>
-    </view>
-    <view class="weui-grids">
-      <block wx:for="{{product}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.url === 'add'}}">
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
-        </navigator>
-        <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.url !== 'add'}}">
-          <i class="iconfont icon-jianhao" @tap="jian('0', index)"></i>
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
+        <view class="weui-grids">
+          <block wx:for="{{product}}" wx:key="*this">
+            <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.url === 'add'}}">
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </navigator>
+            <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.url !== 'add'}}">
+              <i class="iconfont icon-jianhao" @tap="jian('0', index)"></i>
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </view>
+          </block>
         </view>
+        <view class="hr"/>
+      </block>
+
+      <!-- 订单管理 -->
+      <block wx:if="{{item.value === 'order'}}">
+        <view class="weui-panel">
+          <view class="weui-cell weui-cell_access">
+            <view class="weui-cell__bd">订单管理</view>
+            <navigator url="/pages/order/order?active=0" class="weui-cell__ft"><text class="info">我的订单</text></navigator>
+          </view>
+        </view>
+        <view class="weui-grids">
+          <block wx:for="{{orders}}" wx:key="*this">
+            <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </navigator>
+          </block>
+        </view>
+        <view class="hr"/>
+      </block>
+
+      <!-- 常用工具 -->
+      <block wx:if="{{item.value === 'tool'}}">
+        <view class="weui-panel">
+          <view class="weui-cell weui-cell_access">
+            <view class="weui-cell__bd">常用工具</view>
+            <view class="weui-cell__ft">
+              <text class="info" @tap="edit('1')" wx:if="{{!toggleTools}}">编辑</text>
+              <text class="info" @tap="save" wx:if="{{toggleTools}}">完成</text>
+            </view>
+          </view>
+        </view>
+        <view class="weui-grids">
+          <block wx:for="{{tools}}" wx:key="*this">
+            <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.icon === 'icon-jia'}}">
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </navigator>
+            <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.icon !== 'icon-jia'}}">
+              <i class="iconfont icon-jianhao" @tap="jian('1', index)"></i>
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </view>
+          </block>
+        </view>
+        <view class="hr"/>
+      </block>
+
+      <!-- 数据管理中心 -->
+      <block wx:if="{{item.value === 'data'}}">
+        <view class="weui-panel">
+          <view class="weui-cell weui-cell_access">
+            <view class="weui-cell__bd">数据管理中心</view>
+          </view>
+        </view>
+        <view class="weui-grids">
+          <block wx:for="{{dataManageCenter}}" wx:key="*this">
+            <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
+              <i class="iconfont {{item.icon}}"></i>
+              <view class="weui-grid__label">{{item.text}}</view>
+            </navigator>
+          </block>
+        </view>
+        <view class="hr"/>
       </block>
     </view>
 
-    <!-- 订单管理 -->
-    <view class="hr"/>
-    <view class="weui-panel">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">订单管理</view>
-        <navigator url="/pages/order/order?active=0" class="weui-cell__ft"><text class="info">我的订单</text></navigator>
-      </view>
-    </view>
-    <view class="weui-grids">
-      <block wx:for="{{orders}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid" hover-class="weui-grid_active">
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
-        </navigator>
-      </block>
-    </view>
-
-    <!-- 常用工具 -->
-    <view class="hr"/>
-    <view class="weui-panel">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">常用工具</view>
-        <view class="weui-cell__ft">
-          <text class="info" @tap="edit('1')" wx:if="{{!toggleTools}}">编辑</text>
-          <text class="info" @tap="edit('1')" wx:if="{{toggleTools}}">完成</text>
-        </view>
-      </view>
-    </view>
-    <view class="weui-grids">
-      <block wx:for="{{tools}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.icon === 'icon-jia'}}">
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
-        </navigator>
-        <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.icon !== 'icon-jia'}}">
-          <i class="iconfont icon-jianhao" @tap="jian('1', index)"></i>
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
-        </view>
-      </block>
-    </view>
-
-    <!-- 数据管理中心 -->
-    <view class="hr"/>
-    <view class="weui-panel">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">数据管理中心</view>
-      </view>
-    </view>
-    <view class="weui-grids">
-      <block wx:for="{{dataManageCenter}}" wx:key="*this">
-        <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.name}}</view>
-        </navigator>
-      </block>
-    </view>
-    <view class="hr"/>
   </view>
 </template>
 <script>
@@ -99,39 +110,53 @@ export default class Console extends wepy.page {
   components = {}
 
   data = {
+    mobileSort: [
+      {text: '我的产品', value:'product', checked: true},
+      {text: '订单管理', value:'order', checked: false},
+      {text: '常用工具', value:'tool', checked: true},
+      {text: '数据管理中心', value:'data', checked: true}
+    ],
     product: [
-      {url: '/pages/user/user', name: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
-      {url: '/pages/user/user', name: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
-      {url: 'add', name: '添加', icon: 'icon-jia'},
-      {url: '', name: 'text', icon: 'icon-jia'}
+      {url: '/pages/user/user', text: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
+      {url: '/pages/user/user', text: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
+      {url: 'add', text: '添加', icon: 'icon-jia'},
+      {url: '', text: 'text', icon: 'icon-jia'}
     ],
     productTools: false,
     orders: [
-      {url: '/pages/order/order?active=1', name: '待付款', icon: 'icon-fukuan'},
-      {url: '/pages/order/order?active=2', name: '待发货', icon: 'icon-fahuo1'},
-      {url: '/pages/mobile/mobile', name: '待评价', icon: 'icon-ic-comment'},
-      {url: '/pages/mobile/mobile', name: '退换/售后', icon: 'icon-shouhou1'}
+      {url: '/pages/order/order?active=1', text: '待付款', icon: 'icon-fukuan'},
+      {url: '/pages/order/order?active=2', text: '待发货', icon: 'icon-fahuo1'},
+      {url: '/pages/mobile/mobile', text: '待评价', icon: 'icon-ic-comment'},
+      {url: '/pages/mobile/mobile', text: '退换/售后', icon: 'icon-shouhou1'}
     ],
     tools: [
-      {url: '/pages/order/order?active=0', name: '订单管理', icon: 'icon-dingdandaifukuan', editting: false},
-      {url: '/pages/member/member', name: '会员管理', icon: 'icon-Group', editting: false},
-      {url: '/pages/console/toods', name: '添加', icon: 'icon-jia'},
-      {url: '', name: 'text', icon: 'icon-jia'}
+      {url: '/pages/order/order?active=0', text: '订单管理', icon: 'icon-dingdandaifukuan', editting: false},
+      {url: '/pages/member/member', text: '会员管理', icon: 'icon-Group', editting: false},
+      {url: '/pages/console/tools', text: '添加', icon: 'icon-jia'},
+      {url: '', text: 'text', icon: 'icon-jia'}
     ],
     toggleTools: false,
     dataManageCenter: [
-      {url: '/pages/data/data', name: '站点管理', icon: 'icon-qiu'},
-      {url: '/pages/user/enterprise', name: '公司信息', icon: 'icon-kujialeqiyezhan_gongsishili'},
-      {url: '/pages/product/product', name: '产品管理', icon: 'icon-product'},
-      {url: '/pages/news/news', name: '新闻管理', icon: 'icon-xinwenzixun'},
-      {url: '/pages/album/album', name: '相册管理', icon: 'icon-xiangce'},
-      {url: '/pages/member/member', name: '客户管理', icon: 'icon-kehuguanli'},
-      {url: '/pages/shop/shop', name: '商城管理', icon: 'icon-jiankangshangcheng'},
-      {url: '', name: 'text', icon: 'icon-jia'}
+      {url: '/pages/data/data', text: '站点管理', icon: 'icon-qiu'},
+      {url: '/pages/user/enterprise', text: '公司信息', icon: 'icon-kujialeqiyezhan_gongsishili'},
+      {url: '/pages/product/product', text: '产品管理', icon: 'icon-product'},
+      {url: '/pages/news/news', text: '新闻管理', icon: 'icon-xinwenzixun'},
+      {url: '/pages/album/album', text: '相册管理', icon: 'icon-xiangce'},
+      {url: '/pages/member/member', text: '客户管理', icon: 'icon-kehuguanli'},
+      {url: '/pages/shop/shop', text: '商城管理', icon: 'icon-jiankangshangcheng'},
+      {url: '', text: 'text', icon: 'icon-jia'}
     ]
   }
 
-  onLoad () {}
+  onLoad () {
+    let that = this
+    this.$parent.getCustomDate(function(json){
+      //更新数据
+      that.tools = json.linkMobile
+      that.mobileSort = json.mobileSort
+      that.$apply()
+    })
+  }
 
   methods = {
     edit (e) {
@@ -145,6 +170,27 @@ export default class Console extends wepy.page {
         this.product.forEach(item => {
           item.editting = this.productTools
         })
+      }
+    },
+    save () {
+      this.edit('1')
+      let tools = []
+      this.tools.forEach(item => {
+        if (item.icon !== 'icon-jia') {
+          tools.push({url: item.url, text: item.text, icon: item.icon})
+        }
+      })
+      const json = await api.customUpdate({
+        data: {
+          content: JSON.stringify(tools)
+        },
+        method: 'post'
+      })
+      if (json.success) {
+        this.$parent.globalData.customData.linkMobile = tools
+        Tips.success("保存成功");
+      } else {
+        Tips.error(json.msg)
       }
     },
     jian (idx, e) {
@@ -164,7 +210,7 @@ export default class Console extends wepy.page {
           this.tools.splice(len - 1, 1)
           this.tools.splice(len - 2, 1)
         } else {
-          this.tools.push({url: '', name: 'text', icon: 'icon-jia'})
+          this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
         }
       } else {
         this.product.splice(e, 1)
@@ -174,7 +220,7 @@ export default class Console extends wepy.page {
           this.product.splice(len - 1, 1)
           this.product.splice(len - 2, 1)
         } else {
-          this.product.push({url: '', name: 'text', icon: 'icon-jia'})
+          this.product.push({url: '', text: 'text', icon: 'icon-jia'})
         }
       }
     }

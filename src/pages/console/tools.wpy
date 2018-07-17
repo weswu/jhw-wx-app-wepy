@@ -1,26 +1,36 @@
 <template>
-  <view class="hr" style="height:16rpx"/>
-  <view wx:for="{{list}}" wx:key="*this">
-    <view class="weui-panel">
-      <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">{{item.title}}</view>
+  <view style="background:#f1f1f1;text-align:right;padding:10px;color:#666;" @tap="submit">
+    完成
+  </view>
+  <checkbox-group bindchange="checkboxChange">
+    <view wx:for="{{list}}" wx:key="*this" wx:for-item="row">
+      <view class="weui-panel">
+        <view class="weui-cell weui-cell_access">
+          <view class="weui-cell__bd">{{row.title}}</view>
+        </view>
+      </view>
+      <view class="weui-grids">
+        <label wx:for="{{row.children}}" wx:key="*this">
+          <checkbox class="weui-check" value="{{item.text}}" checked="{{item.checked}}"/>
+          <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
+            <icon class="weui-icon-checkbox_circle" type="circle" size="20" wx:if="{{!item.checked}}"></icon>
+            <icon class="weui-icon-checkbox_success" type="success" size="20" wx:if="{{item.checked}}"></icon>
+            <i class="iconfont {{item.icon}}"></i>
+            <view class="weui-grid__label">{{item.text}}</view>
+          </view>
+        </label>
       </view>
     </view>
-    <view class="weui-grids">
-      <block wx:for="{{item.children}}" wx:key="*this">
-        <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active">
-          <i class="iconfont icon-jianhao" @tap="jian('1', index)"></i>
-          <i class="iconfont {{item.icon}}"></i>
-          <view class="weui-grid__label">{{item.text}}</view>
-        </view>
-      </block>
-    </view>
-  </view>
+  </checkbox-group>
+
+
+
 </template>
 
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
+import Tips from '@/utils/Tips'
 export default class Tools extends wepy.page {
   config = {
     navigationBarTitleText: '所有工具'
@@ -31,82 +41,154 @@ export default class Tools extends wepy.page {
       {
         title: '站点管理',
         children: [
-          { value: 'static', text: '站点数据管理', icon: 'icon-shuju' },
-          { value: 'seo', text: 'SEO管理', icon: 'icon-SEO1' },
-          { value: 'beian', text: '域名备案', icon: 'icon-yuming' },
-          { value: 'sitemap', text: 'Sitemap生成', icon: 'icon-sitemap' },
-          { value: 'seo_batch', text: '批量提交', icon: 'icon-tijiao' },
-          { value: 'third_party_statistics', text: '第三方统计', icon: 'icon-tongji' },
-          { value: 'convenient', text: '便捷登录配置', icon: 'icon-denglu' }
+          { url: '/pages/user/static', text: '站点数据管理', icon: 'icon-shuju' },
+          { url: '/pages/user/seo', text: 'SEO管理', icon: 'icon-SEO1' },
+          { url: '/pages/user/beian', text: '域名备案', icon: 'icon-yuming' },
+          { url: '/pages/user/sitemap', text: 'Sitemap生成', icon: 'icon-sitemap' },
+          { url: '/pages/user/seo_batch', text: '批量提交', icon: 'icon-tijiao' },
+          { url: '/pages/user/third_party_statistics', text: '第三方统计', icon: 'icon-tongji' },
+          { url: '/pages/user/convenient', text: '便捷登录配置', icon: 'icon-denglu' },
+          { url: '', text: 'text', icon: 'icon-jia' }
         ]
       },
       {
         title: '公司信息',
         children: [
-          { value: 'enterprise', text: '基本资料', icon: 'icon-ziliao' },
-          { value: 'company', text: '公司简介', icon: 'icon-gongsi1' },
-          { value: 'recruit', text: '招聘管理', icon: 'icon-zhaopin' },
-          { value: 'link', text: '友情链接', icon: 'icon-ziyuan' }
+          { url: '/pages/user/enterprise', text: '基本资料', icon: 'icon-ziliao' },
+          { url: '/pages/user/company', text: '公司简介', icon: 'icon-gongsi1' },
+          { url: '/pages/user/recruit', text: '招聘管理', icon: 'icon-zhaopin' },
+          { url: '/pages/user/link', text: '友情链接', icon: 'icon-ziyuan' }
         ]
       },
       {
         title: '产品管理',
         children: [
-          { value: 'product', text: '产品列表', icon: 'icon-liebiao1' },
-          { value: 'category/product', text: '产品分类', icon: 'icon-classifi' },
-          { value: 'product_import', text: '导入', icon: 'icon-daoru1' },
-          { value: 'product_download', text: '下载', icon: 'icon-xiazai' }
+          { url: '/pages/user/product', text: '产品列表', icon: 'icon-liebiao1' },
+          { url: '/pages/user/category/product', text: '产品分类', icon: 'icon-classifi' },
+          { url: '/pages/user/product_import', text: '导入', icon: 'icon-daoru1' },
+          { url: '/pages/user/product_download', text: '下载', icon: 'icon-xiazai' }
         ]
       },
       {
         title: '新闻管理',
         children: [
-          { value: 'news', text: '新闻列表', icon: 'icon-liebiao' },
-          { value: 'category/news', text: '新闻分类', icon: 'icon-classifi' }
+          { url: '/pages/user/news', text: '新闻列表', icon: 'icon-liebiao' },
+          { url: '/pages/user/category/news', text: '新闻分类', icon: 'icon-classifi' },
+          { url: '', text: 'text', icon: 'icon-jia' },
+          { url: '', text: 'text', icon: 'icon-jia' }
         ]
       },
       {
         title: '相册管理',
         children: [
-          { value: 'album', text: '图片目录', icon: 'icon-mulu' },
-          { value: 'addAlbum', text: '新建相册', icon: 'icon-xinjian' },
-          { value: 'shangchuanPic', text: '上传图片', icon: 'icon-shangchuan1' },
-          { value: 'recycle', text: '回收站', icon: 'icon-huishouzhan1' }
+          { url: '/pages/user/album', text: '图片目录', icon: 'icon-mulu' },
+          { url: '/pages/user/addAlbum', text: '新建相册', icon: 'icon-xinjian' },
+          { url: '/pages/user/shangchuanPic', text: '上传图片', icon: 'icon-shangchuan1' },
+          { url: '/pages/user/recycle', text: '回收站', icon: 'icon-huishouzhan1' }
         ]
       },
       {
         title: '客户管理',
         children: [
-          { value: 'member', text: '会员管理', icon: 'icon-Group' },
-          { value: 'member_rank', text: '会员等级配置', icon: 'icon-huiyuandengjidengjizuanshi' },
-          { value: 'member_attr', text: '会员属性配置', icon: 'icon-huiyuanshuxing' },
-          { value: 'member_register', text: '网站会员注册', icon: 'icon-huiyuanzhuce' }
+          { url: '/pages/user/member', text: '会员管理', icon: 'icon-Group' },
+          { url: '/pages/user/member_rank', text: '会员等级配置', icon: 'icon-huiyuandengjidengjizuanshi' },
+          { url: '/pages/user/member_attr', text: '会员属性配置', icon: 'icon-huiyuanshuxing' },
+          { url: '/pages/user/member_register', text: '网站会员注册', icon: 'icon-huiyuanzhuce' }
         ]
       },
       {
         title: '商城管理',
         children: [
-          { value: 'shop', text: '订单管理', icon: 'icon-dingdandaifukuan' },
-          { value: 'shop_config', text: '商品相关配置', icon: 'icon-shangpin' },
-          { value: 'shop_pay', text: '支付方式管理', icon: 'icon-zhifu' },
-          { value: 'shop_delivery', text: '物流公司管理', icon: 'icon-gongsi11' },
-          { value: 'shop_bill', text: '物流单据设置', icon: 'icon-wuliu' },
-          { value: 'shop_refund', text: '商品退换货管理', icon: 'icon-tuihuanhuo' },
-          { value: 'coupon', text: '营销管理', icon: 'icon-yingxiao' }
+          { url: '/pages/user/shop', text: '订单管理', icon: 'icon-dingdandaifukuan' },
+          { url: '/pages/user/shop_config', text: '商品相关配置', icon: 'icon-shangpin' },
+          { url: '/pages/user/shop_pay', text: '支付方式管理', icon: 'icon-zhifu' },
+          { url: '/pages/user/shop_delivery', text: '物流公司管理', icon: 'icon-gongsi11' },
+          { url: '/pages/user/shop_bill', text: '物流单据设置', icon: 'icon-wuliu' },
+          { url: '/pages/user/shop_refund', text: '商品退换货管理', icon: 'icon-tuihuanhuo' },
+          { url: '/pages/user/coupon', text: '营销管理', icon: 'icon-yingxiao' },
+          { url: '', text: 'text', icon: 'icon-jia' },
+          { url: '', text: 'text', icon: 'icon-jia' }
         ]
       }
     ]
   }
 
   onLoad () {
+    this.list.forEach(row => {
+      row.children.forEach(item => {
+        item.checked = false
+      })
+    })
     this.get()
   }
 
   async get () {}
 
   methods = {
-    submit () {}
+    checkboxChange (e) {
+      let values = e.detail.value
+      this.list.forEach(row => {
+        row.children.forEach(item => {
+          item.checked = false
+          values.forEach(value => {
+            if (item.text === value) {
+              item.checked = true
+            }
+          })
+        })
+      })
+    },
+    submit () {
+      let tools = []
+      this.list.forEach(row => {
+        row.children.forEach(item => {
+          values.forEach(value => {
+            if (item.checked) {
+              tools.push({url: item.url, text: item.text, icon: item.icon})
+            }
+          })
+        })
+      })
+      const json = await api.customUpdate({
+        data: {
+          content: JSON.stringify(tools)
+        },
+        method: 'post'
+      })
+      if (json.success) {
+        this.$parent.globalData.customData.linkMobile = tools
+        Tips.success("保存成功");
+      } else {
+        Tips.error(json.msg)
+      }
+    }
   }
 
 }
 </script>
+<style lang="less">
+.weui-grids{
+  background: #fff;
+  .weui-grid{
+    width: 25%;
+    text-align:center;
+    i{
+      color: #12bedb;
+      font-size: 18px;
+    }
+    .icon-jia{
+      color: #b1b2b7;
+    }
+    icon{
+      position:absolute;
+      right:3px;
+      top:5px;
+    }
+    &.opacity{
+      i,view, icon{
+        opacity: 0;
+      }
+    }
+  }
+}
+</style>

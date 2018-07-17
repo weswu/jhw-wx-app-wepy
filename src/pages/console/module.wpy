@@ -17,7 +17,7 @@
                       <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!movableViewPosition.data.checked}}"></icon>
                       <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{movableViewPosition.data.checked}}"></icon>
                   </view>
-                  <view class="weui-cell__bd">{{movableViewPosition.data.name}}</view>
+                  <view class="weui-cell__bd">{{movableViewPosition.data.text}}</view>
                   <view class="weui-cell__ft">
                       <i class="iconfont icon-tuozhuaicaidandaohang"></i>
                   </view>
@@ -33,7 +33,7 @@
                     <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!item.checked}}"></icon>
                     <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{item.checked}}"></icon>
                 </view>
-                <view class="weui-cell__bd">{{item.name}}</view>
+                <view class="weui-cell__bd">{{item.text}}</view>
                 <view class="weui-cell__ft">
                     <i class="iconfont icon-tuozhuaicaidandaohang"></i>
                 </view>
@@ -74,10 +74,10 @@ export default class Module extends wepy.page {
         selectPosition:0,
     },
     optionsListData: [
-      {name: '我的产品', value:'product', checked: true},
-      {name: '订单管理', value:'order', checked: false},
-      {name: '常用工具', value:'tool', checked: true},
-      {name: '数据管理中心', value:'data', checked: true}
+      {text: '我的产品', value:'product', checked: true},
+      {text: '订单管理', value:'order', checked: false},
+      {text: '常用工具', value:'tool', checked: true},
+      {text: '数据管理中心', value:'data', checked: true}
     ]
   }
 

@@ -1,6 +1,19 @@
 <template>
   <!-- 导航 -->
-
+  <view class="searchFixed">
+    <view class="search" style="background:#22252a">
+      <i class="iconfont icon-saoyisao" @tap="saoyisao"></i>
+      <navigator url="/pages/product/product" class="search-btn" style="background: #fff;">
+        <view style="background: rgba(34,37,42,0.8);width:100%;height:100%">
+          <i class="iconfont icon-sousuo"></i>
+        </view>
+      </navigator>
+      <navigator url="/pages/message/message" class="email" style="position: relative;">
+        <i class="iconfont icon-mail"></i>
+        <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
+      </navigator>
+    </view>
+  </view>
   <!-- 轮播 -->
   <view class="swiper-container">
     <swiper class="swiper_box" bindchange="swiperChange" style="{{swiperHeight}}"
@@ -19,7 +32,7 @@
   </view>
 
   <!-- 签到 -->
-  <view class="signIn">
+  <view class="signIn" @tap="qiandao">
     <i class="iconfont icon-qiandao"></i>
     <button type="primary" plain="true" size="mini">签到</button>
   </view>
@@ -144,7 +157,8 @@
       grids: [
         {url: '', name: '建站快速入门', icon: 'icon-beginnerguide', content: '按步骤指导操作'},
         {url: '', name: '常见问题', icon: 'icon-kuaisurumen', content: '自助排除故障'}
-      ]
+      ],
+      userInfo: {}
     }
 
     async onLoad () {
@@ -177,19 +191,26 @@
       this.$parent.get(function(json){
         Tips.loaded()
         //更新数据
-        json.user.addTime = Utils.formatTime(json.user.addTime, 'yyyy-MM-dd hh:mm')
         that.user = json.user
         that.userInfo = json.userInfo
-        that.enterprise = json.enterprise
-        if (json.employee.length > 0) {
-          that.employee = json.employee[0]
-        }
         console.log('用户数据存入当前页面');
         that.$apply()
       })
     }
 
     methods = {
+      // 头顶
+      saoyisao () {
+        wx.scanCode({
+          success: (res) => {
+            if (res.scanType === 'QR_CODE') {
+              wx.navigateTo({
+                url: '/pages/setting/webView?src=' + res.result
+              })
+            }
+          }
+        })
+      },
       // 轮播
       imageLoad (e) {
         var $width = e.detail.width,    //获取图片真实宽度
@@ -205,13 +226,18 @@
         this.swiperCurrent = e.detail.current
         this.$apply()
       },
+      // 签到
+      qiandao () {
+        Tips.success('签到成功')
+      },
       // 跳转
       toMiniProgram () {
         wx.navigateToMiniProgram({
           appId: 'wx031271ed9d1f909f',
           path: 'pages/index/index',
           extraData: {
-            foo: 'bar'
+            enterprise_id: 'Enterp_0000000000000000000049341',
+            user_id: 'User_000000000000000000000065262'
           },
           envVersion: 'develop',
           success(res) {
@@ -230,6 +256,22 @@
   }
 </script>
 <style lang="less">
+/* 搜索 */
+.searchFixed{height: 41px;z-index:11;position:relative;}
+.search{padding:10px 0 15rpx 12rpx;overflow:hidden;position: fixed;left:0;top:0;width:750rpx;line-height: 54rpx;}
+.search .search-btn{color:#fff;font-size:12px;height:54rpx;line-height:54rpx;width:540rpx;float: left;border-radius: 3rpx}
+.search .search-btn .iconfont{margin-left: 18rpx}
+.search .iconfont{color:#fff;}
+.search .icon-saoyisao{
+  float: left;
+  padding: 0 22rpx;
+}
+.email{
+  position: relative;
+  float:left;
+  padding-left: 20rpx;
+  .iconfont{font-size:20px;}
+}
 /* 轮播 */
 .swiper_box{
   background: #22252a

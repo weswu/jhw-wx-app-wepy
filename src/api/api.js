@@ -1,6 +1,6 @@
 import { http } from '@/utils/Http'
 
-const host = 'https://app.jihui88.com'
+const host = 'https://www.jihui88.com'
 
 const wxHost = 'https://wx.jihui88.net'
 
@@ -12,8 +12,10 @@ const logout = (params) => http(params, wxHost + '/rest/api/user/wxappLogout')
 // 基本数据
 const user = (params) => http(params, host + '/rest/api/user/detail')
 const userInfo = (params) => http(params, host + '/rest/api/user/index')
-const accountInfo = (params) => http(params, host + '/rest/api/user/accountInfo/' + params.id)
 const enterprise = (params) => http(params, host + '/rest/api/enterprise/detail')
+const customData = (params) => http(params, host + '/rest/api/custom/detail')
+const customUpdate = (params) => http(params, host + '/rest/api/custom/update')
+
 // 站点数据
 const staticList = (params) => http(params, host + '/rest/pc/api/baseLayout/list?page=1&pageSize=100&sortType=desc')
 // 留言
@@ -92,7 +94,7 @@ const mobileCase = (params) => http(params, host + '/rest/api/mobile/case')
 module.exports = {
   wxapplogin,
   // 基本数据
-  user, userInfo, accountInfo, enterprise,
+  user, userInfo, enterprise, customData, customUpdate,
   login, logout,
   // 站点
   staticList,

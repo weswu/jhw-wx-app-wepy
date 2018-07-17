@@ -2,7 +2,7 @@ import wepy from 'wepy'
 
 const http = async (params = {}, url) => {
   console.log(url)
-  if (url.indexOf('app.jihui88.com') > -1) {
+  if (url.indexOf('www.jihui88.com') > -1) {
     params.data = params.data || {}
     params.data.skey = wepy.getStorageSync('skey')
   }
