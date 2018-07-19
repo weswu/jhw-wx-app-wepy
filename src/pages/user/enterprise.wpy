@@ -1,6 +1,11 @@
 <template>
   <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
+    <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
+      <view class="weui-cell__hd">
+        <view class="weui-label">基本信息：</view>
+      </view>
+    </view>
     <WInput>
       <view slot="title" class="weui-label">公司LOGO</view>
       <view slot="input" style="width: 300rpx;padding: 8px">
@@ -66,7 +71,7 @@ import Upload from '@/components/common/upload'
 import input from '@/mixins/input'
 export default class Enterprise extends wepy.page {
   config = {
-    navigationBarTitleText: '企业资料'
+    navigationBarTitleText: '基本资料'
   }
 
   components = {

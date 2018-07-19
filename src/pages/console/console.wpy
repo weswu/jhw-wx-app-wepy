@@ -111,12 +111,7 @@ export default class Console extends wepy.page {
   components = {}
 
   data = {
-    mobileSort: [
-      {text: '我的产品', value:'product', checked: true},
-      {text: '订单管理', value:'order', checked: false},
-      {text: '常用工具', value:'tool', checked: true},
-      {text: '数据管理中心', value:'data', checked: true}
-    ],
+    mobileSort: [],
     product: [
       {url: '/pages/user/user', text: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
       {url: '/pages/user/user', text: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
@@ -149,12 +144,16 @@ export default class Console extends wepy.page {
     ]
   }
 
-  onLoad () {
+  onShow () {
+    this.get()
+  }
+
+  async get () {
     let that = this
-    this.$parent.getCustomDate(function(json){
+    this.$parent.getCustomDate(function(res){
       //更新数据
-      that.tools = json.linkMobile
-      that.mobileSort = json.mobileSort
+      that.tools = res.linkMobile
+      that.mobileSort = res.mobileSort
       that.$apply()
     })
   }

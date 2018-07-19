@@ -17,7 +17,9 @@ const userInfo = (params) => http(params, host + 'user/index')
 const enterprise = (params) => http(params, host + 'enterprise/detail')
 const customData = (params) => http(params, host + 'custom/detail')
 const customUpdate = (params) => http(params, host + 'custom/update')
+// 账号安全
 const accountInfo = (params) => http(params, host + 'user/accountInfo/' + params.id)
+const accountOauth = (params) => http(params, host + 'oauth/list')
 
 // 站点数据
 const staticList = (params) => http(params, pcHost + 'baseLayout/list?page=1&pageSize=100&sortType=desc')
@@ -102,7 +104,9 @@ const mobileCase = (params) => http(params, host + 'mobile/case')
 module.exports = {
   wxapplogin,
   // 基本数据
-  user, userInfo, enterprise, customData, customUpdate, accountInfo,
+  user, userInfo, enterprise, customData, customUpdate,
+  // 账号安全
+  accountInfo, accountOauth,
   login, logout,
   // 站点
   staticList,

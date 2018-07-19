@@ -1,27 +1,26 @@
 <template>
   <view style="text-align:right;padding:7px 15px;color:#999;font-size:12px;">
-    按住拖动排序
+    按住拖动排序<text class="submit info" @tap="save">完成</text>
   </view>
   <view style="position: relative; z-index: 199;">
-  	<view class="touchView" style="height:{{scrollPosition.scrollViewHeight}}px;"  catchtouchstart="scrollTouchStart"
+  	<view class="touchView" style="height:{{scrollPosition.scrollViewHeight}}px;" catchtouchstart="scrollTouchStart"
   		  catchtouchmove="scrollTouchMove" catchtouchend="scrollTouchEnd">
   	</view>
-  	<movable-area class="moveable_row {{movableViewPosition.className}}"
-  				  style="height: {{scrollPosition.scrollViewHeight}}px;">
+  	<movable-area class="moveable_row {{movableViewPosition.className}}" style="height: {{scrollPosition.scrollViewHeight}}px;">
   		<movable-view style="height: {{scrollPosition.everyOptionCell}}px; width: 100%; background-color: #fff;"
-  					  direction="vertical" x="{{movableViewPosition.x}}" y="{{movableViewPosition.y}}"
-  					  inertia="false" damping="9999"  friction="9999">
-              <label class="weui-cell weui-check__label">
-                  <checkbox class="weui-check" value="{{movableViewPosition.data.value}}" checked="{{movableViewPosition.data.checked}}"/>
-                  <view class="weui-cell__hd weui-check__hd_in-checkbox">
-                      <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!movableViewPosition.data.checked}}"></icon>
-                      <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{movableViewPosition.data.checked}}"></icon>
-                  </view>
-                  <view class="weui-cell__bd">{{movableViewPosition.data.text}}</view>
-                  <view class="weui-cell__ft">
-                      <i class="iconfont icon-tuozhuaicaidandaohang"></i>
-                  </view>
-              </label>
+        direction="vertical" x="{{movableViewPosition.x}}" y="{{movableViewPosition.y}}"
+        damping="9999" friction="9999">
+        <label class="weui-cell weui-check__label">
+            <checkbox class="weui-check" value="{{movableViewPosition.data.value}}" checked="{{movableViewPosition.data.checked}}"/>
+            <view class="weui-cell__hd weui-check__hd_in-checkbox">
+                <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!movableViewPosition.data.checked}}"></icon>
+                <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{movableViewPosition.data.checked}}"></icon>
+            </view>
+            <view class="weui-cell__bd">{{movableViewPosition.data.text}}</view>
+            <view class="weui-cell__ft">
+                <i class="iconfont icon-tuozhuaicaidandaohang"></i>
+            </view>
+        </label>
   		</movable-view>
   	</movable-area>
   	<scroll-view class="edit_row_holder" scroll-y="{{scrollPosition.scrollY}}" style="height: {{scrollPosition.scrollViewHeight}}px;" bindscroll="bindscroll">
@@ -45,6 +44,8 @@
 </template>
 <script>
 import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
 export default class Module extends wepy.page {
   config = {
     navigationBarTitleText: '所有模块',
@@ -69,58 +70,73 @@ export default class Module extends wepy.page {
       data:{}
     },
     selectItemInfo:{
-        value:"",
-        selectIndex: -1,
-        selectPosition:0,
+      value:"",
+      selectIndex: -1,
+      selectPosition:0,
     },
-    optionsListData: [
-      {text: '我的产品', value:'product', checked: true},
-      {text: '订单管理', value:'order', checked: false},
-      {text: '常用工具', value:'tool', checked: true},
-      {text: '数据管理中心', value:'data', checked: true}
-    ]
+    optionsListData: []
   }
 
   onLoad () {
     // 开始加载页面
     var systemInfo= wx.getSystemInfoSync()
-    this.optionsListData = this.optionsDataTranlate(this.optionsListData, '')
+    this.optionsListData = this.optionsDataTranlate(this.$parent.globalData.customData.mobileSort, '')
     this.scrollPosition.scrollViewWidth= systemInfo.windowHeight-33
     this.scrollPosition.scrollViewHeight= systemInfo.windowWidth
     this.scrollPosition.windowViewHeight= systemInfo.windowHeight
     this.$apply()
   }
 
+  async save () {
+    let data = this.$parent.globalData.customData
+    data.mobileSort = []
+    this.optionsListData.forEach(item => {
+      data.mobileSort.push({text: item.text, value: item.value, checked: item.checked})
+    })
+    const res = await api.customUpdate({
+      data: {
+        content: JSON.stringify(data)
+      },
+      method: 'post'
+    })
+    if (res.success) {
+      this.$parent.globalData.customData = data
+      Tips.success("保存成功")
+      wx.navigateBack({
+        delta: 1
+      })
+    }
+  }
+
 
   optionsDataTranlate (optionsList,selectClass) {
-      for(var i=0,j=optionsList.length;i<j;i++){
-          optionsList[i].selectClass = selectClass;
-      }
-      return optionsList;
+    for(var i=0,j=optionsList.length;i<j;i++){
+      optionsList[i].selectClass = selectClass;
+    }
+    return optionsList
   }
-
-
 
   getOptionInfo (code) {
-      for(var i=0,j=this.data.optionsListData.length;i<j;i++){
-          var optionData= this.data.optionsListData[i];
-          if(optionData.value == code){
-              optionData.selectIndex = i;
-              return optionData;
-          }
+    for(var i=0,j=this.data.optionsListData.length;i<j;i++){
+      var optionData= this.data.optionsListData[i];
+      if(optionData.value == code){
+        optionData.selectIndex = i
+        return optionData;
       }
-      return {};
+    }
+    return {}
   }
+
   getPositionDomByXY (potions) {
-      var y = potions.y-this.scrollPosition.top+this.scrollPosition.scrollTop;
-      var optionsListData = this.optionsListData;
-      var everyOptionCell = this.scrollPosition.everyOptionCell;
-      for(var i=0,j=optionsListData.length;i<j;i++){
-          if(y>=i*everyOptionCell&&y<(i+1)*everyOptionCell){
-              return optionsListData[i];
-          }
-      }
-      return optionsListData[0];
+    var y = potions.y-this.scrollPosition.top+this.scrollPosition.scrollTop;
+    var optionsListData = this.optionsListData;
+    var everyOptionCell = this.scrollPosition.everyOptionCell;
+    for(var i=0,j=optionsListData.length;i<j;i++){
+        if(y>=i*everyOptionCell&&y<(i+1)*everyOptionCell){
+            return optionsListData[i];
+        }
+    }
+    return optionsListData[0]
   }
 
   scrollTouchStart (event) {
@@ -195,13 +211,12 @@ export default class Module extends wepy.page {
       this.$apply()
   }
   scrollTouchEnd (event) {
-      console.log(event);
-      var optionsListData = this.optionsDataTranlate(this.data.optionsListData,"");
-
-      this.scrollPosition.scrollY = true
-      this.movableViewPosition.className = 'none'
-      this.optionsListData = optionsListData
-      this.$apply()
+    console.log(event);
+    var optionsListData = this.optionsDataTranlate(this.data.optionsListData,"")
+    this.scrollPosition.scrollY = true
+    this.movableViewPosition.className = 'none'
+    this.optionsListData = optionsListData
+    this.$apply()
   }
 
 
@@ -225,6 +240,10 @@ export default class Module extends wepy.page {
 <style lang="less">
 page {
   background-color: #f1f1f1;
+  .submit{
+    margin-left:10px;
+    font-size:14px;
+  }
 }
 
 .touchView{z-index: 200; width: 100px;position: absolute;top: 0;left:275px; top: 0;}

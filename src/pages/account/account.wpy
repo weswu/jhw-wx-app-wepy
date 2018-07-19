@@ -1,0 +1,158 @@
+<template>
+  <view class="header">
+    <view class="logo">
+      <Upload :type.sync="type" :src.sync="logo" @change.user="change">
+        <i class="iconfont icon-huiyuan1" slot="content" wx:if="{{!logo}}"></i>
+      </Upload>
+    </view>
+  </view>
+  <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
+    <view class="weui-cell__hd">
+      <view class="weui-label">账号</view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">账号昵称</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">
+        <input style="height:10px;line-height:10px;" placeholder="请输入昵称" @blur="input" value="{{accountInfo.nickName}}"/>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">会员账号ID</view>
+      <view class="weui-cell__ft">{{user.username}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">注册时间</view>
+      <view class="weui-cell__ft">{{user.addTime}}</view>
+    </view>
+  </view>
+
+  <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
+    <view class="weui-cell__hd">
+      <view class="weui-label">安全</view>
+    </view>
+  </view>
+  <view class="weui-cells weui-cells_in-small-appmsg">
+    <navigator url="password" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">登录密码</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <view class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">备用邮箱</view>
+      <view class="weui-cell__ft">{{user.email}}</view>
+    </view>
+    <repeat for="{{oauth}}" key="index" index="index" item="item">
+      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'weixin'}}">
+        <view class="weui-cell__bd">微信</view>
+        <view class="weui-cell__ft">{{item.nickname}}</view>
+      </view>
+      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'qq'}}">
+        <view class="weui-cell__bd">QQ</view>
+        <view class="weui-cell__ft">{{item.nickname}}</view>
+      </view>
+      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'cellphone'}}">
+        <view class="weui-cell__bd">手机</view>
+        <view class="weui-cell__ft">{{item.nickname}}</view>
+      </view>
+    </repeat>
+  </view>
+  <view class="hr"/>
+</template>
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Upload from '@/components/common/upload'
+export default class Account extends wepy.page {
+  config = {
+    navigationBarTitleText: '安全设置'
+  }
+
+  components = {
+    Upload
+  }
+
+  data = {
+    user: {},
+    accountInfo: {},
+    logo: '',
+    type: '',
+    oauth: [
+      {nickname: '未绑定', type: 'weixin'},
+      {nickname: '未绑定', type: 'qq'},
+      {nickname: '未绑定', type: 'cellphone'}
+    ]
+  }
+
+  async onLoad() {
+    let that = this
+    this.$parent.getAccountInfo(function(res){
+      //更新数据
+      that.user = res.user
+      that.user.addTime = Utils.formatTime(that.user.addTime)
+      that.accountInfo = res.accountInfo
+      that.logo = res.accountInfo.headimg || ''
+      that.type = !that.logo ? 'slot' : '' // 日不能放在{{}}上
+      that.$apply()
+    })
+    this.get()
+  }
+
+  async get () {
+    let res = await api.accountOauth()
+    if (res.success) {
+      this.oauth = res.attributes.data
+    }
+    this.$apply()
+  }
+
+  methods = {
+    change (text) {
+      this.accountInfo.headimg = text.data
+      this.logo = text.data
+      this.save()
+    },
+    input (e) {
+      this.accountInfo.nickName = e.detail.value
+      this.save()
+    }
+  }
+
+  async save () {
+    const res = await api.accountInfo({
+      id: this.user.userId,
+      data: {
+        model: JSON.stringify(this.accountInfo),
+        _method: 'put'
+      },
+      method: 'post'
+    })
+    if (res.success) {
+      this.$parent.globalData.accountInfo = this.accountInfo
+      Tips.success("保存成功")
+    }
+  }
+
+}
+</script>
+<style lang="less">
+  .header{
+    background: #373d40;
+    text-align: center;height:200rpx;
+  }
+  .logo{
+    width:150rpx;
+    height:150rpx;
+    margin:0 auto;
+    line-height:75px;
+    padding-top:15rpx;
+    image {
+      width:150rpx;border-radius: 8rpx;
+    }
+  }
+  .icon-huiyuan1{
+    background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
+  }
+</style>

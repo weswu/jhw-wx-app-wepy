@@ -2,7 +2,7 @@
   <view class="bg-gray j_my">
     <view class="weui-panel">
       <view class="weui-media-box weui-media-box_appmsg">
-          <navigator url="" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <navigator url="/pages/account/account" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
             <i class="iconfont icon-huiyuan1 weui-media-box__thumb" wx:if="{{!user.username}}"></i>
             <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" wx:if="{{user.username}}"/>
           </navigator>
@@ -55,14 +55,14 @@
     </view>
     <view class="hr"/>
     <view class="weui-panel">
-      <navigator url="/pages/setting/serviceFeedback"  class="weui-cell weui-cell_access">
+      <navigator url="/pages/setting/serviceFeedback" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-erji"></i>
         </view>
         <view class="weui-cell__bd">服务反馈</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
-      <navigator url="/pages/service/service"  class="weui-cell weui-cell_access">
+      <navigator url="/pages/service/service" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-paimaizixun"></i>
         </view>
@@ -72,7 +72,7 @@
     </view>
     <view class="hr"/>
     <view class="weui-panel">
-      <navigator url="/pages/user/user"  class="weui-cell weui-cell_access">
+      <navigator url="/pages/account/account" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-account-only"></i>
         </view>
@@ -82,7 +82,7 @@
     </view>
     <view class="hr"/>
     <view class="weui-panel">
-      <navigator url="/pages/setting/setting"  class="weui-cell weui-cell_access">
+      <navigator url="/pages/setting/setting" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-shezhi"></i>
         </view>
@@ -118,6 +118,13 @@ export default class My extends wepy.page {
       that.$apply()
     })
   }
+
+  onShow () {
+    if (this.$parent.globalData.accountInfo.headimg || this.$parent.globalData.accountInfo.nickName) {
+      this.accountInfo = this.$parent.globalData.accountInfo
+      this.$apply()
+    }
+  }
 }
 </script>
 
@@ -138,7 +145,7 @@ export default class My extends wepy.page {
           vertical-align:bottom
         }
       }
-      .iconfont{
+      .icon-huiyuan1{
         background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
       }
       .weui-media-box__thumb{

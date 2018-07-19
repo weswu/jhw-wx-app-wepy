@@ -12,12 +12,16 @@ export default class extends wepy.app {
   config = {
     pages: [
     'pages/user/login',
-    'pages/cost/detail', 'pages/cost/order',
+    'pages/account/account', 'pages/account/password',
+    'pages/user/enterprise',
     'pages/index/my', 'pages/index/index',
+    'pages/cost/detail', 'pages/cost/order',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
-    'pages/point/point', 'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
-      'pages/message/messageDetail', 'pages/message/messageList', 'pages/message/message', 'pages/message/messageBind',
+    'pages/point/point',
+    'pages/message/messageDetail', 'pages/message/messageList', 'pages/message/message',
       // 其它
+      'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
+      'pages/message/messageBind',
       'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
@@ -34,11 +38,10 @@ export default class extends wepy.app {
       'pages/cert/cert', 'pages/cert/certDetail',
       'pages/link/link', 'pages/link/linkDetail',
       'pages/album/album',
-      'pages/setting/setting', 'pages/setting/serviceFeedback', 'pages/setting/account', 'pages/setting/logList','pages/setting/sale',
+      'pages/setting/setting', 'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
       'pages/service/service', 'pages/service/faq', 'pages/service/faq1',
-      'pages/setting/password','pages/setting/webView',
+      'pages/setting/webView',
       'pages/user/user', 'pages/user/map',
-      'pages/user/enterprise',
       'pages/bind/bind', 'pages/bind/bindDetail',
       'pages/user/publish'
     ],
@@ -95,7 +98,13 @@ export default class extends wepy.app {
       noReaderMsg: 8
     },
     accountInfo: {},
-    customData: {},
+    customData: {
+      mobileSort: [
+      {text: '我的产品', value:'product', checked: true},
+      {text: '订单管理', value:'order', checked: true},
+      {text: '常用工具', value:'tool', checked: true},
+      {text: '数据管理中心', value:'data', checked: true}
+    ]},
     // 站点
     staticList: [],
     layoutId: '',
@@ -184,7 +193,7 @@ export default class extends wepy.app {
           if (!content.mobileSort) {
             content.mobileSort = [
               {text: '我的产品', value:'product', checked: true},
-              {text: '订单管理', value:'order', checked: false},
+              {text: '订单管理', value:'order', checked: true},
               {text: '常用工具', value:'tool', checked: true},
               {text: '数据管理中心', value:'data', checked: true}
             ]
