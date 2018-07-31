@@ -67,7 +67,7 @@ export default class Message extends wepy.page {
     font-size: 13px;color: #888888;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space:nowrap;width:91%;
+    white-space:nowrap;width:75%;
   }
   .icon{
     width: 40px; height: 40px;

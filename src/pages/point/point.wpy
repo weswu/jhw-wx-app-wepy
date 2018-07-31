@@ -4,7 +4,7 @@
       <text class="number">{{point}}</text>积分
     </view>
     <!-- 签到 -->
-    <view class="signIn">
+    <view class="signIn" @tap="signIn">
       <i class="iconfont icon-qiandao"></i>
       <button type="primary" plain="true" size="mini">每日签到领积分</button>
     </view>
@@ -58,6 +58,7 @@
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
+import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
 import Item from '@/components/order/orderItem'
@@ -219,6 +220,15 @@ export default class Progress extends wepy.page {
   async getRule () {
     const res = await api.pointRule()
     this.rule = res.attributes.data
+  }
+
+  async signIn () {
+    const res = await api.signIn()
+    if (res.success) {
+      Tips.success('签到成功')
+    } else {
+      Tips.error(res.msg)
+    }
   }
 
   methods = {

@@ -25,7 +25,7 @@
           <view class="weui-cell__hd">
             <i class="iconfont icon-price" style="color:#f67d73"></i>
           </view>
-          <view class="weui-cell__bd weui-cell_primary">费用中心</view>
+          <view class="weui-cell__bd">费用中心</view>
           <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>

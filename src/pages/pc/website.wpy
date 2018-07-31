@@ -1,0 +1,289 @@
+<template>
+    <!--圆形点击框  -->
+  <view class="round-click">
+     <navigator url='/pages/pc/add' >创建新网站</navigator >
+  </view>
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <view class="weui-panel">
+        <view class="weui-panel__bd" @tap="toggle({{item}})">
+            <view class="weui-media-box weui-media-box_text">
+                <view class="weui-media-box__title weui-media-box__title_in-text">{{item.seoTitle}}</view>
+                <view class="weui-media-box__desc">
+                  <navigator url="/pages/setting/webView?src={{item.url}}">
+                    {{item.url}}
+                   </navigator>
+                   <text class="time" wx:if="{{item.endTime}}">(到期时间：{{item.endTime}})</text>
+                </view>
+                <view class="weui-media-box__info">
+                  <view class="weui-media-box__info__meta">网站编号：{{item.id}}</view>
+                  <view class="weui-media-box__info__meta">{{item.lan}}</view>
+                  <view class="weui-media-box__info__meta weui-media-box__info__meta_extra">
+                    <!-- 状态 -->
+                    <text class="type" wx:if="{{item.state === '0'}}">审核中</text>
+                    <text class="type" wx:elif="{{item.state === '3'}}" style="background: #d0021b;">审核未通过</text>
+                    <text class="type" wx:else="{{!item.bind.address}}">未上线</text>
+                  </view>
+                </view>
+            </view>
+        </view>
+        <view class="weui-panel__ft" wx:if="{{item._checked}}">
+            <view class="weui-cell weui-cell_access weui-cell_link">
+                <view class="weui-cell__bd">
+                  <button type="default" size="mini" @tap="copy({{item}})">复制</button>
+                  <button type="default" size="mini" @tap="del({{item.id}})" style="margin-left:10px;">删除</button>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="hr">
+  </repeat>
+
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Loadmore from '@/components/weui/loadmore'
+export default class PcWebsite extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的网站'
+  }
+  components = {
+    Loadmore
+  }
+
+  data = {
+    list: [
+      {
+        addTime: 1530175983000,
+        addUser: "",
+        args: null,
+        bind: {
+          addTime: null,
+          address: "",
+          bindId: null,
+          country: "",
+          icp: "",
+          id: "null",
+          layoutId: null,
+          psr: "",
+          seccurityLink: "",
+          secondDomain: "",
+          state: "",
+          type: "",
+          updateTime: null
+        },
+        categoryId: "7",
+        copyId: "464",
+        copyState: "0",
+        endTime: 1532767983000,
+        entName: "",
+        enterpriseId: "Enterp_0000000000000000000000039",
+        grade: 1,
+        icon: "",
+        id: "744",
+        industryId: "",
+        isCase: "",
+        language: "1",
+        laymodList: "",
+        layoutId: 744,
+        logo: "",
+        mviews: "",
+        pic: "",
+        pviews: "",
+        rviews: "",
+        sceneId: "",
+        seoDescription: "",
+        seoKeywords: "",
+        seoTitle: "我的网站----------模板（墙布）",
+        signContent: "null",
+        state: "0",
+        tagName: "",
+        templateId: 464,
+        themeId: 0,
+        title: "我的网站",
+        updateTime: "2018-07-28 17:58:00.0",
+        user: null,
+        uviews: "",
+        views: ""
+      },
+      {
+        addTime: 1530175959000,
+        addUser: "",
+        args: null,
+        bind: {
+          addTime: null,
+          address: "",
+          bindId: null,
+          country: "",
+          icp: "",
+          id: "null",
+          layoutId: null,
+          psr: "",
+          seccurityLink: "",
+          secondDomain: "",
+          state: "",
+          type: "",
+          updateTime: null
+        },
+        categoryId: "7",
+        copyId: "455",
+        copyState: "0",
+        endTime: 1532767959000,
+        entName: "",
+        enterpriseId: "Enterp_0000000000000000000000039",
+        grade: 1,
+        icon: "",
+        id: "743",
+        industryId: "",
+        isCase: "",
+        language: "2",
+        laymodList: "",
+        layoutId: 743,
+        logo: "",
+        mviews: "",
+        pic: "",
+        pviews: "",
+        rviews: "",
+        sceneId: "",
+        seoDescription: "",
+        seoKeywords: "",
+        seoTitle: "模板（工具）",
+        signContent: "null",
+        state: "0",
+        tagName: "",
+        templateId: 455,
+        themeId: 0,
+        title: "我的网站",
+        updateTime: "2018-07-28 17:58:00.0",
+        user: null,
+        uviews: "",
+        views: ""
+      }
+    ],
+    params: {
+      page: 1,
+      pageSize: 4,
+      sortType: 'desc'
+    },
+    count: 0,
+    more: { loading: true }
+  }
+
+  onLoad () {
+    this.get()
+  }
+
+  async get () {
+    const res = await api.staticList({
+      data: this.params
+    })
+    if (res.success) {
+      res.attributes.data.forEach(item => {
+        item._checked = false
+        if (item.language === '1') {
+          item.lan = '中文'
+        }
+        if (item.language === '2') {
+          item.lan = '英文'
+        }
+        if (item.bind.address) {
+          let src = item.bind.address
+          item.url = src.indexOf('http') > -1 ? src : ('http://' + src)
+        } else {
+          item.url = 'http://pc.jihui88.com/rest/site/' + item.id + '/index'
+        }
+        item.endTime = Utils.formatTime(item.endTime)
+      })
+    }
+    await Utils.scrollList(this, res, '我的网站')
+  }
+
+  async copy (e) {
+    let item = e.target.dataset.wpycopyA
+    let data = {
+      model: JSON.stringify({
+        title: item.title,
+        seoTitle: item.seoTitle,
+        language: item.language,
+        grade: item.grade,
+        name: item.name,
+        cellphone: item.cellphone,
+        categoryId: item.categoryId,
+        entName: item.entName,
+        areaPath: item.areaPath,
+        copyId: item.id
+      })
+    }
+    Tips.loading()
+    const res = await api.staticDetail({
+      data: data,
+      method: 'post'
+    })
+    Tips.loaded()
+    if (res.success) {
+      await Utils.del(this, e, '我的网站')
+      Tips.success('复制成功')
+      this.list.splice(0, 0, res.attributes.data)
+    } else {
+      Tips.error(res.msg)
+    }
+  }
+
+    methods = {
+      toggle (e) {
+        this.list.forEach(item => {
+          if (item.id === e.id) {
+            item._checked = !item._checked
+          }
+        })
+        this.$apply()
+      }
+    }
+
+
+    // 删除
+  async del (e) {
+    await Tips.confirm('确认删除吗？')
+    Tips.loading()
+    const res = await api.staticDetail({
+      method: 'DELETE',
+      id: e.target.dataset.wpydelA
+    })
+    Tips.loaded()
+    if (res.success) {
+      await Utils.del(this, e, '我的网站')
+      Tips.success('删除成功')
+    }
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.params.page = 1
+    this.list = []
+    this.more.loading = true
+    await this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.params.page += 1
+    this.get()
+  }
+
+}
+</script>
+
+<style lang="less">
+  .hr{
+    height: 16rpx;
+  }
+</style>

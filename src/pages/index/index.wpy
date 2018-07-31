@@ -32,7 +32,7 @@
   </view>
 
   <!-- 签到 -->
-  <view class="signIn" @tap="qiandao">
+  <view class="signIn" @tap="signIn">
     <i class="iconfont icon-qiandao"></i>
     <button type="primary" plain="true" size="mini">签到</button>
   </view>
@@ -198,6 +198,15 @@
       })
     }
 
+    async signIn () {
+      const res = await api.signIn()
+      if (res.success) {
+        Tips.success('签到成功')
+      } else {
+        Tips.error(res.msg)
+      }
+    }
+
     methods = {
       // 头顶
       saoyisao () {
@@ -225,10 +234,6 @@
       swiperChange (e){
         this.swiperCurrent = e.detail.current
         this.$apply()
-      },
-      // 签到
-      qiandao () {
-        Tips.success('签到成功')
       },
       // 跳转
       toMiniProgram () {

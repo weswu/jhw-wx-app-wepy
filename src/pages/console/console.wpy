@@ -12,19 +12,19 @@
           <view class="weui-cell weui-cell_access">
             <view class="weui-cell__bd">我的产品</view>
             <view class="weui-cell__ft">
-              <text class="info" @tap="edit('0')" wx:if="{{!productTools}}">编辑</text>
+              <text class="info" @tap="edit('0')" wx:if="{{!productTools}}"></text>
               <text class="info" @tap="edit('0')" wx:if="{{productTools}}">完成</text>
             </view>
           </view>
         </view>
         <view class="weui-grids">
-          <block wx:for="{{product}}" wx:key="*this">
+          <block wx:for="{{product}}" wx:key="*this" wx:for-index="idx">
             <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.url === 'add'}}">
               <i class="iconfont {{item.icon}}"></i>
               <view class="weui-grid__label">{{item.text}}</view>
             </navigator>
             <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.url !== 'add'}}">
-              <i class="iconfont icon-jianhao" @tap="jian('0', index)"></i>
+              <i class="iconfont icon-jianhao" @tap="jian('0', {{idx}})"></i>
               <i class="iconfont {{item.icon}}"></i>
               <view class="weui-grid__label">{{item.text}}</view>
             </view>
@@ -64,13 +64,13 @@
           </view>
         </view>
         <view class="weui-grids">
-          <block wx:for="{{tools}}" wx:key="*this">
+          <block wx:for="{{tools}}" wx:key="*this" wx:for-index="idx">
             <navigator url="{{item.url}}" class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{!item.editting || item.icon === 'icon-jia'}}">
               <i class="iconfont {{item.icon}}"></i>
               <view class="weui-grid__label">{{item.text}}</view>
             </navigator>
             <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.icon !== 'icon-jia'}}">
-              <i class="iconfont icon-jianhao" @tap="jian('1', index)"></i>
+              <i class="iconfont icon-jianhao" @tap="jian('1', {{idx}})"></i>
               <i class="iconfont {{item.icon}}"></i>
               <view class="weui-grid__label">{{item.text}}</view>
             </view>
@@ -103,19 +103,19 @@
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
+import Tips from '@/utils/Tips'
 export default class Console extends wepy.page {
   config = {
-    navigationBarTitleText: '控制台',
-    navigationStyle: 'custom'
+    navigationBarTitleText: '控制台'
   }
   components = {}
 
   data = {
     mobileSort: [],
     product: [
-      {url: '/pages/user/user', text: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
+      {url: '/pages/pc/website', text: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
       {url: '/pages/user/user', text: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
-      {url: 'add', text: '添加', icon: 'icon-jia'},
+      {url: '', text: '添加', icon: 'icon-jia'},
       {url: '', text: 'text', icon: 'icon-jia'}
     ],
     productTools: false,
@@ -125,15 +125,10 @@ export default class Console extends wepy.page {
       {url: '/pages/mobile/mobile', text: '待评价', icon: 'icon-ic-comment'},
       {url: '/pages/mobile/mobile', text: '退换/售后', icon: 'icon-shouhou1'}
     ],
-    tools: [
-      {url: '/pages/order/order?active=0', text: '订单管理', icon: 'icon-dingdandaifukuan', editting: false},
-      {url: '/pages/member/member', text: '会员管理', icon: 'icon-Group', editting: false},
-      {url: '/pages/console/tools', text: '添加', icon: 'icon-jia'},
-      {url: '', text: 'text', icon: 'icon-jia'}
-    ],
+    tools: [],
     toggleTools: false,
     dataManageCenter: [
-      {url: '/pages/data/data', text: '站点管理', icon: 'icon-qiu'},
+      {url: '/pages/pc/website', text: '站点管理', icon: 'icon-qiu'},
       {url: '/pages/user/enterprise', text: '公司信息', icon: 'icon-kujialeqiyezhan_gongsishili'},
       {url: '/pages/product/product', text: '产品管理', icon: 'icon-product'},
       {url: '/pages/news/news', text: '新闻管理', icon: 'icon-xinwenzixun'},
@@ -152,59 +147,50 @@ export default class Console extends wepy.page {
     let that = this
     this.$parent.getCustomDate(function(res){
       //更新数据
-      that.tools = res.linkMobile
+      that.tools = []
+      res.mobileLink.forEach((item, index) => {
+        item.editting = false
+        that.tools.push(item)
+      })
+      that.tools.push({url: '/pages/console/tools', text: '添加', icon: 'icon-jia'})
+      let len = 4 - that.tools.length%4
+      if (len !== 4) {
+        for (var i = 0; i < len; i++) {
+          that.tools.push({url: '', text: 'text', icon: 'icon-jia'})
+        }
+      }
       that.mobileSort = res.mobileSort
       that.$apply()
     })
   }
 
   methods = {
-    edit (e) {
+    jian (e, idx) {
       if (e === '1') {
-        this.toggleTools = !this.toggleTools
-        this.tools.forEach(item => {
-          item.editting = this.toggleTools
-        })
+        this.tools.splice(idx, 1)
+        this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
       } else {
-        this.productTools = !this.productTools
-        this.product.forEach(item => {
-          item.editting = this.productTools
-        })
-      }
-    },
-    jian (idx, e) {
-      let index = 0
-      let data = []
-      if (idx === '1') {data = this.toods} else {data = this.product}
-      data.forEach(item => {
-        if (item.name === 'text') {
-          index += 1
-        }
-      })
-      if (idx === '1') {
-        this.tools.splice(e, 1)
-        let len = this.tools.length
-        if (index === 3) {
-          this.tools.splice(len, 1)
-          this.tools.splice(len - 1, 1)
-          this.tools.splice(len - 2, 1)
-        } else {
-          this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
-        }
-      } else {
-        this.product.splice(e, 1)
-        let len = this.product.length
-        if (index === 3) {
-          this.product.splice(len, 1)
-          this.product.splice(len - 1, 1)
-          this.product.splice(len - 2, 1)
-        } else {
-          this.product.push({url: '', text: 'text', icon: 'icon-jia'})
-        }
+        this.product.splice(idx, 1)
+        this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
       }
     }
   }
 
+  edit (e) {
+    let cou = e
+    if (e.target) {cou = e.target.dataset.wpyeditA}
+    if (cou === '1') {
+      this.toggleTools = !this.toggleTools
+      this.tools.forEach(item => {
+        item.editting = this.toggleTools
+      })
+    } else {
+      this.productTools = !this.productTools
+      this.product.forEach(item => {
+        item.editting = this.productTools
+      })
+    }
+  }
 
   async save () {
     this.edit('1')
@@ -214,14 +200,14 @@ export default class Console extends wepy.page {
         tools.push({url: item.url, text: item.text, icon: item.icon})
       }
     })
-    const json = await api.customUpdate({
+    this.$parent.globalData.customData.mobileLink = tools
+    const res = await api.customUpdate({
       data: {
-        content: JSON.stringify(tools)
+        content: JSON.stringify(this.$parent.globalData.customData)
       },
       method: 'post'
     })
-    if (json.success) {
-      this.$parent.globalData.customData.linkMobile = tools
+    if (res.success) {
       Tips.success("保存成功");
     } else {
       Tips.error(json.msg)
@@ -262,6 +248,9 @@ export default class Console extends wepy.page {
           i,view{
             opacity: 0;
           }
+        }
+        .weui-grid__label{
+          font-size: 12px
         }
       }
     }

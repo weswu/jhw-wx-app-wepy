@@ -1,11 +1,7 @@
 <template>
   <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
-    <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
-      <view class="weui-cell__hd">
-        <view class="weui-label">基本信息：</view>
-      </view>
-    </view>
+    <view class="j_title">基本信息：</view>
     <WInput>
       <view slot="title" class="weui-label">公司LOGO</view>
       <view slot="input" style="width: 300rpx;padding: 8px">
@@ -13,46 +9,83 @@
       </view>
     </WInput>
     <WInput>
-      <view slot="title" class="weui-label">公司名称*</view>
+      <view slot="title" class="weui-label">公司名称<text class="red">*</text></view>
+      <input slot="input" class="weui-input" placeholder="请输入公司名称" @input="input" id="enterprise.name" value="{{input.enterprise.name}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">法人代表<text class="red">*</text></view>
+      <input slot="input" class="weui-input" placeholder="请输入法人代表" @input="input" id="enterprise.legalPre" value="{{input.enterprise.legalPre}}"/>
+    </WInput>
+
+    <view class="j_title">联系信息：</view>
+    <view class="picker-view" animation="{{animationAddressMenu}}" style="display:none;visibility:{{addressMenuIsShow ? 'visible':'hidden'}}">
+      <view style="height:10% ;width:95%;margin-top:10rpx">
+        <text catchtap="cityCancel">取消</text>
+        <text style="float: right" catchtap="citySure">确定</text>
+      </view>
+      <picker-view style="width: 100%; height: 300px;" bindchange="cityChange" value="{{input.enterprise.address}}" wx:key="">
+        <picker-view-column>
+          <view wx:for="{{provinces}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{citys}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{areas}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+    <WInput>
+      <view slot="title" class="weui-label">详细地址<text class="red">*</text></view>
+      <input slot="input" class="weui-input" placeholder="请输入详细地址" @input="input" id="address" value="{{input.address}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">联系电话</view>
+      <input slot="input" class="weui-input" placeholder="请输入联系电话" @input="input" id="phone" value="{{input.phone}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">法人手机</view>
+      <input slot="input" class="weui-input" placeholder="请输入法人手机" @input="input" id="enterprise.legalPersonCellphone" value="{{input.enterprise.legalPersonCellphone}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">传真</view>
+      <input slot="input" class="weui-input" placeholder="请输入传真" @input="input" id="fax" value="{{input.fax}}"/>
+    </WInput>
+
+    <view class="j_title">业务联系人信息：</view>
+    <WInput>
+      <view slot="title" class="weui-label">姓名<text class="red">*</text></view>
       <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
     </WInput>
     <WInput>
-      <view slot="title" class="weui-label">主营产品*</view>
-      <input slot="input" class="weui-input" placeholder="请输入主营产品" @input="input" id="mainBusiness" value="{{input.mainBusiness}}"/>
+      <view slot="title" class="weui-label">手机</view>
+      <input slot="input" class="weui-input" placeholder="请输入手机" @input="input" id="cellphone" value="{{input.cellphone}}"/>
     </WInput>
     <WInput>
-      <view slot="title" class="weui-label">法人代表*</view>
-      <input slot="input" class="weui-input" placeholder="请输入法人代表" @input="input" id="legalPre" value="{{input.legalPre}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">员工数量*</view>
-      <input slot="input" class="weui-input" placeholder="请输入员工数量" @input="input" id="staffSum" value="{{input.staffSum}}"/>
+      <view slot="title" class="weui-label">Email</view>
+      <input slot="input" class="weui-input" placeholder="请输入Email" @input="input" id="email" value="{{input.email}}"/>
     </WInput>
     <!--单选-->
     <view class="weui-cell weui-cells_after-title">
       <view class="weui-cell__hd">
-        <view class="weui-label">经营模式</view>
+        <view class="weui-label">性别</view>
       </view>
       <view class="weui-cell__bd">
-        <radio-group class="radio-group" @change="radio" id="businessType">
-          <label class="radio" wx:for="{{businessTypeSelect}}" wx:key="item.value">
-            <radio value="{{item.value}}" checked="{{input.businessType == item.value}}"/>
-            {{item.text}}
+        <radio-group class="radio-group row" @change="radio" id="sex">
+          <label class="radio row">
+            <radio value="00" checked="{{input.sex == '00'}}"/>
+            先生
+          </label>
+          <label class="radio row">
+            <radio value="01" checked="{{input.sex == '01'}}"/>
+            女士
           </label>
         </radio-group>
       </view>
     </view>
     <WInput>
-      <view slot="title" class="weui-label">icp备案号</view>
-      <input slot="input" class="weui-input" placeholder="请输入icp备案号" @input="input" id="icp" value="{{input.icp}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">年营业额</view>
-      <input slot="input" class="weui-input" placeholder="请输入年营业额" @input="input" id="annualTurnover" value="{{input.annualTurnover}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">注册资本</view>
-      <input slot="input" class="weui-input" placeholder="请输入注册资本" @input="input" id="registeredCapital" value="{{input.registeredCapital}}"/>
+      <view slot="title" class="weui-label">职务</view>
+      <input slot="input" class="weui-input" placeholder="请输入职务" @input="input" id="position" value="{{input.position}}"/>
     </WInput>
   </view>
 
@@ -83,31 +116,54 @@ export default class Enterprise extends wepy.page {
   mixins = [input]
 
   data = {
-    input: {},
+    animationAddressMenu: {},
+    input: {
+      enterprise: {}
+    },
     logo: '',
-    businessTypeSelect: [
-      {text: '生产加工', value: '00'},
-      {text: '经营批发', value: '01'},
-      {text: '招商代理', value: '02'},
-      {text: '商业服务', value: '03'},
-      {text: '以上都不是', value: '04'}
-    ]
+    provinces: [],
+    citys: [],
+    areas: []
   }
 
   async onReady () {
+    this.input = this.$parent.globalData.user
     if (!this.$parent.globalData.enterprise.enterpriseId) {
       this.get()
     } else {
-      this.input = this.$parent.globalData.enterprise
-      this.logo = this.input.logo
+      this.input.enterprise = this.$parent.globalData.enterprise
+      this.logo = this.input.enterprise.logo
       this.$apply()
     }
+    this.getArea()
   }
 
   async get () {
-    const json = await api.enterprise()
-    if (json.success) {
-      this.input = json.attributes.data
+    const res = await api.enterprise()
+    if (res.success) {
+      this.input.enterprise = res.attributes.data
+      this.logo = res.attributes.data.logo
+      this.$apply()
+    } else {
+      Tips.error(res.msg)
+    }
+  }
+
+  async getArea () {
+    const res = await api.area()
+    if (res.success) {
+      let data = res.attributes.data
+      data.forEach(item => {
+        if (item.level === 0) {
+          this.provinces.push(item)
+        }
+        if (item.level === 1) {
+          this.citys.push(item)
+        }
+        if (item.level === 2) {
+          this.areas.push(item)
+        }
+      })
       this.$apply()
     } else {
       Tips.error(json.msg)
@@ -123,24 +179,29 @@ export default class Enterprise extends wepy.page {
   validate() {
     const rules = [
       {
+        value: this.input.enterprise.name,
+        method: 'required',
+        message: '公司全称不能为空'
+      },
+      {
+        value: this.input.enterprise.legalPre,
+        method: 'required',
+        message: '法人不能为空'
+      },
+      {
+        value: this.input.address,
+        method: 'required',
+        message: '详细地址不能为空'
+      },
+      {
         value: this.input.name,
         method: 'required',
-        message: '公司名称不能为空'
+        message: '姓名不能为空'
       },
       {
-        value: this.input.mainBusiness,
+        value: this.input.cellphone,
         method: 'required',
-        message: '主营产品不能为空'
-      },
-      {
-        value: this.input.legalPre,
-        method: 'required',
-        message: '法人代表不能为空'
-      },
-      {
-        value: this.input.staffSum,
-        method: 'required',
-        message: '员工数量不能为空'
+        message: '手机不能为空'
       }
     ];
     return this.check(rules);
@@ -150,13 +211,32 @@ export default class Enterprise extends wepy.page {
     if (!this.validate()) {
       return;
     }
+    // user
+    const res = await api.user({
+      id: this.input.userId,
+      data: {
+        model: JSON.stringify(this.input),
+        _method: 'put'
+      },
+      method: 'post'
+    })
+    if (res.success) {
+      this.$parent.globalData.user = this.input
+    } else {
+      Tips.error(res.msg)
+    }
+    // enterprise
     const json = await api.enterprise({
-      data: this.input,
-      method: 'PUT'
+      id: this.input.enterprise.enterpriseId,
+      data: {
+        model: JSON.stringify(this.input.enterprise),
+        _method: 'put'
+      },
+      method: 'post'
     })
     if (json.success) {
-      this.$parent.globalData.enterprise = this.input
-      Tips.success("保存成功");
+      this.$parent.globalData.enterprise = this.input.enterprise
+      Tips.success("保存成功")
     } else {
       Tips.error(json.msg)
     }
@@ -169,3 +249,31 @@ export default class Enterprise extends wepy.page {
 
 }
 </script>
+
+<style media="screen">
+
+  .j_title{
+    background: #f1f1f1;
+    padding:10px 15px;
+  }
+.picker-view {
+width: 100%;
+display: flex;
+z-index:12;
+background-color: #fff;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: fixed;
+bottom: 0rpx;
+left: 0rpx;
+height: 40vh;
+}
+
+.picker-item {
+line-height: 70rpx;
+margin-left: 5rpx;
+margin-right: 5rpx;
+text-align: center;
+}
+</style>

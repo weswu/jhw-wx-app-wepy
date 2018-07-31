@@ -1,6 +1,6 @@
 <template>
-  <view style="text-align:right;padding:7px 15px;color:#999;font-size:12px;">
-    按住拖动排序<text class="submit info" @tap="save">完成</text>
+  <view class="j_save">
+    按住拖动排序<text class="info" @tap="save">完成</text>
   </view>
   <view style="position: relative; z-index: 199;">
   	<view class="touchView" style="height:{{scrollPosition.scrollViewHeight}}px;" catchtouchstart="scrollTouchStart"
@@ -79,7 +79,7 @@ export default class Module extends wepy.page {
 
   onLoad () {
     // 开始加载页面
-    var systemInfo= wx.getSystemInfoSync()
+    var systemInfo = wx.getSystemInfoSync()
     this.optionsListData = this.optionsDataTranlate(this.$parent.globalData.customData.mobileSort, '')
     this.scrollPosition.scrollViewWidth= systemInfo.windowHeight-33
     this.scrollPosition.scrollViewHeight= systemInfo.windowWidth
@@ -102,9 +102,7 @@ export default class Module extends wepy.page {
     if (res.success) {
       this.$parent.globalData.customData = data
       Tips.success("保存成功")
-      wx.navigateBack({
-        delta: 1
-      })
+      wx.navigateBack()
     }
   }
 
@@ -240,10 +238,6 @@ export default class Module extends wepy.page {
 <style lang="less">
 page {
   background-color: #f1f1f1;
-  .submit{
-    margin-left:10px;
-    font-size:14px;
-  }
 }
 
 .touchView{z-index: 200; width: 100px;position: absolute;top: 0;left:275px; top: 0;}

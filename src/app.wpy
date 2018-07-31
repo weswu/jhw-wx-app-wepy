@@ -7,18 +7,19 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import api from './api/api';
+import api from './api/api'
 export default class extends wepy.app {
   config = {
     pages: [
     'pages/user/login',
-    'pages/account/account', 'pages/account/password',
-    'pages/user/enterprise',
-    'pages/index/my', 'pages/index/index',
-    'pages/cost/detail', 'pages/cost/order',
+    'pages/pc/add', 'pages/pc/website',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
+    'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageList',
+    'pages/user/enterprise',
     'pages/point/point',
-    'pages/message/messageDetail', 'pages/message/messageList', 'pages/message/message',
+    'pages/index/my', 'pages/index/index',
+    'pages/account/account', 'pages/account/password',
+    'pages/cost/detail', 'pages/cost/order',
       // 其它
       'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
       'pages/message/messageBind',
@@ -90,10 +91,58 @@ export default class extends wepy.app {
   globalData = {
     user: {
       name: '未登录',
-      username: '未登录',
+      username: 'ggggfj',
       addTime: 1272102123858,
-      enterprise: {}
+      enterprise: {},
+      address: "详细地址",
+      state: "01",
+      type: "01",
+      country: null,
+      position: "it22",
+      domain: "abbcc.net",
+      password: "e10adc3949ba59abbe56e057f20f883e",
+      version: null,
+      code: "?w=300&logo=http://img.jihui88.com/upload/g/g2/ggggfj/picture/2013/12/12/e770f67d-8285-4178-9388-5c18109c7409.jpg",
+      url: "http://www.sohu.com",
+      enterpriseId: "Enterp_0000000000000000000000039",
+      grade: "02",
+      nickName: "ggggfj",
+      userId: "User_000000000000000000000000082",
+      email: "zjut_wyj3@163.com",
+      enterprise: {},
+      addTime: 1272102123858,
+      cellphone: "13868184604",
+      posterId: null,
+      sex: "00",
+      wcdMember: "01",
+      vericode: "lozoi3pfz6lbp6ispozgzm2fzrtb5jrg",
+      phone: "86-0571-72204155",
+      weibo: null,
+      weixin: null,
+      pwdQuestion: "花飘万家雪",
+      pwdAnswer: "花飘万家雪",
+      dist: null,
+      zipcode: "322001",
+      qq: "123445914",
+      fax: "0571-122222",
+      score: null,
+      msn: "11913",
+      codestate: "01",
+      pcode: "01",
+      phone24: "400-1234567",
+      url2: "www.sohu.com",
+      entUrl: "http://53happy.com",
+      qqfromOauth: "",
+      weixinFromOauth: "",
+      userType: "营销版",
+      password2: "e10adc3949ba59abbe56e057f20f883e",
+      sitemap: "0",
+      robotsurl: "未登录.jihui88.com",
+      jsonstr: "[]",
+      pcSitePayTime: "2017-12-19,2033-12-19",
+      mobileSitePayTime: null
     },
+    enterprise: {},
     userInfo: {
       noReaderMsg: 8
     },
@@ -163,7 +212,13 @@ export default class extends wepy.app {
   }
 
   async getStaticList (cb) {
-    const res = await api.staticList()
+    const res = await api.staticList({
+      data: {
+        page: 1,
+        pageSize: 100,
+        sortType: 'desc'
+      }
+    })
     if (res.success) {
       this.globalData.staticList = res.attributes.data
       if (res.attributes.data.length > 0) {
@@ -178,15 +233,15 @@ export default class extends wepy.app {
   }
 
   async getCustomDate (cb) {
-    if (!this.globalData.customData.linkMobile) {
+    if (!this.globalData.customData.mobileLink) {
       const res = await api.customData()
       if (res.success) {
         let data = res.attributes.data
         if (data.content) {
           let content = JSON.parse(data.content)
-          if (!content.linkMobile) {
-            content.linkMobile = [
-              {url: '/pages/order/order?active=0', text: '订单管理', icon: 'icon-dingdandaifukuan'},
+          if (!content.mobileLink) {
+            content.mobileLink = [
+              {url: '/pages/order/order', text: '订单管理', icon: 'icon-dingdandaifukuan'},
               {url: '/pages/member/member', text: '会员管理', icon: 'icon-Group'}
             ]
           }

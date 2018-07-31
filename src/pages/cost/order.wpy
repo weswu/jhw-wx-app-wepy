@@ -10,7 +10,7 @@
               <view class="weui-media-box__desc">{{item.name}}</view>
               <view class="weui-media-box__info">
                 <view style="overflow:hidden">
-                  <view class="weui-media-box__info__meta price">￥{{item.paidPrice}}</view>
+                  <view class="weui-media-box__info__meta price">￥{{item.paidPrice | '-'}}</view>
                   <view class="weui-media-box__info__meta totalPrice" wx:if="{{item.totalPrice}}">(￥{{item.totalPrice}})</view>
                 </view>
                 <view style="overflow:hidden">

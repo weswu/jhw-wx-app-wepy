@@ -1,6 +1,6 @@
 <template>
-  <view style="background:#f1f1f1;text-align:right;padding:10px;color:#666;" @tap="submit">
-    完成
+  <view class="j_save" @tap="submit">
+    <text class="info">完成</text>
   </view>
   <checkbox-group bindchange="checkboxChange">
     <view wx:for="{{list}}" wx:key="*this" wx:for-item="row">
@@ -42,7 +42,7 @@ export default class Tools extends wepy.page {
         title: '站点管理',
         children: [
           { url: '/pages/user/static', text: '站点数据管理', icon: 'icon-shuju' },
-          { url: '/pages/user/seo', text: 'SEO管理', icon: 'icon-SEO1' },
+          { url: '/pages/user/seo', text: 'SEO管理', icon: 'icon-SEO' },
           { url: '/pages/user/beian', text: '域名备案', icon: 'icon-yuming' },
           { url: '/pages/user/sitemap', text: 'Sitemap生成', icon: 'icon-sitemap' },
           { url: '/pages/user/seo_batch', text: '批量提交', icon: 'icon-tijiao' },
@@ -65,7 +65,7 @@ export default class Tools extends wepy.page {
         children: [
           { url: '/pages/user/product', text: '产品列表', icon: 'icon-liebiao1' },
           { url: '/pages/user/category/product', text: '产品分类', icon: 'icon-classifi' },
-          { url: '/pages/user/product_import', text: '导入', icon: 'icon-daoru1' },
+          { url: '/pages/user/product_import', text: '导入', icon: 'icon-daoru' },
           { url: '/pages/user/product_download', text: '下载', icon: 'icon-xiazai' }
         ]
       },
@@ -83,8 +83,8 @@ export default class Tools extends wepy.page {
         children: [
           { url: '/pages/user/album', text: '图片目录', icon: 'icon-mulu' },
           { url: '/pages/user/addAlbum', text: '新建相册', icon: 'icon-xinjian' },
-          { url: '/pages/user/shangchuanPic', text: '上传图片', icon: 'icon-shangchuan1' },
-          { url: '/pages/user/recycle', text: '回收站', icon: 'icon-huishouzhan1' }
+          { url: '/pages/user/shangchuanPic', text: '上传图片', icon: 'icon-shangchuan' },
+          { url: '/pages/user/recycle', text: '回收站', icon: 'icon-huishouzhan' }
         ]
       },
       {
@@ -102,11 +102,10 @@ export default class Tools extends wepy.page {
           { url: '/pages/user/shop', text: '订单管理', icon: 'icon-dingdandaifukuan' },
           { url: '/pages/user/shop_config', text: '商品相关配置', icon: 'icon-shangpin' },
           { url: '/pages/user/shop_pay', text: '支付方式管理', icon: 'icon-zhifu' },
-          { url: '/pages/user/shop_delivery', text: '物流公司管理', icon: 'icon-gongsi11' },
+          { url: '/pages/user/shop_delivery', text: '物流公司管理', icon: 'icon-gongsi1' },
           { url: '/pages/user/shop_bill', text: '物流单据设置', icon: 'icon-wuliu' },
           { url: '/pages/user/shop_refund', text: '商品退换货管理', icon: 'icon-tuihuanhuo' },
           { url: '/pages/user/coupon', text: '营销管理', icon: 'icon-yingxiao' },
-          { url: '', text: 'text', icon: 'icon-jia' },
           { url: '', text: 'text', icon: 'icon-jia' }
         ]
       }
@@ -117,12 +116,15 @@ export default class Tools extends wepy.page {
     this.list.forEach(row => {
       row.children.forEach(item => {
         item.checked = false
+        this.$parent.globalData.customData.mobileLink.forEach(row => {
+          if (item.icon === row.icon) {
+            item.checked = true
+          }
+        })
       })
     })
-    this.get()
   }
 
-  async get () {}
 
   methods = {
     checkboxChange (e) {
@@ -139,27 +141,26 @@ export default class Tools extends wepy.page {
       })
     }
   }
-  
+
   async submit () {
     let tools = []
     this.list.forEach(row => {
       row.children.forEach(item => {
-        values.forEach(value => {
-          if (item.checked) {
-            tools.push({url: item.url, text: item.text, icon: item.icon})
-          }
-        })
+        if (item.checked) {
+          tools.push({url: item.url, text: item.text, icon: item.icon})
+        }
       })
     })
-    const json = await api.customUpdate({
+    this.$parent.globalData.customData.mobileLink = tools
+    const res = await api.customUpdate({
       data: {
-        content: JSON.stringify(tools)
+        content: JSON.stringify(this.$parent.globalData.customData)
       },
       method: 'post'
     })
-    if (json.success) {
-      this.$parent.globalData.customData.linkMobile = tools
+    if (res.success) {
       Tips.success("保存成功");
+      wx.navigateBack()
     } else {
       Tips.error(json.msg)
     }
@@ -188,6 +189,9 @@ export default class Tools extends wepy.page {
       i,view, icon{
         opacity: 0;
       }
+    }
+    .weui-grid__label{
+      font-size: 12px
     }
   }
 }

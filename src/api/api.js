@@ -12,17 +12,20 @@ const wxapplogin = (params) => http(params, wxHost + "/rest/api/user/wxapplogin"
 const login = (params) => http(params, wxHost + '/rest/api/user/wxAppLoginByUsernameAndPassword')
 const logout = (params) => http(params, wxHost + '/rest/api/user/wxappLogout')
 // 基本数据
-const user = (params) => http(params, host + 'user/detail')
+const user = (params) => http(params, host + 'user/detail' + (params ? '/' + params.id : ''))
 const userInfo = (params) => http(params, host + 'user/index')
-const enterprise = (params) => http(params, host + 'enterprise/detail')
+const enterprise = (params) => http(params, host + 'enterprise/detail' + (params ? '/' + params.id : ''))
 const customData = (params) => http(params, host + 'custom/detail')
 const customUpdate = (params) => http(params, host + 'custom/update')
+// 地区
+const area = (params) => http(params, host + 'area/list')
 // 账号安全
 const accountInfo = (params) => http(params, host + 'user/accountInfo/' + params.id)
 const accountOauth = (params) => http(params, host + 'oauth/list')
 
 // 站点数据
-const staticList = (params) => http(params, pcHost + 'baseLayout/list?page=1&pageSize=100&sortType=desc')
+const staticList = (params) => http(params, pcHost + 'baseLayout/list')
+const staticDetail = (params) => http(params, pcHost + 'baseLayout/detail' + (params.id ? '/' + params.id : ''))
 // 费用中心
 const costOrder = (params) => http(params, buyHost + 'order/orderHistory')
 const costPaid = (params) => http(params, buyHost + 'order/listPaid')
@@ -90,6 +93,7 @@ const pointRule = (params) => http(params, host + 'integral_rule/list?page=1&pag
 const pointProduct = (params) => http(params, host + 'point_product/detail/' + params.id)
 const pointList = (params) => http(params, host + 'point/list')
 const pointRank = (params) => http(params, host + 'point/rank')
+const signIn = (params) => http(params, host + 'integral_rule/daily')
 // 推广
 const spread = (params) => http(params, host + 'poster/list?pageSize=72')
 const spreadRank = (params) => http(params, wxHost + '/rest/api/comm/poster/userlist')
@@ -105,11 +109,12 @@ module.exports = {
   wxapplogin,
   // 基本数据
   user, userInfo, enterprise, customData, customUpdate,
+  area,
   // 账号安全
   accountInfo, accountOauth,
   login, logout,
   // 站点
-  staticList,
+  staticList, staticDetail,
   // 费用中心
   costOrder, costPaid, costDetail,
   // 留言
@@ -145,7 +150,7 @@ module.exports = {
   //服务进度
   progress, progressDetail,
   // 积分
-  point, pointProduct, pointRule, pointList, pointRank,
+  point, pointProduct, pointRule, pointList, pointRank, signIn,
   // 推广
   spread, spreadRank, posters,
   // 微传单
