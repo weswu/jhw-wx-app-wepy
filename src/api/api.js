@@ -26,6 +26,7 @@ const accountOauth = (params) => http(params, host + 'oauth/list')
 // 站点数据
 const staticList = (params) => http(params, pcHost + 'baseLayout/list')
 const staticDetail = (params) => http(params, pcHost + 'baseLayout/detail' + (params.id ? '/' + params.id : ''))
+const staticAdd = (params) => http(params, 'http://www.jihui88.com/rest/pc/index/list')
 // 费用中心
 const costOrder = (params) => http(params, buyHost + 'order/orderHistory')
 const costPaid = (params) => http(params, buyHost + 'order/listPaid')
@@ -114,7 +115,7 @@ module.exports = {
   accountInfo, accountOauth,
   login, logout,
   // 站点
-  staticList, staticDetail,
+  staticList, staticDetail, staticAdd,
   // 费用中心
   costOrder, costPaid, costDetail,
   // 留言

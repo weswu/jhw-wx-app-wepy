@@ -1,29 +1,24 @@
 <template>
     <!--圆形点击框  -->
   <view class="round-click">
-     <navigator url='/pages/pc/add' >创建新网站</navigator >
+     <navigator url='/pages/pc/add'>创建网站</navigator>
   </view>
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
-    <view class="weui-panel">
-        <view class="weui-panel__bd">
-            <view class="weui-media-box weui-media-box_text">
-                <view class="weui-media-box__title weui-media-box__title_in-text">{{item.seoTitle}}</view>
-                <view class="weui-media-box__desc">
-                   <text class="time" wx:if="{{item.endTime}}">(到期时间：{{item.endTime}})</text>
-                </view>
-                <view class="weui-media-box__info">
-                  <view class="weui-media-box__info__meta">网站编号：{{item.id}}</view>
-                  <view class="weui-media-box__info__meta">{{item.lan}}</view>
-                </view>
-            </view>
+    <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+            <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{item.pic}}"/>
         </view>
-        <view class="weui-panel__ft" wx:if="{{item._checked}}">
-            <view class="weui-cell weui-cell_access weui-cell_link">
-                <view class="weui-cell__bd">
-                  <button type="default" size="mini">复制</button>
-                </view>
-            </view>
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
+            {{dx}}
+        </view>
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title">{{title}}</view>
+            <view class="weui-media-box__desc">{{content}}</view>
+            <view class="weui-media-box__info" wx:if="{{time}}">{{time}}</view>
+        </view>
+        <view class="weui-media-box__ft" wx:if="{{operation}}" @tap.stop="del({{id}})">
+            <i class="iconfont icon-lajixiang"></i>
         </view>
     </view>
     <view class="hr">

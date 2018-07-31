@@ -1,7 +1,7 @@
 <template>
     <!--圆形点击框  -->
   <view class="round-click">
-     <navigator url='/pages/pc/add' >创建新网站</navigator >
+     <navigator url='/pages/pc/add' >创建网站</navigator>
   </view>
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
