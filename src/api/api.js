@@ -24,7 +24,7 @@ const messageBind = (params) => http(params, host + '/rest/api/message/bind/deta
 // 设置
 const password = (params) => http(params, host + '/rest/api/user/detail/password')
 const log = (params) => http(params, host + '/rest/api/log/list')
-const serviceFeedback = (params) => http(params, host + '/rest/api/crm/feedback/msg_send')
+const serviceFeedback = (params) => http(params, 'https://api.jihui88.net/crm_api/index.php/jihui/jihuifeedback')
 // 相册
 const album = (params) => http(params, host + '/rest/api/album/attr/list/' + params.id)
 const albumCategory = (params) => http(params, host + '/rest/api/album/list?pageSize=100')
