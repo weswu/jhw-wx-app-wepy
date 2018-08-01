@@ -128,19 +128,18 @@ export default class PcWebsite extends wepy.page {
     }
   }
 
-    methods = {
-      toggle (e) {
-        this.list.forEach(item => {
-          if (item.id === e.id) {
-            item._checked = !item._checked
-          }
-        })
-        this.$apply()
-      }
+  methods = {
+    toggle (e) {
+      this.list.forEach(item => {
+        if (item.id === e.id) {
+          item._checked = !item._checked
+        }
+      })
+      this.$apply()
     }
+  }
 
-
-    // 删除
+  // 删除
   async del (e) {
     await Tips.confirm('确认删除吗？')
     Tips.loading()
@@ -152,6 +151,8 @@ export default class PcWebsite extends wepy.page {
     if (res.success) {
       await Utils.del(this, e, '我的网站')
       Tips.success('删除成功')
+    } else {
+      Tips.error(res.msg)
     }
   }
 

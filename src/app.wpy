@@ -12,13 +12,12 @@ export default class extends wepy.app {
   config = {
     pages: [
     'pages/user/login',
-    'pages/order/refund', 'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
+    'pages/pc/miniProgram', 'pages/pc/add', 'pages/pc/website',
+    'pages/order/refund', 'pages/order/refundDetail', 'pages/order/review', 'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
+    'pages/point/point',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
-    'pages/pc/add', 'pages/pc/website',
     'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageList',
     'pages/user/enterprise',
-    'pages/user/login',
-    'pages/point/point',
     'pages/index/my', 'pages/index/index',
     'pages/account/account', 'pages/account/password',
     'pages/cost/detail', 'pages/cost/order',
@@ -43,9 +42,8 @@ export default class extends wepy.app {
       'pages/setting/setting', 'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
       'pages/service/service', 'pages/service/faq', 'pages/service/faq1',
       'pages/setting/webView',
-      'pages/user/user', 'pages/user/map',
-      'pages/bind/bind', 'pages/bind/bindDetail',
-      'pages/user/publish'
+      'pages/user/map',
+      'pages/bind/bind', 'pages/bind/bindDetail'
     ],
     window: {
       backgroundColor: '#fff',
@@ -173,7 +171,7 @@ export default class extends wepy.app {
     console.log('启动');
     //用户信息
     const login = await wepy.login()
-    if (login.code && false) {
+    if (login.code) {
       let u = await wepy.getUserInfo()
       const resp =  await api.wxapplogin({
         data: {

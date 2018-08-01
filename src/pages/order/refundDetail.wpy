@@ -1,0 +1,157 @@
+<template>
+  <Tips />
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell">
+      <view class="weui-cell__hd">
+        <view class="weui-label">联系电话</view>
+      </view>
+      <view class="weui-cell__bd">
+        {{input.mobile}}
+      </view>
+    </view>
+    <!--单选-->
+    <view class="weui-cell">
+      <view class="weui-cell__hd">
+        <view class="weui-label">退货状态：</view>
+      </view>
+      <view class="weui-cell__bd">
+        <radio-group class="radio-group" id="state">
+          <label class="radio" wx:for="{{disputeState}}" wx:key="item.value">
+            <radio value="{{item.value}}" checked="{{input.state === item.value}}"/>
+            {{item.text}}
+          </label>
+        </radio-group>
+      </view>
+    </view>
+    <!--单选-->
+    <view class="weui-cell">
+      <view class="weui-cell__hd">
+        <view class="weui-label">退货类型：</view>
+      </view>
+      <view class="weui-cell__bd">
+        <radio-group class="radio-group" id="type">
+          <label class="radio" wx:for="{{disputeType}}" wx:key="item.value">
+            <radio value="{{item.value}}" checked="{{input.type === item.value}}"/>
+            {{item.text}}
+          </label>
+        </radio-group>
+      </view>
+    </view>
+
+    <WInput>
+      <view slot="title" class="weui-label">退货金额：</view>
+      <input slot="input" class="weui-input" placeholder="请输入退货金额" @input="input" id="amount" value="{{input.amount}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">退货说明：</view>
+      <textarea slot="input" placeholder="退货说明" @input="input" id="buyerReason" value="{{input.buyerReason}}" style="margin-top:10px;"/>
+    </WInput>
+  </view>
+  <view class="weui-btn-area">
+      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import FormTips from '@/components/weui/tips'
+  import input from '@/mixins/input'
+  import WInput from '@/components/weui/input'
+  import Upload from '@/components/common/upload'
+  export default class newsDetail extends wepy.page {
+    config = {
+      navigationBarTitleText: '退货处理'
+    }
+    components = {
+      Tips: FormTips,
+      WInput,
+      Upload
+    }
+    data = {
+      id:'',
+      input: {
+        mobile: '15168352892',
+        type: 'onlymoney',
+        state: 'unprocessed',
+      },
+      // 退货类型
+      disputeType: [
+        { text: '仅退款 ', value: 'onlymoney' },
+        { text: '退款并退货 ', value: 'goodandmoney' }
+      ],
+      // 退货状态
+      disputeState: [
+        { text: '未处理 ', value: 'unprocessed' },
+        { text: '处理中 ', value: 'processed' },
+        { text: '已退款 ', value: 'returned' },
+        { text: '已拒绝 ', value: 'invalid' },
+        { text: '已完成 ', value: 'completed' },
+        { text: '已关闭 ', value: 'closed' }
+      ]
+    }
+    mixins = [input]
+
+    onLoad ({id}) {
+      this.id = id
+      this.get()
+    }
+
+    async get () {
+      const json = await api.orderRefundDetail({
+        id: this.id
+      })
+      if (json.success) {
+        this.input = json.attributes.data
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+
+    validate() {
+      const rules = [
+        {
+          value: this.input.amount,
+          method: 'required',
+          message: '退货金额为空'
+        }
+      ];
+      return this.check(rules);
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      let data = {
+        model: JSON.stringify(this.detail)
+      }
+      if (this.input.disputeId) {
+        data._method = 'put'
+      }
+      Tips.loading()
+      const json = await api.orderRefundDetail({
+        data: data,
+        method: 'POST',
+        id: this.input.disputeId || ''
+      })
+      Tips.loaded()
+      if (json.success) {
+        Tips.success('处理成功')
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      await this.get()
+      wepy.stopPullDownRefresh()
+    }
+
+  }
+</script>
+
+<style>
+</style>

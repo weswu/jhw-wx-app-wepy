@@ -1,0 +1,150 @@
+<template>
+  <view class="weui-tab">
+    <!--TAB-->
+    <Tab :tabs.sync="tabs" @change.user="switchTab"/>
+    <view class="weui-tab__panel">
+      <view class="weui-tab__content" hidden="{{activeIndex != 0}}">
+        <view class="j_tip">
+          <view>1、数据（产品、新闻、相册、公司信息）和电脑网站机汇网同步，同一个数据后台</view>
+          <view>2、套模板：我们会提供基础模板</view>
+          <view>3、备注：模板颜色可改部分——底栏和标题栏可自定义</view>
+        </view>
+        <!--单选-->
+        <view class="weui-cell weui-cells_after-title">
+          <view class="weui-cell__hd">
+            <view class="weui-label">可选方案：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio">
+              <label class="radio row">
+                <radio value="00" checked="{{state === '00'}}"/>
+                无
+              </label>
+              <label class="radio row">
+                <radio value="01" checked="{{state === '01'}}"/>
+                微信小程序（展示版）
+              </label>
+              <label class="radio row">
+                <radio value="02" checked="{{state === '02'}}"/>
+                微信小程序（电商版）
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <view class="j_panel_box" wx:if="{{state !== '00'}}">
+          <view wx:if="{{state === '01'}}">微信小程序（展示版）简介：更好的宣传您的品牌和产品</view>
+          <view wx:if="{{state === '01'}}">案例：步阳智能锁、玩美者净醛木墙饰、美人到家</view>
+          <view wx:if="{{state === '02'}}">微信小程序（电商版）简介：品牌和产品宣传并有简单基础的购买功能</view>
+          <view wx:if="{{state === '02'}}">案例：烤肉锅、烧烤炉工具厂家、康怡乐不粘锅礼品锅、涛涛集团有限公司</view>
+          <view class="address">购买地址：http://buy.jihui88.com</view>
+          <view class="a_underline" @tap="tel">人工客服</view>
+        </view>
+      </view>
+      <view class="weui-tab__content" hidden="{{activeIndex != 1}}">
+        <view class="j_tip">
+          <view>1、独立后台，数据与电脑网站机汇网不同步</view>
+          <view>2、套模板：标准模板</view>
+          <view>3、备注：模板颜色可改部分——底栏和标题栏可自定义</view>
+        </view>
+        <!--单选-->
+        <view class="weui-cell weui-cells_after-title">
+          <view class="weui-cell__hd">
+            <view class="weui-label">可选方案：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio2">
+              <label class="radio row">
+                <radio value="00" checked="{{state2 === '00'}}"/>
+                无
+              </label>
+              <label class="radio row">
+                <radio value="01" checked="{{state2 === '01'}}"/>
+                微信小程序（高级功能版）
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <view class="j_panel_box" wx:if="{{state2 === '01'}}">
+          <view>微信小程序（高级功能版）简介：独立后台，数据与电脑网站机汇网不同步</view>
+          <view>功能清单：优惠券、分销中心、整点秒杀、拼团、线下预约核销、裂变拆“红包”、积分商城</view>
+          <view>案例：永康快购、机汇网科技</view>
+          <view class="address">购买地址：http://buy.jihui88.com</view>
+          <view class="address">独立后台登录网址： https://wxapp.jihui88.com</view>
+          <view class="a_underline" @tap="tel">人工客服</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+
+<script>
+import wepy from 'wepy'
+import Tab from '@/components/weui/tab'
+export default class PcWebsite extends wepy.page {
+  config = {
+    navigationBarTitleText: '小程序界面管理'
+  }
+  components = {
+    Tab
+  }
+
+  data = {
+    tabs: ["基础版", "高级版"],
+    activeIndex: 0,
+    state: '00',
+    state2: '00'
+  }
+
+  onLoad () {}
+
+  methods = {
+    switchTab (e) {
+      this.activeIndex = e
+    },
+    radio (e) {
+      this.state = e.detail.value
+    },
+    radio2 (e) {
+      this.state2 = e.detail.value
+    },
+    tel () {
+      wx.makePhoneCall({
+        phoneNumber: '13967938189'
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.weui-tab__content{
+  padding: 0 15px;
+  .weui-cell{
+    padding:10px 0;
+  }
+}
+.j_tip{
+  color: #595959;
+  padding: 7px 15px;
+  border: 1px solid #ddd;
+  margin: 20px 0;
+  background: #f9f9f9;
+  line-height: 1.7;
+}
+.j_panel_box{
+  padding: 7px 15px;
+  border: 1px solid #ddd;
+  .address{
+    margin-top: 5px;
+    color: #999;
+  }
+  .a_underline{
+    padding: 5px 0
+  }
+}
+.a_underline{
+  color: #0366ce;
+  text-decoration: underline;
+}
+</style>

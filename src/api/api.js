@@ -1,4 +1,4 @@
-import { http } from '@/utils/Http'
+import { http } from '@/utils/http'
 
 const host = 'https://www.jihui88.com/rest/api/'
 const pcHost = 'https://www.jihui88.com/rest/pc/api/'
@@ -73,7 +73,9 @@ const dData = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api
 const dBouns = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/bouns/' + params.id + '/' + params.page + '/4')
 // 订单
 const order = (params) => http(params, host + 'order/list')
+const orderReview = (params) => http(params, host + 'productreview/list')
 const orderRefund = (params) => http(params, host + 'orderDispute/list')
+const orderRefundDetail = (params) => http(params, host + 'orderDispute/detail/' + params.id)
 const orderListDetail = (params) => http(params, host + 'order/listDetail/' + params.id)
 const orderDetail = (params) => http(params, host + 'order/detail/' + params.id)
 const orderExpress = (params) => http(params, host + 'order/express')
@@ -144,7 +146,7 @@ module.exports = {
   // 分销
   dMember, dData, dBouns,
   // 订单
-  orderRefund, order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
+  orderRefund, orderRefundDetail, orderReview, order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
   // 商城数据
   data, purchase,
   // 服务缴费

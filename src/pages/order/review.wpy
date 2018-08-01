@@ -1,0 +1,108 @@
+<template>
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <view class="weui-panel">
+        <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_text">
+                <view class="weui-media-box__title weui-media-box__title_in-text">吴小伟</view>
+                <view class="weui-media-box__desc">
+                  {{item.firstreply || '此用户没有填写评价'}}
+                </view>
+                <view class="weui-media-box__info">{{item.fr_time}}</view>
+            </view>
+        </view>
+        <view class="weui-panel__ft">
+          <view class="weui-cell weui-cell_access weui-cell_link">
+            <view class="weui-cell__bd">
+              <view class="weui-media-box__title">再次评价</view>
+              <view class="weui-media-box__desc">
+                  {{item.secondcontent}}
+              </view>
+              <view class="weui-media-box__info">{{item.sc_time}}</view>
+            </view>
+          </view>
+        </view>
+    </view>
+    <view class="hr">
+  </repeat>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import Utils from '@/utils/Utils'
+  import Item from '@/components/weui/item'
+  import Loadmore from '@/components/weui/loadmore'
+  export default class OrderReview extends wepy.page {
+    config = {
+      navigationBarTitleText: '评价管理'
+    }
+    components = {
+      Item,
+      Loadmore
+    }
+
+    data = {
+      list: [
+        {
+          firstreply: '环比跌幅超五成。',
+          secondcontent: '昨天(27日)，记者联系了多家地产中介公司了解到，三环以里店面的成交量环，一般都比上个月要下降三四成左右，三环外降幅更甚。中原地产研究部统计数据显示，截至26号，北京二手房成交量仅有九千五百套，而在5月份同期，该数字已经超',
+          fr_time: '2015-11-27 13:45',
+          sc_time: '2015-11-27 13:45'
+        }
+      ],
+      params: {
+        page: 1,
+        pageSize: 16
+      },
+      count: 0,
+      more: { loading: true }
+    }
+
+    onLoad () {
+      this.get()
+    }
+
+    async get () {
+      const json = await api.orderReview({
+        data: this.params
+      })
+      if (json.success) {
+        await Utils.scrollList(this, json, '评价管理')
+      }
+    }
+
+    async submit () {
+      if (!this.validate()) {
+        return;
+      }
+      const json = await api.orderExpress({
+        data: this.input,
+        method: 'PUT'
+      })
+      if (json.success) {
+        Tips.success("修改成功");
+      } else {
+        Tips.error(json.msg)
+      }
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      await this.get()
+      wepy.stopPullDownRefresh()
+    }
+  }
+</script>
+<style>
+.weui-cell_link .weui-media-box__title{
+  color:#ff6700;
+  font-size:13px;
+}
+.weui-media-box__info,.weui-media-box__desc{
+  font-size: 12px;
+}
+</style>

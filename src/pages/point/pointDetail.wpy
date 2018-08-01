@@ -10,8 +10,8 @@
             <view class="weui-media-box__desc">{{item.addTime}}</view>
         </view>
         <view class="weui-media-box__ft">
-          <span class="plus" wx:if="{{item.income>0}}">+{{item.income}}</span>
-          <span class="minus" wx:if="{{item.out>0}}">-{{item.out}}</span>
+          <text class="plus" wx:if="{{item.income>0}}">+{{item.income}}</text>
+          <text class="minus" wx:if="{{item.out>0}}">-{{item.out}}</text>
         </view>
     </view>
   </repeat>

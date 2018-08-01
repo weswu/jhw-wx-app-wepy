@@ -114,7 +114,7 @@ export default class Console extends wepy.page {
     mobileSort: [],
     product: [
       {url: '/pages/pc/website', text: '我的网站', icon: 'icon-diannao-tianchong', editting: false},
-      {url: '/pages/user/user', text: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
+      {url: '/pages/pc/miniProgram', text: '我的小程序', icon: 'icon-xiaochengxu', editting: false},
       {url: '', text: '添加', icon: 'icon-jia'},
       {url: '', text: 'text', icon: 'icon-jia'}
     ],
@@ -122,8 +122,8 @@ export default class Console extends wepy.page {
     orders: [
       {url: '/pages/order/order?active=1', text: '待付款', icon: 'icon-fukuan'},
       {url: '/pages/order/order?active=2', text: '待发货', icon: 'icon-fahuo1'},
-      {url: '/pages/mobile/mobile', text: '待评价', icon: 'icon-ic-comment'},
-      {url: '/pages/mobile/mobile', text: '退换/售后', icon: 'icon-shouhou1'}
+      {url: '/pages/order/review', text: '待评价', icon: 'icon-ic-comment'},
+      {url: '/pages/order/refund', text: '退换/售后', icon: 'icon-shouhou1'}
     ],
     tools: [],
     toggleTools: false,

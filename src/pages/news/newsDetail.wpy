@@ -84,7 +84,6 @@
   import WInput from '@/components/weui/input'
   import Upload from '@/components/common/upload'
   import Tab from '@/components/weui/tab'
-
   export default class newsDetail extends wepy.page {
     config = {
       navigationBarTitleText: '新闻修改'
@@ -174,7 +173,7 @@
         this.input.picPath = text.data
         this.src = text.data
       }
-    };
+    }
 
     validate() {
       const rules = [
@@ -232,7 +231,7 @@
     async onPullDownRefresh () {
       await this.get()
       wepy.stopPullDownRefresh()
-    }    
+    }
 
   }
 </script>

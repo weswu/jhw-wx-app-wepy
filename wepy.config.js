@@ -26,7 +26,7 @@ module.exports = {
       outputStyle: 'compressed'
     },*/
     babel: {
-      sourceMap: false,
+      sourceMap: true,
       presets: [
         'env'
       ],
