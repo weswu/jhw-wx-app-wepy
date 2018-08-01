@@ -11,8 +11,10 @@ import api from './api/api'
 export default class extends wepy.app {
   config = {
     pages: [
-    'pages/pc/add', 'pages/pc/website',
+    'pages/user/login',
+    'pages/order/refund', 'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
+    'pages/pc/add', 'pages/pc/website',
     'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageList',
     'pages/user/enterprise',
     'pages/user/login',
@@ -23,7 +25,6 @@ export default class extends wepy.app {
       // 其它
       'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
       'pages/message/messageBind',
-      'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
       'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
       'pages/wcd/wcd',

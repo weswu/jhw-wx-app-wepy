@@ -39,7 +39,7 @@ const messageBind = (params) => http(params, host + 'message/bind/detail' + (par
 // 设置
 const password = (params) => http(params, host + 'user/detail/password')
 const log = (params) => http(params, host + 'log/list')
-const serviceFeedback = (params) => http(params, host + 'crm/feedback/msg_send')
+const serviceFeedback = (params) => http(params, 'https://api.jihui88.net/crm_api/index.php/jihui/jihuifeedback')
 // 相册
 const album = (params) => http(params, host + 'album/attr/list/' + params.id)
 const albumCategory = (params) => http(params, host + 'album/list?pageSize=100')
@@ -73,6 +73,7 @@ const dData = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api
 const dBouns = (params) => http(params, wxHost + '/wechat/cps/index.php/jihui_api/bouns/' + params.id + '/' + params.page + '/4')
 // 订单
 const order = (params) => http(params, host + 'order/list')
+const orderRefund = (params) => http(params, host + 'orderDispute/list')
 const orderListDetail = (params) => http(params, host + 'order/listDetail/' + params.id)
 const orderDetail = (params) => http(params, host + 'order/detail/' + params.id)
 const orderExpress = (params) => http(params, host + 'order/express')
@@ -143,7 +144,7 @@ module.exports = {
   // 分销
   dMember, dData, dBouns,
   // 订单
-  order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
+  orderRefund, order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
   // 商城数据
   data, purchase,
   // 服务缴费

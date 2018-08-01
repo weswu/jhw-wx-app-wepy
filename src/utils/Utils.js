@@ -35,20 +35,17 @@ const addAll = (a, b) => {
  * @date: 2018-1-17
  * @desc: 滚动加载数据
 */
-const scrollList = (ctx, json, text, searchData) => {
-  if (json.success) {
-    addAll(ctx.list, json.attributes.data)
-    ctx.pageSize = ctx.pageSize || 16
-    let isOnePage = false
-    if (searchData && ctx.searchData.page === 1){
-      isOnePage = true
-      ctx.searchData.pageSize = ctx.searchData.pageSize || 16
-    } else if(ctx.page === 1){
+const scrollList = (ctx, res, text) => {
+  if (res.success) {
+    addAll(ctx.list, res.attributes.data)
+    ctx.params.pageSize = ctx.params.pageSize || 16
+    let isOnePage = false //
+    if(ctx.params.page === 1){
       isOnePage = true
     }
     if (isOnePage) {
-      ctx.count = json.attributes.count
-      if (json.attributes.data.length === 0) {
+      ctx.count = res.attributes.count
+      if (res.attributes.data.length === 0) {
         ctx.more.empty = true
       } else {
         ctx.more.empty = false
@@ -57,11 +54,8 @@ const scrollList = (ctx, json, text, searchData) => {
         title: text + '(' + ctx.count + ')'
       })
     }
-    let pageSize = ctx.pageSize
-    if (searchData){
-      pageSize = ctx.searchData.pageSize
-    }
-    if (json.attributes.data.length < pageSize) { ctx.more.reachBottom = true } else { ctx.more.reachBottom = false }
+    let pageSize = ctx.params.pageSize
+    if (res.attributes.data.length < pageSize) { ctx.more.reachBottom = true } else { ctx.more.reachBottom = false }
   } else {
     ctx.refresh = false
   }

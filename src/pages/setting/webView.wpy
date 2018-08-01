@@ -14,6 +14,9 @@ export default class WebView extends wepy.page {
     if (option.src.indexOf('wcd') > -1){
       option.src = option.src + '?debug=01'
     }
+    if (option.src.indexOf('pc.jihui88.com') > -1){
+      option.src = option.src + '?isMobile=true'
+    }
     this.src = 'https://www.jihui88.com/webview.html?src=' + option.src
   }
 

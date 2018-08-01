@@ -2,19 +2,15 @@
   <view class="weui-tab order">
     <!--TAB-->
     <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
+    <MenuBar :type="'shop'" :active="'shop_refund'"/>
     <view class="weui-tab__panel">
-      <view class="weui-tab__content" wx:if="{{grade === '07'}}">
+      <view class="weui-tab__content">
         <!--列表-->
         <repeat for="{{list}}" key="index" index="index" item="item">
           <Item :item.sync="item" :pic.sync="pic" :index="index"/>
         </repeat>
         <!-- 加载提示 -->
         <Loadmore :more.sync="more"/>
-      </view>
-      <view class="chaxun" wx:if="{{grade === '01'}}">
-        <view><i class="iconfont icon-tishi"></i>
-        您还未开通商城，无法查看订单</view>
-        咨询请联系：<text @tap="tel">4007111011</text>
       </view>
     </view>
   </view>
@@ -26,12 +22,14 @@ import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
+import MenuBar from '@/components/common/menu_bar'
 import Item from '@/components/order/orderItem'
 import Loadmore from '@/components/weui/loadmore'
 export default class Order extends wepy.page {
   config = {}
   components = {
     Tab,
+    MenuBar,
     Item,
     Loadmore
   }
@@ -42,7 +40,6 @@ export default class Order extends wepy.page {
     list: [],
     page: 1,
     count: 0,
-    grade: '00',
     pic: [],
     more: { loading: true }
   }
@@ -51,25 +48,17 @@ export default class Order extends wepy.page {
   onLoad ({active}) {
     this.activeIndex = parseInt(active) || ''
     this.$invoke('Tab', 'init', this.activeIndex)
-    if (this.$parent.globalData.enterprise.mobileSite === '07' || this.$parent.globalData.enterprise.mobileSite === '14' || this.$parent.globalData.user.userType === '电商版') {
-      this.grade = '07'
-      this.get()
-    } else {
-      this.grade = '01'
-      this.$apply()
-    }
+    this.get()
   }
 
   methods = {
     switchTab (e) {
       this.activeIndex = parseInt(e)
-      if (this.grade === '07') {
-        this.page = 1
-        this.list = []
-        this.pic = []
-        this.more.loading = true
-        this.get()
-      }
+      this.page = 1
+      this.list = []
+      this.pic = []
+      this.more.loading = true
+      this.get()
     }
   }
 

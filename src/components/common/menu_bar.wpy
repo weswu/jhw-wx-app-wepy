@@ -1,0 +1,95 @@
+<template>
+  <!-- 分类btn -->
+  <view class="categoryIcon" @tap.stop="open" wx:if="{{activeIndex === '1'}}"><i class="iconfont icon-tuozhuaicaidandaohang"></i></view>
+  <!--分类-->
+  <view class="page-category" animation="{{animationData}}" wx:if="{{activeIndex === '1'}}">
+    <view class="page-content">
+      <repeat for="{{category}}" key="index" index="index" item="item">
+        <view @tap="getCategoryCase({{item.id}})" class="{{searchData.category_id === item.id ? 'cative' :''}}">
+          <text>{{item.name}}</text>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class MenuBar extends wepy.component {
+    props = {
+      type: {
+        default: ''
+      }
+    }
+
+    data = {
+      grade: '00',
+      menu: {
+        shop: [
+          { name: '全部', id: '' },
+          { name: 'VIP专属', id: 343798 },
+          { name: '外包设计', id: 343764 },
+          { name: '品牌', id: 343763 },
+          { name: '推荐', id: 343762 },
+          { name: '风格', id: 343761 },
+          { name: '节假', id: 343760 },
+          { name: '个人', id: 343759 },
+          { name: '企业', id: 343758 },
+          { name: '行业', id: 343757 }
+        ]
+      },
+      category: [
+        { name: '全部', id: '' },
+        { name: 'VIP专属', id: 343798 },
+        { name: '外包设计', id: 343764 },
+        { name: '品牌', id: 343763 },
+        { name: '推荐', id: 343762 },
+        { name: '风格', id: 343761 },
+        { name: '节假', id: 343760 },
+        { name: '个人', id: 343759 },
+        { name: '企业', id: 343758 },
+        { name: '行业', id: 343757 }
+      ]
+    }
+
+    methods = {
+      open () {
+        this.state = !this.state
+        if (this.state) {
+          this.attrAn(0,200,true,300)
+        } else {
+          this.attrAn(200,0,false,300)
+        }
+      },
+      attrAn (anFrom, anTo, modal, duration) {
+        var animation = wx.createAnimation({
+          duration: duration,
+          timingFunction: "linear",
+          delay: 0
+        })
+        this.animation = animation
+        animation.translateX(anFrom).step()
+        this.setData({
+          animationData: animation.export(),
+          showModalStatus: modal
+        })
+        setTimeout(function() {
+          animation.translateX(anTo).step()
+          this.setData({
+            animationData: animation.export()
+          })
+        }.bind(this), 0)
+      },
+      getCategoryCase (e) {
+        this.searchData.category_id = e.currentTarget.dataset.wpygetcategorycaseA
+      }
+    }
+  }
+</script>
+
+<style lang="less">
+  image{
+    width: 250rpx;
+    max-height: 250rpx;
+  }
+</style>

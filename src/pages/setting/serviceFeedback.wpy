@@ -55,15 +55,14 @@ export default class ServiceFeedback extends wepy.page {
 
   data = {
     input: {
-      fdbk_type: '2'
+      fdbk_type: '5'
     },
     list: [
-      { text: '购买', value: '1' },
-      { text: '服务', value: '2' },
-      { text: '投诉', value: '3' },
       { text: '表扬', value: '4' },
       { text: '建议', value: '5' },
-      { text: '其他', value: '6' }
+      { text: '【页面修改】', value: '1506' },
+      { text: '【资料修改】', value: '1507' },
+      { text: '【页面与资料修改】', value: '1508' }
     ]
   }
 
@@ -102,10 +101,9 @@ export default class ServiceFeedback extends wepy.page {
       method: 'POST'
     })
     if (json.success) {
-      debugger
       Tips.success("反馈成功");
     } else {
-      Tips.error(json.msg === '用户不存在' ? '未关联到机汇云' : json.msg)
+      Tips.error('未关联到机汇云')
     }
   }
 

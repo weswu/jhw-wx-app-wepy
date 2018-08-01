@@ -1,7 +1,7 @@
 <template>
     <!--圆形点击框  -->
-  <view class="round-click">
-     <navigator url='/pages/pc/add' >创建网站</navigator>
+  <view class="round-click origin">
+     <navigator url='/pages/pc/add'>创建网站</navigator>
   </view>
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
@@ -58,117 +58,10 @@ export default class PcWebsite extends wepy.page {
   }
 
   data = {
-    list: [
-      {
-        addTime: 1530175983000,
-        addUser: "",
-        args: null,
-        bind: {
-          addTime: null,
-          address: "",
-          bindId: null,
-          country: "",
-          icp: "",
-          id: "null",
-          layoutId: null,
-          psr: "",
-          seccurityLink: "",
-          secondDomain: "",
-          state: "",
-          type: "",
-          updateTime: null
-        },
-        categoryId: "7",
-        copyId: "464",
-        copyState: "0",
-        endTime: 1532767983000,
-        entName: "",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        grade: 1,
-        icon: "",
-        id: "744",
-        industryId: "",
-        isCase: "",
-        language: "1",
-        laymodList: "",
-        layoutId: 744,
-        logo: "",
-        mviews: "",
-        pic: "",
-        pviews: "",
-        rviews: "",
-        sceneId: "",
-        seoDescription: "",
-        seoKeywords: "",
-        seoTitle: "我的网站----------模板（墙布）",
-        signContent: "null",
-        state: "0",
-        tagName: "",
-        templateId: 464,
-        themeId: 0,
-        title: "我的网站",
-        updateTime: "2018-07-28 17:58:00.0",
-        user: null,
-        uviews: "",
-        views: ""
-      },
-      {
-        addTime: 1530175959000,
-        addUser: "",
-        args: null,
-        bind: {
-          addTime: null,
-          address: "",
-          bindId: null,
-          country: "",
-          icp: "",
-          id: "null",
-          layoutId: null,
-          psr: "",
-          seccurityLink: "",
-          secondDomain: "",
-          state: "",
-          type: "",
-          updateTime: null
-        },
-        categoryId: "7",
-        copyId: "455",
-        copyState: "0",
-        endTime: 1532767959000,
-        entName: "",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        grade: 1,
-        icon: "",
-        id: "743",
-        industryId: "",
-        isCase: "",
-        language: "2",
-        laymodList: "",
-        layoutId: 743,
-        logo: "",
-        mviews: "",
-        pic: "",
-        pviews: "",
-        rviews: "",
-        sceneId: "",
-        seoDescription: "",
-        seoKeywords: "",
-        seoTitle: "模板（工具）",
-        signContent: "null",
-        state: "0",
-        tagName: "",
-        templateId: 455,
-        themeId: 0,
-        title: "我的网站",
-        updateTime: "2018-07-28 17:58:00.0",
-        user: null,
-        uviews: "",
-        views: ""
-      }
-    ],
+    list: [],
     params: {
       page: 1,
-      pageSize: 4,
+      pageSize: 6,
       sortType: 'desc'
     },
     count: 0,

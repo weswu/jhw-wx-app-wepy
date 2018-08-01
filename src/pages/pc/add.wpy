@@ -1,28 +1,20 @@
 <template>
     <!--圆形点击框  -->
-  <view class="round-click">
-     <navigator url='/pages/pc/add'>创建网站</navigator>
+  <view class="round-click origin">
+     <view class="btn" @tap="add">空白网站</view>
   </view>
   <!--列表-->
-  <repeat for="{{list}}" key="index" index="index" item="item">
-    <view class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{item.pic}}"/>
-        </view>
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" wx:if="{{dx}}">
-            {{dx}}
-        </view>
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{title}}</view>
-            <view class="weui-media-box__desc">{{content}}</view>
-            <view class="weui-media-box__info" wx:if="{{time}}">{{time}}</view>
-        </view>
-        <view class="weui-media-box__ft" wx:if="{{operation}}" @tap.stop="del({{id}})">
-            <i class="iconfont icon-lajixiang"></i>
-        </view>
-    </view>
-    <view class="hr">
-  </repeat>
+  <view class="weui-grids">
+      <block wx:for="{{list}}" wx:key="*this">
+          <view class="weui-grid" hover-class="weui-grid_active">
+              <image class="weui-grid__icon" src="http://dfwjjingtai.b0.upaiyun.com/{{item.pic}}" />
+              <view class="wcd_icon">
+                <navigator url='/pages/setting/webView?src=http://pc.jihui88.com/rest/site/{{item.id}}/index'><button type="default" size="mini">查看</button></navigator>
+                <button type="default" size="mini" @tap="add({{item}})" style="float:right">使用</button>
+              </view>
+          </view>
+      </block>
+  </view>
 
   <!-- 加载提示 -->
   <Loadmore :more.sync="more"/>
@@ -43,87 +35,11 @@ export default class PcAdd extends wepy.page {
   }
 
   data = {
-    list: [
-      {
-      addTime: 1531721523000,
-      addUser: "",
-      args: null,
-      bind: null,
-      categoryId: "7",
-      copyId: "",
-      copyState: "1",
-      endTime: 1565798400000,
-      entName: "",
-      grade: 1,
-      icon: "upload//z//z2//zjj001//picture//2018//05//21/99f9571b-df22-479c-b2f6-2dd4dad675ce.png",
-      id: "825",
-      industryId: "",
-      isCase: "",
-      language: "1",
-      laymodList: "",
-      layoutId: 825,
-      logo: "upload//a//a1//admin//picture//2018//01//24/0b539a52-e158-4101-a50f-41e3bc8a7c52.png",
-      mviews: "",
-      pic: "upload//a//a1//admin//picture//2018//07//17/8d356576-022e-471b-968e-0d178ec5476d.jpg",
-      pviews: "",
-      rviews: "",
-      sceneId: "",
-      seoDescription: "",
-      seoKeywords: "",
-      seoTitle: "模板（铝型材）",
-      signContent: "null",
-      state: "1",
-      tagName: "",
-      templateId: null,
-      themeId: 0,
-      title: "我的网站",
-      updateTime: "2018-07-17 17:12:26.0",
-      user: null,
-      uviews: "",
-      views: ""
-      },
-      {
-      addTime: 1530856307000,
-      addUser: "",
-      args: null,
-      bind: null,
-      categoryId: "7",
-      copyId: "",
-      copyState: "1",
-      endTime: 1564934400000,
-      entName: "",
-      grade: 1,
-      icon: "upload//z//z2//zjj001//picture//2018//05//21/99f9571b-df22-479c-b2f6-2dd4dad675ce.png",
-      id: "775",
-      industryId: "",
-      isCase: "",
-      language: "1",
-      laymodList: "",
-      layoutId: 775,
-      logo: "upload//a//a1//admin//picture//2018//01//24/0b539a52-e158-4101-a50f-41e3bc8a7c52.png",
-      mviews: "",
-      pic: "upload//a//a1//admin//picture//2018//07//16/09a662e0-e206-45e4-8b8e-519911519fe2.jpg",
-      pviews: "",
-      rviews: "",
-      sceneId: "",
-      seoDescription: "",
-      seoKeywords: "",
-      seoTitle: "模板（滑板车）",
-      signContent: "null",
-      state: "1",
-      tagName: "",
-      templateId: null,
-      themeId: 0,
-      title: "我的网站",
-      updateTime: "2018-07-16 13:51:12.0",
-      user: null,
-      uviews: "",
-      views: ""
-      }
-    ],
+    list: [],
     params: {
       page: 1,
-      pageSize: 4
+      pageSize: 8,
+      sort: 'addTime!desc'
     },
     more: { loading: true }
   }
@@ -136,21 +52,50 @@ export default class PcAdd extends wepy.page {
     const res = await api.staticAdd({
       data: this.params
     })
-    await Utils.scrollList(this, res, '我的网站')
+    await Utils.scrollList(this, res, '创建网站')
   }
 
     // 删除
-  async del (e) {
-    await Tips.confirm('确认删除吗？')
+  async add (e) {
+    let item = e.target.dataset.wpyaddA
+    let obj = {
+      title: '我的网站',
+      seoTitle: '我的网站',
+      language: '1',
+      grade: 1,
+      name: '我的网站',
+      cellphone: '',
+      categoryId: '7',
+      entName: '',
+      areaPath: ''
+    }
+    if (item) {
+      obj = {
+        title: item.title,
+        seoTitle: item.seoTitle,
+        language: item.language,
+        grade: item.grade,
+        name: item.name,
+        cellphone: '',
+        categoryId: item.categoryId,
+        entName: '',
+        areaPath: '',
+        copyId: item.id
+      }
+    }
     Tips.loading()
     const res = await api.staticDetail({
-      method: 'DELETE',
-      id: e.target.dataset.wpydelA
+      data: {
+        model: JSON.stringify(obj)
+      },
+      method: 'POST'
     })
     Tips.loaded()
     if (res.success) {
-      await Utils.del(this, e, '我的网站')
-      Tips.success('删除成功')
+      Tips.success('添加成功')
+      wx.navigateBack()
+    } else {
+      Tips.error(res.msg)
     }
   }
 
@@ -175,7 +120,27 @@ export default class PcAdd extends wepy.page {
 </script>
 
 <style lang="less">
-  .hr{
-    height: 16rpx;
+  .weui-grid {
+    float:left;
+    width:50%;
+    padding:10px 10px;
+    image{
+      width: 300rpx;
+      height: 188rpx;
+      margin-bottom:10px;
+    }
+    .weui-grid__label{
+      font-size: 12px;
+      text-align:left;
+    }
+    .wcd_icon{
+      navigator{
+        display: inline-block;
+      }
+      button{
+        background: #ff5241;
+        color: #fff;
+      }
+    }
   }
 </style>
