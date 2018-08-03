@@ -34,7 +34,7 @@
   <!-- 签到 -->
   <view class="signIn" @tap="signIn">
     <i class="iconfont icon-qiandao"></i>
-    <button type="primary" plain="true" size="mini">签到</button>
+    <button type="primary" plain="true" size="mini"><text wx:if="{{integralCount.dailyPoint === 0}}">已</text>签到</button>
   </view>
   <!-- 认识 -->
   <view class="weui-grids grids1">
@@ -137,9 +137,6 @@
   import Tips from '@/utils/Tips'
   import Utils from '@/utils/Utils'
   export default class Index extends wepy.page {
-    config = {
-      navigationStyle: 'custom'
-    }
     data = {
       // 轮播
       images: [
@@ -158,52 +155,46 @@
         {url: '', name: '建站快速入门', icon: 'icon-beginnerguide', content: '按步骤指导操作'},
         {url: '', name: '常见问题', icon: 'icon-kuaisurumen', content: '自助排除故障'}
       ],
-      userInfo: {}
+      userInfo: {},
+      integralCount: {}
     }
 
     async onLoad () {
-      let that = this
-      let key = wepy.getStorageSync('skey')
-      if (key) {
+      if (!this.$parent.globalData.user.username) {
         this.get()
       } else {
-        this.$parent.skeyCallback = skey => {
-          if (skey != '') {
-            this.get()
-          }
-        }
-      }
-    }
-
-
-    async onShow () {
-      let init = wepy.getStorageSync('init')
-      if (init) {
-        this.get()
-        wepy.setStorageSync('init', '')
+        this.user = this.$parent.globalData.user
+        this.userInfo = this.$parent.globalData.userInfo
+        this.integralCount = this.$parent.globalData.integralCount
+        this.$apply()
       }
     }
 
     async get() {
       Tips.loading()
       let that = this
-      wepy.setStorageSync('init', false)
       this.$parent.get(function(json){
         Tips.loaded()
         //更新数据
         that.user = json.user
         that.userInfo = json.userInfo
-        console.log('用户数据存入当前页面');
+        that.integralCount = json.integralCount
+        console.log('用户数据存入当前页面')
         that.$apply()
       })
     }
 
     async signIn () {
-      const res = await api.signIn()
-      if (res.success) {
-        Tips.success('签到成功')
-      } else {
-        Tips.error(res.msg)
+      if (this.integralCount.dailyPoint === 1) {
+        const res = await api.signIn()
+        if (res.success) {
+          this.integralCount.dailyPoint = 0
+          this.$parent.globalData.integralCount.dailyPoint = 0
+          Tips.success('签到成功')
+          this.$apply()
+        } else {
+          Tips.error(res.msg)
+        }
       }
     }
 

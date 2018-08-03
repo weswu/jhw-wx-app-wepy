@@ -1,6 +1,6 @@
 <template>
   <Tips />
-  <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">获取用户信息</button>
+  <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" hidden>获取用户信息</button>
   <view class="logo"><image src="http://www.jihui88.com/member/static/images/f-logo.png" alt=""></view>
   <view class="login">
     <view class="form">

@@ -41,8 +41,11 @@ export default class Album extends wepy.page {
 
   data = {
     list: [],
-    page: 1,
-    pageSize: 15,
+    params: {
+      page: 1,
+      pageSize: 15,
+      sort: 'att_id'
+    },
     more: { loading: true },
     id: 'all',
     albumCategory: [],
@@ -56,11 +59,7 @@ export default class Album extends wepy.page {
 
   async get () {
     const data = await api.album({
-      data: {
-        page: this.page,
-        pageSize: this.pageSize,
-        sort: 'att_id'
-      },
+      data: this.params,
       id: this.id
     })
     if (data.success) {
@@ -83,7 +82,7 @@ export default class Album extends wepy.page {
       this.idIndex = index
       this.id = this.albumCategory[index].id
       this.list = []
-      this.page = 1
+      this.params.page = 1
       this.get()
     }
   }
@@ -103,7 +102,7 @@ export default class Album extends wepy.page {
   async onPullDownRefresh () {
     this.more.loading = true
     this.list = []
-    this.page = 1
+    this.params.page = 1
     this.get()
     wepy.stopPullDownRefresh()
   }
@@ -112,7 +111,7 @@ export default class Album extends wepy.page {
   async onReachBottom () {
     if (this.more.loading) { return false }
     this.more.loading = true
-    this.page += 1
+    this.params.page += 1
     this.get()
   }
 

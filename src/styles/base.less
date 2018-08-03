@@ -2,6 +2,11 @@
 
 page{
   height: 100vh;
+  font-family:-apple-system-font,Helvetica,'微软雅黑','黑体',sans-serif;
+  font-size: 12px;
+}
+text,view{
+  font-size: 12px;
 }
 
 //******外边距原子样式******/
@@ -14,13 +19,7 @@ page{
 .mb10{margin-bottom: 10rpx}
 .mb20{margin-bottom: 20rpx}
 
-
 //******通用样式******/
-text, view {
-  font-family: MicroSoft Yahei;
-  font-size: @text-nm;
-}
-
 .form {
   text,view{
     font-family: 宋体;
@@ -30,9 +29,6 @@ text, view {
 
 button[type="primary"]{
   background-color: @color-primary;
-}
-button[type="info"]{
-  background-color: @color-info;
 }
 button.pain-btn[open-type="share"]{
   background-color: transparent;
@@ -65,10 +61,13 @@ text.white{color:#FFF}
 text.muted,input.muted,view.muted{color: @color-muted}
 text.weak{color: @color-weak}
 text.primary{color: @color-primary}
-text.info{color: @color-info}
 text.major{color: @color-major}
 text.danger{color: @color-danger}
 text.red{color: red;}
+.info{color: @color-info}
+.price { color: #ff7e3e;}
+.red{color: @color-error;}
+.green{  color: @color-success;}
 
 text.xl{font-size: @text-xl}
 text.xxl{font-size: @text-xxl}
@@ -268,15 +267,6 @@ view.bg-gray{background-color: @color-bg-body}
 }
 
 .chaxun {text-align: center;margin: 10px 0 5px 0;color: #999;font-size: 12px;}
-.price {
-  color: #ff7e3e;
-}
-.red{
-  color: @color-error;
-}
-.green{
-  color: @color-success;
-}
 .j_save{
   background-color: #f1f1f1;
   text-align:right;padding:7px 15px;color:#999;font-size:12px;

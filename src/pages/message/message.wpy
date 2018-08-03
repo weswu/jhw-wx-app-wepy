@@ -6,7 +6,7 @@
             <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{item.count !== 0}}">{{item.count}}</view>
           </view>
           <view class="weui-cell__bd">
-              <view>{{item.name}}</view>
+              <view class="title">{{item.name}}</view>
               <view class="content">{{item.content}}</view>
           </view>
           <view class="weui-cell__ft">{{item.time}}</view>
@@ -25,11 +25,11 @@ export default class Message extends wepy.page {
 
   data = {
     list: [
-      { name: '客户消息', count: '80', icon: 'icon-kehu', color: '59b5f9', content: '我想购买关于这个产品，请问下价格，请相关负责人联系', time: 1467289082007, type: '03' },
-      { name: '产品消息', count: 0, icon: 'icon-product', color: 'a3d253', content: '我想', time: 1467289082007, type: '10' },
-      { name: '安全消息', count: 0, icon: 'icon-anquan', color: 'ff8902', content: '我想', time: 1467289082007, type: '11' },
-      { name: '服务消息', count: '7', icon: 'icon-fuwu', color: '7d65f6', content: '我想', time: 1467289082007, type: '12' },
-      { name: '活动消息', count: '2', icon: 'icon-huodong', color: '02c1de', content: '我想', time: 1467289082007, type: '13' }
+      { name: '客户消息', count: 0, icon: 'icon-kehu', color: '59b5f9', content: '', time: '', type: '03' },
+      { name: '产品消息', count: 0, icon: 'icon-product', color: 'a3d253', content: '', time: '', type: '10' },
+      { name: '安全消息', count: 0, icon: 'icon-anquan', color: 'ff8902', content: '', time: '', type: '11' },
+      { name: '服务消息', count: 0, icon: 'icon-fuwu', color: '7d65f6', content: '', time: '', type: '12' },
+      { name: '活动消息', count: 0, icon: 'icon-huodong', color: '02c1de', content: '', time: '', type: '13' }
     ]
   }
 
@@ -38,17 +38,30 @@ export default class Message extends wepy.page {
   }
 
   async get () {
-    const json = await api.message()
-    this.list[0].time = Utils.formatTime(1531359116622, 'yyyy-MM-dd', true)
-    this.list[1].time = Utils.formatTime(1531205016367, 'yyyy-MM-dd', true)
-    this.list[2].time = Utils.formatTime(1467289082007, 'yyyy-MM-dd', true)
-    this.list[3].time = Utils.formatTime(1467289082007, 'yyyy-MM-dd', true)
-    this.list[4].time = Utils.formatTime(1467289082007, 'yyyy-MM-dd', true)
-    this.$apply()
-  }
-
-  methods = {
-    // 删除
+    const res = await api.message({
+      data: {
+        pageSize: 1
+      }
+    })
+    if (res.success) {
+      let data = res.attributes
+      this.list[0].count = data.count03
+      this.list[1].count = data.count10
+      this.list[2].count = data.count11
+      this.list[3].count = data.count12
+      this.list[4].count = data.count13
+      this.list[0].content = data.detail03.title || '暂无数据'
+      this.list[0].time = Utils.formatTime(data.detail03.addTime, 'yyyy-MM-dd', true)
+      this.list[1].content = data.detail10.title || '暂无数据'
+      this.list[1].time = Utils.formatTime(data.detail10.addTime, 'yyyy-MM-dd', true)
+      this.list[2].content = data.detail11.title || '暂无数据'
+      this.list[2].time = Utils.formatTime(data.detail11.addTime, 'yyyy-MM-dd', true)
+      this.list[3].content = data.detail12.title || '暂无数据'
+      this.list[3].time = Utils.formatTime(data.detail12.addTime, 'yyyy-MM-dd', true)
+      this.list[4].content = data.detail13.title || '暂无数据'
+      this.list[4].time = Utils.formatTime(data.detail13.addTime, 'yyyy-MM-dd', true)
+      this.$apply()
+    }
   }
 
   // 下拉刷新
@@ -63,8 +76,11 @@ export default class Message extends wepy.page {
     position: absolute;right:15px;
     top:11px;
   }
+  .title{
+    font-size: 13px;
+  }
   .content{
-    font-size: 13px;color: #888888;
+    color: #888888;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap;width:75%;

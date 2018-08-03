@@ -11,10 +11,6 @@
         <view class="weui-panel" style="margin-top: 16rpx;">
           <view class="weui-cell weui-cell_access">
             <view class="weui-cell__bd">我的产品</view>
-            <view class="weui-cell__ft">
-              <text class="info" @tap="edit('0')" wx:if="{{!productTools}}"></text>
-              <text class="info" @tap="edit('0')" wx:if="{{productTools}}">完成</text>
-            </view>
           </view>
         </view>
         <view class="weui-grids">

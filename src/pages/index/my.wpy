@@ -7,15 +7,17 @@
             <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" wx:if="{{user.username}}"/>
           </navigator>
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">{{accountInfo.nickName || user.username || 'Hi，您未登录'}}
+            <view class="weui-media-box__title">
+              {{accountInfo.nickName || user.username || 'Hi，您未登录'}}
               <navigator url="/pages/user/login" class="login-btn" wx:if="{{!user.username}}">
                 <button class="weui-btn" type="primary" plain="true" size="mini">登录\n/\n注册</button>
               </navigator>
             </view>
+            <view class="weui-media-box__desc">{{user.username}}</view>
           </view>
       </view>
 
-      <navigator url="/pages/message/message" style='position: absolute;top: 11px;right: 15px;color:#fff'>
+      <navigator url="/pages/message/message" style='position: absolute;top: 0px;right: 15px;color:#fff'>
         <i class="iconfont icon-mail" style="color:#fff;font-size:45rpx"></i>
         <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
       </navigator>
@@ -149,7 +151,7 @@ export default class My extends wepy.page {
         background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
       }
       .weui-media-box__thumb{
-        border-radius:8rpx;
+        border-radius:30px;
       }
     }
     .crpt{

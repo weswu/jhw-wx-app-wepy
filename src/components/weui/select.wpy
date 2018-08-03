@@ -1,8 +1,8 @@
 <template>
   <view class="weui-cells weui-cells_after-title" class="j-select">
-      <view class="weui-cell weui-cells_in-small-appmsg">
+      <view class="weui-cell weui-cells_in-small-appmsg" @tap="toggle">
         <view class="weui-cell__bd">{{title}}</view>
-        <view class="weui-cell__ft" @tap="toggle">
+        <view class="weui-cell__ft">
           <i class="iconfont"/>
         </view>
       </view>

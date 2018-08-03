@@ -6,7 +6,10 @@
     <!-- 签到 -->
     <view class="signIn" @tap="signIn">
       <i class="iconfont icon-qiandao"></i>
-      <button type="primary" plain="true" size="mini">每日签到领积分</button>
+      <button type="primary" plain="true" size="mini">
+        <text wx:if="{{integralCount.dailyPoint === 0}}">已签到</text>
+        <text wx:else>每日签到领积分</text>
+      </button>
     </view>
   </view>
   <view class="weui-tab">
@@ -200,11 +203,13 @@ export default class Progress extends wepy.page {
       state: 1,
       point: 1,
       }
-    ]
+    ],
+    integralCount: {}
   }
 
   onLoad () {
     this.get()
+    this.integralCount = this.$parent.globalData.integralCount
   }
 
   async get () {
@@ -223,11 +228,16 @@ export default class Progress extends wepy.page {
   }
 
   async signIn () {
-    const res = await api.signIn()
-    if (res.success) {
-      Tips.success('签到成功')
-    } else {
-      Tips.error(res.msg)
+    if (this.integralCount.dailyPoint === 1) {
+      const res = await api.signIn()
+      if (res.success) {
+        this.integralCount.dailyPoint = 0
+        this.$parent.globalData.integralCount.dailyPoint = 0
+        Tips.success('签到成功')
+        this.$apply()
+      } else {
+        Tips.error(res.msg)
+      }
     }
   }
 
