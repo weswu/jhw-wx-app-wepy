@@ -1,6 +1,6 @@
 <template>
   <view class="j_upload" @tap="chooseImage">
-    <image mode="widthFix" src="http://img.jihui88.com/{{src}}" wx:if="{{type !== 'slot'}}"/>
+    <image mode="widthFix" src="http://img.jihui88.com/{{src}}" wx:if="{{type !== 'slot'}}" @error="error"/>
     <slot name="content" wx:else></slot>
   </view>
 </template>
@@ -41,6 +41,10 @@
            })
           }
         })
+      },
+      error (e) {
+        this.src = 'upload/j/j2/jihui/picture/2018/07/27/2242dbcc-9807-45a6-a080-c94b12c1bc82.jpg'
+        this.$apply()
       }
     }
   }

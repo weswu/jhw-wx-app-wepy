@@ -149,7 +149,7 @@ export default class Account extends wepy.page {
     line-height:75px;
     padding-top:15rpx;
     image {
-      width:150rpx;border-radius: 8rpx;
+      width:150rpx;border-radius: 75rpx;
     }
   }
   .icon-huiyuan1{

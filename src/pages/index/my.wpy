@@ -3,14 +3,14 @@
     <view class="weui-panel">
       <view class="weui-media-box weui-media-box_appmsg">
           <navigator url="/pages/account/account" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-            <i class="iconfont icon-huiyuan1 weui-media-box__thumb" wx:if="{{!user.username}}"></i>
-            <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" wx:if="{{user.username}}"/>
+            <i class="iconfont icon-huiyuan1 weui-media-box__thumb" wx:if="{{!accountInfo.headimg}}"></i>
+            <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" @error="error" wx:if="{{accountInfo.headimg}}"/>
           </navigator>
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title">
               {{accountInfo.nickName || user.username || 'Hi，您未登录'}}
               <navigator url="/pages/user/login" class="login-btn" wx:if="{{!user.username}}">
-                <button class="weui-btn" type="primary" plain="true" size="mini">登录\n/\n注册</button>
+                <button type="primary" plain="true" size="mini">登录\n/\n注册</button>
               </navigator>
             </view>
             <view class="weui-media-box__desc">{{user.username}}</view>
@@ -22,7 +22,7 @@
         <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
       </navigator>
     </view>
-    <view class="weui-panel">
+    <view class="weui-cells weui-cells_in-small-appmsg">
       <navigator url="/pages/cost/order" class="weui-cell weui-cell_access">
           <view class="weui-cell__hd">
             <i class="iconfont icon-price" style="color:#f67d73"></i>
@@ -31,8 +31,7 @@
           <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
-    <view class="hr"/>
-    <view class="weui-panel">
+    <view class="weui-cells">
       <navigator url="/pages/point/point" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-qiandao"></i>
@@ -55,8 +54,7 @@
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
-    <view class="hr"/>
-    <view class="weui-panel">
+    <view class="weui-cells">
       <navigator url="/pages/setting/serviceFeedback" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-erji"></i>
@@ -72,8 +70,7 @@
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
-    <view class="hr"/>
-    <view class="weui-panel">
+    <view class="weui-cells">
       <navigator url="/pages/account/account" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-account-only"></i>
@@ -82,8 +79,7 @@
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
       </navigator>
     </view>
-    <view class="hr"/>
-    <view class="weui-panel">
+    <view class="weui-cells">
       <navigator url="/pages/setting/setting" class="weui-cell weui-cell_access">
         <view class="weui-cell__hd">
           <i class="iconfont icon-shezhi"></i>
@@ -112,13 +108,18 @@ export default class My extends wepy.page {
 
   onLoad () {
     let that = this
-    this.$parent.getAccountInfo(function(json){
+    this.$parent.getAccountInfo(function(res){
       //更新数据
-      that.user = json.user
-      that.userInfo = json.userInfo
-      that.accountInfo = json.accountInfo
+      that.user = res.user
+      that.userInfo = res.userInfo
+      that.accountInfo = res.accountInfo
       that.$apply()
     })
+  }
+
+  error (e) {
+    this.accountInfo.headimg = 'upload/j/j2/jihui/picture/2018/07/27/2242dbcc-9807-45a6-a080-c94b12c1bc82.jpg'
+    this.$apply()
   }
 
   onShow () {
@@ -137,8 +138,12 @@ export default class My extends wepy.page {
     }
     .weui-media-box_appmsg{
       background:#373d40;color:#fff;
+      .weui-media-box__hd_in-appmsg{
+        margin-right:30rpx;
+      }
       .weui-media-box__title{
-        font-size: 14px;
+        font-size:15px;
+        line-height:2;
       }
       .login-btn{
         margin-left: 16rpx;

@@ -52,18 +52,21 @@ export default class Setting extends wepy.page {
       method: 'POST'
     })
     if (json.success) {
-      wepy.setStorageSync('user', '')
-      wepy.setStorageSync('userInfo', '')
-      wepy.setStorageSync('enterprise', '')
-      wepy.setStorageSync('employee', '')
-      wepy.setStorageSync('proCategory', '')
-      wepy.setStorageSync('newsCategory', '')
-      wepy.setStorageSync('skey', '');
-      wepy.setStorageSync('init', true)
-      this.$parent.globalData.userInfo = {}
       this.$parent.globalData.user = {}
+      this.$parent.globalData.userInfo = {}
       this.$parent.globalData.enterprise = {}
-      this.$parent.globalData.employee = {}
+      this.$parent.globalData.integralCount = {}
+      this.$parent.globalData.accountInfo = {}
+      this.$parent.globalData.integralCount = {}
+      this.$parent.globalData.customData = {
+        mobileSort: [
+        {text: '我的产品', value:'product', checked: true},
+        {text: '订单管理', value:'order', checked: true},
+        {text: '常用工具', value:'tool', checked: true},
+        {text: '数据管理中心', value:'data', checked: true}
+      ]}
+      this.$parent.globalData.staticList = []
+      this.$parent.globalData.layoutId = ''
       wx.navigateTo({
         url: '/pages/user/login'
       })

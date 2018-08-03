@@ -54,7 +54,7 @@
           <view class="weui-cell weui-cell_access">
             <view class="weui-cell__bd">常用工具</view>
             <view class="weui-cell__ft">
-              <text class="info" @tap="edit('1')" wx:if="{{!toggleTools}}">编辑</text>
+              <text class="info" @tap="editTool" wx:if="{{!toggleTools}}">编辑</text>
               <text class="info" @tap="save" wx:if="{{toggleTools}}">完成</text>
             </view>
           </view>
@@ -66,7 +66,7 @@
               <view class="weui-grid__label">{{item.text}}</view>
             </navigator>
             <view class="weui-grid {{!item.url ? 'opacity' : ''}}" hover-class="weui-grid_active" wx:if="{{item.editting && item.icon !== 'icon-jia'}}">
-              <i class="iconfont icon-jianhao" @tap="jian('1', {{idx}})"></i>
+              <i class="iconfont icon-jianhao" @tap="jianTool({{idx}})"></i>
               <i class="iconfont {{item.icon}}"></i>
               <view class="weui-grid__label">{{item.text}}</view>
             </view>
@@ -114,7 +114,6 @@ export default class Console extends wepy.page {
       {url: '', text: '添加', icon: 'icon-jia'},
       {url: '', text: 'text', icon: 'icon-jia'}
     ],
-    productTools: false,
     orders: [
       {url: '/pages/order/order?active=1', text: '待付款', icon: 'icon-fukuan'},
       {url: '/pages/order/order?active=2', text: '待发货', icon: 'icon-fahuo1'},
@@ -161,35 +160,33 @@ export default class Console extends wepy.page {
   }
 
   methods = {
-    jian (e, idx) {
-      if (e === '1') {
-        this.tools.splice(idx, 1)
-        this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
-      } else {
-        this.product.splice(idx, 1)
-        this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
+    jianTool (idx) {
+      this.tools.splice(idx, 1)
+      this.tools.push({url: '', text: 'text', icon: 'icon-jia'})
+      let index = 0
+      this.tools.forEach(item => {
+        if (item.text === 'text') {
+          index += 1
+        }
+      })
+      if (index === 4) {
+        this.tools.splice(this.tools.length - 1, 1)
+        this.tools.splice(this.tools.length - 1, 1)
+        this.tools.splice(this.tools.length - 1, 1)
+        this.tools.splice(this.tools.length - 1, 1)
       }
     }
   }
 
-  edit (e) {
-    let cou = e
-    if (e.target) {cou = e.target.dataset.wpyeditA}
-    if (cou === '1') {
-      this.toggleTools = !this.toggleTools
-      this.tools.forEach(item => {
-        item.editting = this.toggleTools
-      })
-    } else {
-      this.productTools = !this.productTools
-      this.product.forEach(item => {
-        item.editting = this.productTools
-      })
-    }
+  editTool () {
+    this.toggleTools = !this.toggleTools
+    this.tools.forEach(item => {
+      item.editting = this.toggleTools
+    })
   }
 
   async save () {
-    this.edit('1')
+    this.editTool()
     let tools = []
     this.tools.forEach(item => {
       if (item.icon !== 'icon-jia') {

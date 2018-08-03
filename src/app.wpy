@@ -13,12 +13,12 @@ export default class extends wepy.app {
     pages: [
     'pages/user/login',
     'pages/index/my', 'pages/index/index',
-    'pages/message/message', 'pages/message/messageDetail', 'pages/message/messageList',
+    'pages/message/messageList', 'pages/message/message', 'pages/message/messageDetail',
+    'pages/console/console', 'pages/console/tools', 'pages/console/module',
     'pages/album/album',
     'pages/pc/miniProgram', 'pages/pc/add', 'pages/pc/website',
     'pages/order/refund', 'pages/order/refundDetail', 'pages/order/review', 'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
     'pages/point/point',
-    'pages/console/console', 'pages/console/tools', 'pages/console/module',
     'pages/user/enterprise',
     'pages/account/account', 'pages/account/password',
     'pages/cost/detail', 'pages/cost/order',
@@ -89,8 +89,8 @@ export default class extends wepy.app {
 
   globalData = {
     user: {},
-    enterprise: {},
     userInfo: {},
+    enterprise: {},
     integralCount: {},
     accountInfo: {},
     customData: {
