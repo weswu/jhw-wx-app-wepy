@@ -147,4 +147,8 @@ export default class PcWebsite extends wepy.page {
   color: #0366ce;
   text-decoration: underline;
 }
+.radio-group .radio {
+  display:block;
+  margin:0 10px 5px 0;
+}
 </style>

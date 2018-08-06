@@ -1,0 +1,211 @@
+<template>
+  <Tips />
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">产品价格登录后可见：</view>
+      <view class="weui-panel__bd">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">PC网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="priceDisplayAfterLoginPc">
+              <label class="radio" wx:for="{{typelist}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.priceDisplayAfterLoginPc === item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="priceDisplayAfterLoginMobile">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.priceDisplayAfterLoginMobile === item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+      </view>
+  </view>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">产品价格登隐藏：</view>
+      <view class="weui-panel__bd">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">PC网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="priceDisplayPc">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.priceDisplayPc == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="priceDisplayMobile">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.priceDisplayMobile == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+      </view>
+  </view>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">市场价格登隐藏：</view>
+      <view class="weui-panel__bd">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">PC网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="marketPriceDisplayPc">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.marketPriceDisplayPc == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="marketPriceDisplayMobile">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.marketPriceDisplayMobile == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+      </view>
+  </view>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">开具发票：</view>
+      <view class="weui-panel__bd">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">PC网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="billState">
+              <label class="radio" wx:for="{{type2list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.billState == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+
+        <WInput wx:if="{{input.billState === '01'}}">
+          <view slot="title" class="weui-label">最低金额：</view>
+          <input slot="input" class="weui-input" type="number" placeholder="请输入最低金额" @input="input" id="billRate" value="{{input.billRate}}"/>
+          <text slot="footer">%</text>
+        </WInput>
+      </view>
+  </view>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access" style="padding-bottom: 100rpx;">
+      <view class="weui-panel__hd">满多少包邮：</view>
+      <view class="weui-panel__bd">
+        <view class="weui-cell">
+          <view class="weui-cell__hd">
+            <view class="weui-label">PC网站：</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group" @change="radio" id="pinkageState">
+              <label class="radio" wx:for="{{type3list}}" wx:key="item.value">
+                <radio value="{{item.value}}" checked="{{input.pinkageState == item.value}}"/>{{item.text}}
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <WInput wx:if="{{input.pinkageState === '01'}}">
+          <view slot="title" class="weui-label">最低金额：</view>
+          <input slot="input" class="weui-input" type="number" placeholder="请输入最低金额" @input="input" id="pinkageMoney" value="{{input.pinkageMoney}}"/>
+          <text slot="footer">元</text>
+        </WInput>
+      </view>
+  </view>
+
+
+  <button class="fixed" type="primary" @tap="submit">提交</button>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips';
+import WInput from '@/components/weui/input'
+import input from '@/mixins/input'
+export default class ServiceFeedback extends wepy.page {
+  config = {
+    navigationBarTitleText: '商品相关配置'
+  }
+
+  components = {
+    Tips: FormTips,
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    input: {},
+    typelist: [
+      { text: '启用', value: '01' },
+      { text: '关闭', value: '00' }
+    ],
+    type2list: [
+      { text: '显示', value: '01' },
+      { text: '隐藏', value: '00' }
+    ],
+    type3list: [
+      { text: '开启', value: '01' },
+      { text: '关闭', value: '00' }
+    ]
+  }
+
+  async onLoad () {
+    this.get()
+  }
+
+  async get () {
+    const res = await api.webinfo({
+      id: 'id'
+    })
+    if (res.success) {
+      this.input = res.attributes.data
+      this.$apply()
+    }
+  }
+
+  async submit () {
+    let data = {
+      model: JSON.stringify(this.input),
+      _method: 'put'
+    }
+    const json = await api.webinfo({
+      data: data,
+      method: 'POST',
+      id: this.input.webinfoId
+    })
+    if (json.success) {
+      Tips.success("保存成功")
+    } else {
+      Tips.error(res.msg)
+    }
+  }
+
+}
+</script>

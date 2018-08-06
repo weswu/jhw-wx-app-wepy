@@ -1,14 +1,13 @@
 <template>
-  <view class="bg-gray j_my">
+  <view class="j_my">
     <view class="weui-panel">
       <view class="weui-media-box weui-media-box_appmsg">
           <navigator url="/pages/account/account" class="weui-media-box__hd weui-media-box__hd_in-appmsg">
             <i class="iconfont icon-huiyuan1 weui-media-box__thumb" wx:if="{{!accountInfo.headimg}}"></i>
             <image class="weui-media-box__thumb" src="http://img.jihui88.com/{{accountInfo.headimg}}" @error="error" wx:if="{{accountInfo.headimg}}"/>
           </navigator>
-          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title">
-              {{accountInfo.nickName || user.username || 'Hi，您未登录'}}
+          <view class="weui-media-box__bd">
+            <view class="weui-media-box__title">{{accountInfo.nickName || user.username || 'Hi，您未登录'}}
               <navigator url="/pages/user/login" class="login-btn" wx:if="{{!user.username}}">
                 <button type="primary" plain="true" size="mini">登录\n/\n注册</button>
               </navigator>
@@ -18,7 +17,7 @@
       </view>
 
       <navigator url="/pages/message/message" style='position: absolute;top: 0px;right: 15px;color:#fff'>
-        <i class="iconfont icon-mail" style="color:#fff;font-size:45rpx"></i>
+        <i class="iconfont icon-mail" style="color:#fff;font-size:20px"></i>
         <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
       </navigator>
     </view>
@@ -108,6 +107,17 @@ export default class My extends wepy.page {
 
   onLoad () {
     let that = this
+    if (!this.$parent.globalData.user.username) {
+      this.$parent.get(function(json){
+        that.get()
+      })
+    } else {
+      this.get()
+    }
+  }
+
+  async get () {
+    let that = this
     this.$parent.getAccountInfo(function(res){
       //更新数据
       that.user = res.user
@@ -128,10 +138,24 @@ export default class My extends wepy.page {
       this.$apply()
     }
   }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.get()
+    wepy.stopPullDownRefresh()
+  }
 }
 </script>
 
 <style lang="less">
+page{
+  background: #f1f1f1;
+}
+.weui-cell{
+  &:before{
+    left: 42px
+  }
+}
   .j_my{
     .weui-media-box{
       padding: 36px 22px 24px 22px;

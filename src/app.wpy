@@ -11,10 +11,12 @@ import api from './api/api'
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/shop/config',
     'pages/user/login',
+    'pages/setting/setting',
     'pages/index/my', 'pages/index/index',
-    'pages/message/messageList', 'pages/message/message', 'pages/message/messageDetail',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
+    'pages/message/messageList', 'pages/message/message', 'pages/message/messageDetail',
     'pages/album/album',
     'pages/pc/miniProgram', 'pages/pc/add', 'pages/pc/website',
     'pages/order/refund', 'pages/order/refundDetail', 'pages/order/review', 'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
@@ -25,7 +27,6 @@ export default class extends wepy.app {
       // 其它
       'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
       'pages/message/messageBind',
-      'pages/data/data', 'pages/data/purchaseQuantity', 'pages/data/purchaseAmount',
       'pages/mobile/mobile',
       'pages/wcd/wcd',
       'pages/distribution/distribution',
@@ -39,7 +40,7 @@ export default class extends wepy.app {
       'pages/category/category', 'pages/category/categoryDetail', 'pages/category/categoryList',
       'pages/cert/cert', 'pages/cert/certDetail',
       'pages/link/link', 'pages/link/linkDetail',
-      'pages/setting/setting', 'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
+      'pages/setting/serviceFeedback', 'pages/setting/logList','pages/setting/sale',
       'pages/service/service', 'pages/service/faq', 'pages/service/faq1',
       'pages/setting/webView',
       'pages/user/map',
@@ -96,7 +97,7 @@ export default class extends wepy.app {
     customData: {
       mobileSort: [
       {text: '我的产品', value:'product', checked: true},
-      {text: '订单管理', value:'order', checked: true},
+      {text: '订单管理', value:'order', checked: false},
       {text: '常用工具', value:'tool', checked: true},
       {text: '数据管理中心', value:'data', checked: true}
     ]},
@@ -118,7 +119,8 @@ export default class extends wepy.app {
     console.log('启动');
     //用户信息
     const login = await wepy.login()
-    if (login.code) {
+    // if (login.code) {
+    if (login.code && false) {
       let u = await wepy.getUserInfo()
       const resp =  await api.wxapplogin({
         data: {
@@ -195,7 +197,7 @@ export default class extends wepy.app {
           if (!content.mobileSort) {
             content.mobileSort = [
               {text: '我的产品', value:'product', checked: true},
-              {text: '订单管理', value:'order', checked: true},
+              {text: '订单管理', value:'order', checked: false},
               {text: '常用工具', value:'tool', checked: true},
               {text: '数据管理中心', value:'data', checked: true}
             ]

@@ -6,7 +6,7 @@
     </navigator>
     <view class="weui-cell weui-cell_access" @tap="tel">
       <view class="weui-cell__bd">我的客服</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access">{{employee.emp_mobile_phone || '400-7111-011'}}</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">400-7111-011</view>
     </view>
     <view class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">咨询QQ</view>
@@ -27,26 +27,19 @@ export default class Service extends wepy.page {
   }
   components = {}
 
-  data = {
-    employee: {}
-  }
+  data = {}
 
-  async onLoad() {
-    this.get()
-  }
-
-  async get() {
-    const json = await api.getEmployee()
-    if (json.success) {
-      this.employee = json.ttributes.data[0] || {}
-      this.$apply();
-    }
-  }
+  onLoad() {}
 
   tel () {
     wx.makePhoneCall({
-      phoneNumber: this.employee.emp_mobile_phone || '400-7111-011'
+      phoneNumber: '400-7111-011'
     })
   }
 }
 </script>
+<style>
+page{
+  background: #f1f1f1;
+}
+</style>

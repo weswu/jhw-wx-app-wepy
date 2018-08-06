@@ -1,7 +1,8 @@
 <template>
   <view class="j_upload" @tap="chooseImage">
-    <image mode="widthFix" src="http://img.jihui88.com/{{src}}" wx:if="{{type !== 'slot'}}" @error="error"/>
-    <slot name="content" wx:else></slot>
+    <slot name="content">
+      <image mode="widthFix" src="http://img.jihui88.com/{{src}}" @error="error"/>
+    </slot>
   </view>
 </template>
 
@@ -9,9 +10,6 @@
   import wepy from 'wepy'
   export default class Upload extends wepy.component {
     props = {
-      type: {
-        default: ''
-      },
       src: String
     }
     methods = {

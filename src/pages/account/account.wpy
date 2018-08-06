@@ -1,14 +1,9 @@
 <template>
   <view class="header">
     <view class="logo">
-      <Upload :type.sync="type" :src.sync="logo" @change.user="change">
-        <i class="iconfont icon-huiyuan1" slot="content" wx:if="{{!logo}}"></i>
+      <Upload @change.user="change">
+        <image slot="content" mode="widthFix" src="http://img.jihui88.com/{{logo}}" @error="error"/>
       </Upload>
-    </view>
-  </view>
-  <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
-    <view class="weui-cell__hd">
-      <view class="weui-label">账号</view>
     </view>
   </view>
   <view class="weui-cells weui-cells_in-small-appmsg">
@@ -28,12 +23,7 @@
     </view>
   </view>
 
-  <view class="weui-cell weui-cell-border-top" style="background: #f1f1f1;">
-    <view class="weui-cell__hd">
-      <view class="weui-label">安全</view>
-    </view>
-  </view>
-  <view class="weui-cells weui-cells_in-small-appmsg">
+  <view class="weui-cells">
     <navigator url="password" class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">登录密码</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
@@ -57,7 +47,6 @@
       </view>
     </repeat>
   </view>
-  <view class="hr"/>
 </template>
 <script>
 import wepy from 'wepy'
@@ -78,7 +67,6 @@ export default class Account extends wepy.page {
     user: {},
     accountInfo: {},
     logo: '',
-    type: '',
     oauth: [
       {nickname: '未绑定', type: 'weixin'},
       {nickname: '未绑定', type: 'qq'},
@@ -88,15 +76,22 @@ export default class Account extends wepy.page {
 
   async onLoad() {
     let that = this
-    this.$parent.getAccountInfo(function(res){
-      //更新数据
-      that.user = res.user
+    if (this.$parent.globalData.accountInfo.headimg && this.$parent.globalData.user) {
+      that.user = this.$parent.globalData.user
       that.user.addTime = Utils.formatTime(that.user.addTime)
-      that.accountInfo = res.accountInfo
-      that.logo = res.accountInfo.headimg || ''
-      that.type = !that.logo ? 'slot' : '' // 日不能放在{{}}上
-      that.$apply()
-    })
+      that.logo = this.$parent.globalData.accountInfo.headimg || ''
+      this.accountInfo = this.$parent.globalData.accountInfo
+      this.$apply()
+    } else {
+      this.$parent.getAccountInfo(function(res){
+        //更新数据
+        that.user = res.user
+        that.user.addTime = Utils.formatTime(that.user.addTime)
+        that.logo = res.accountInfo.headimg || ''
+        that.accountInfo = res.accountInfo
+        that.$apply()
+      })
+    }
     this.get()
   }
 
@@ -138,6 +133,9 @@ export default class Account extends wepy.page {
 }
 </script>
 <style lang="less">
+page{
+  background: #f1f1f1;
+}
   .header{
     background: #373d40;
     text-align: center;height:200rpx;

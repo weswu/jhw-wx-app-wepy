@@ -88,14 +88,14 @@ export default class Module extends wepy.page {
   }
 
   async save () {
-    let data = this.$parent.globalData.customData
-    data.mobileSort = []
+    let data = []
     this.optionsListData.forEach(item => {
-      data.mobileSort.push({text: item.text, value: item.value, checked: item.checked})
+      data.push({text: item.text, value: item.value, checked: item.checked})
     })
+    this.$parent.globalData.customData.mobileSort = data
     const res = await api.customUpdate({
       data: {
-        content: JSON.stringify(data)
+        content: JSON.stringify(this.$parent.globalData.customData)
       },
       method: 'post'
     })
@@ -238,6 +238,11 @@ export default class Module extends wepy.page {
 <style lang="less">
 page {
   background-color: #f1f1f1;
+}
+.weui-cell{
+  &:before{
+    left: 42px
+  }
 }
 
 .touchView{z-index: 200; width: 100px;position: absolute;top: 0;left:275px; top: 0;}

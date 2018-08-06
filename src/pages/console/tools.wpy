@@ -159,7 +159,7 @@ export default class Tools extends wepy.page {
       method: 'post'
     })
     if (res.success) {
-      Tips.success("保存成功");
+      Tips.success("保存成功")
       wx.navigateBack()
     } else {
       Tips.error(json.msg)

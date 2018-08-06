@@ -8,23 +8,17 @@
       <view class="weui-cell__bd">服务反馈</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-    <navigator url="logList" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">操作记录</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
   </view>
 
-  <view class="weui-panel weui-panel_access">
-    <view class="weui-panel__ft">
-      <navigator url="sale" class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">促销活动</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </navigator>
-      <navigator url="/pages/service/service" class="weui-cell weui-cell_access">
-        <view class="weui-cell__bd">服务中心</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-      </navigator>
-    </view>
+  <view class="weui-cells">
+    <navigator url="sale" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">促销活动</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="/pages/service/service" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">服务中心</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
   </view>
 
   <view class="weui-btn-area">
@@ -61,7 +55,7 @@ export default class Setting extends wepy.page {
       this.$parent.globalData.customData = {
         mobileSort: [
         {text: '我的产品', value:'product', checked: true},
-        {text: '订单管理', value:'order', checked: true},
+        {text: '订单管理', value:'order', checked: false},
         {text: '常用工具', value:'tool', checked: true},
         {text: '数据管理中心', value:'data', checked: true}
       ]}
@@ -99,3 +93,8 @@ export default class Setting extends wepy.page {
   }
 }
 </script>
+<style>
+page{
+  background: #f1f1f1;
+}
+</style>
