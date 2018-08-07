@@ -1,0 +1,219 @@
+<template>
+  <Tips />
+  <WInput>
+    <view slot="title" class="weui-label">支付方式名称：</view>
+    <input slot="input" class="weui-input" placeholder="请输入支付方式名称" @input="input" id="name" value="{{input.name}}"/>
+  </WInput>
+  <WInput>
+    <view slot="title" class="weui-label">支付类型：</view>
+    <picker slot="input" @change="categoryPicker" id="paymentConfigType" value="{{paymentConfigTypeIndex}}" range-key="text" range="{{category}}">
+        <view class="weui-select weui-select_in-select-after">{{category[paymentConfigTypeIndex].text}}</view>
+    </picker>
+  </WInput>
+  <WInput wx:if="{{input.paymentConfigType !== 'custom'}}">
+    <view slot="title" class="weui-label">支付手续费设置：</view>
+    <radio-group slot="input" class="radio-group" @change="radio" id="paymentFeeType">
+      <label class="radio" wx:for="{{feeList}}" wx:key="item.value">
+        <radio value="{{item.value}}" checked="{{input.paymentFeeType === item.value}}"/>{{item.text}}
+      </label>
+    </radio-group>
+  </WInput>
+  <WInput wx:if="{{input.paymentConfigType !== 'custom'}}">
+    <view slot="title" class="weui-label">费率/费用：</view>
+    <input slot="input" class="weui-input" type="number" placeholder="请输入费率/费用" @input="input" id="paymentFee" value="{{input.paymentFee}}"/>
+  </WInput>
+
+  <view wx:if="{{input.paymentConfigType === 'alipay'}}">
+    <view class="hr"/>
+    <WInput>
+      <view slot="title" class="weui-label">支付宝类型：</view>
+      <radio-group slot="input" class="radio-group" @change="radio" id="configObject.tenpayType">
+        <label class="radio" wx:for="{{alipayTypeList}}" wx:key="item.value">
+          <radio value="{{item.value}}" checked="{{input.configObject.tenpayType === item.value}}"/>{{item.text}}
+        </label>
+      </radio-group>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">支付宝账号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入支付宝账号" @input="input" id="configObject.account" value="{{input.configObject.account}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">支付宝商户号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入支付宝商户号" @input="input" id="configObject.bargainorId" value="{{input.configObject.bargainorId}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">支付宝密钥：</view>
+      <input slot="input" class="weui-input" placeholder="请输入支付宝密钥" @input="input" id="configObject.key" value="{{input.configObject.key}}"/>
+    </WInput>
+    <view class="j_tip" style="margin:10px 10px;">
+      <view style="font-size:14px;">手机网站支付 - RSA(SHA1) ：</view>
+      <view class="a_underline">设置地址：https://openhome.alipay.com/platform/home.htm</view>
+    </view>
+    <WInput>
+      <view slot="title" class="weui-label">应用APPID：</view>
+      <input slot="input" class="weui-input" placeholder="请输入应用APPID" @input="input" id="configObject.mAppId" value="{{input.configObject.mAppId}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">应用密钥：</view>
+      <input slot="input" class="weui-input" placeholder="请输入应用密钥" @input="input" id="configObject.mSecretKey" value="{{input.configObject.mSecretKey}}"/>
+    </WInput>
+  </view>
+
+  <view wx:if="{{input.paymentConfigType === 'wxpay'}}">
+    <view class="hr"/>
+    <WInput>
+      <view slot="title" class="weui-label">微信appid：</view>
+      <input slot="input" class="weui-input" placeholder="请输入微信appid" @input="input" id="configObject.appid" value="{{input.configObject.appid}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">应用密钥：</view>
+      <input slot="input" class="weui-input" placeholder="请输入应用密钥" @input="input" id="configObject.key" value="{{input.configObject.key}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">微信商户号：</view>
+      <input slot="input" class="weui-input" placeholder="请输入微信商户号" @input="input" id="configObject.bargainorId" value="{{input.configObject.bargainorId}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">应用APPID：</view>
+      <input slot="input" class="weui-input" placeholder="请输入应用APPID" @input="input" id="configObject.appsecret" value="{{input.configObject.appsecret}}"/>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">扫码支付回调链接：</view>
+      <input slot="input" class="weui-input" placeholder="请输入扫码支付回调链接" @input="input" id="configObject.qrcodeUrl" value="{{input.configObject.qrcodeUrl}}"/>
+    </WInput>
+    <view class="j_tip" style="margin:10px 10px;">
+      设置指引：进入商户平台-->产品中心-->开发配置， 设置扫码支付回调链接：http://www.jihui88.com/rest/pay/qrcode_notify_wx
+    </view>
+  </view>
+  <WInput>
+    <view slot="title" class="weui-label">排序：</view>
+    <input slot="input" class="weui-input" type="number" placeholder="请输入排序" @input="input" id="sort" value="{{input.sort}}"/>
+  </WInput>
+
+  <view style="padding-bottom:100rpx;">
+  </view>
+
+  <button class="fixed" type="primary" @tap="submit">提交</button>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import FormTips from '@/components/weui/tips';
+import WInput from '@/components/weui/input'
+import input from '@/mixins/input'
+export default class PayDetail extends wepy.page {
+  config = {
+    navigationBarTitleText: '支付方式'
+  }
+
+  components = {
+    Tips: FormTips,
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    id: '',
+    input: {},
+    paymentConfigTypeIndex: 0,
+    category: [
+      { text: '预存款', value: 'deposit' },
+      { text: '线下支付', value: 'offline' },
+      { text: '支付宝', value: 'alipay' },
+      { text: '微信支付', value: 'wxpay' },
+      { text: '自定义支付', value: 'custom' }
+    ],
+    feeList: [
+      { text: '按比例收费', value: 'scale' },
+      { text: '固定手续费', value: 'fixed' }
+    ],
+    alipayTypeList: [
+      { text: '即时交易', value: 'direct' },
+      { text: '担保交易', value: 'partnerMaterial' }
+    ]
+  }
+
+  async onLoad ({id}) {
+    this.id = id || ''
+    this.$apply()
+    this.get()
+  }
+
+  async get () {
+    if (this.id) {
+      const res = await api.orderPayDetail({
+        id: this.id
+      })
+      if (res.success) {
+        this.input = res.attributes.data
+      }
+    } else {
+      this.input = {
+        paymentConfigType: 'deposit',
+        paymentFeeType: 'scale',
+        configObject: {},
+        sort: 0
+      }
+    }
+    this.$apply()
+  }
+
+  methods = {
+    categoryPicker (e) {
+      var index = e.detail.value
+      this[e.currentTarget.id+'Index'] = index
+      this.input[e.currentTarget.id] = this.category[index].value
+    }
+  }
+
+  validate() {
+    const rules = [
+      {
+        value: this.input.name,
+        method: 'required',
+        message: '支付方式名称不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
+  async submit () {
+    if (!this.validate()) {
+      return;
+    }
+    Tips.loading()
+    let data = {
+      model: JSON.stringify(Object.assign(this.input, this.input.configObject))
+    }
+    let url = ''
+    if (this.input.paymentId) {
+      url = '/' + this.input.paymentId
+      data._method = 'put'
+    }
+    const res = await api.orderPayDetail({
+      data: data,
+      method: 'POST',
+      id: this.input.paymentId || ''
+    })
+    Tips.loaded()
+    if (res.success) {
+      if (!this.input.paymentId) {
+        wx.setStorageSync('orderPayDetail', res.attributes.data)
+        wx.navigateBack()
+      }
+      Tips.success("保存成功")
+    } else {
+      Tips.error(res.msg)
+    }
+  }
+
+}
+</script>
+<style media="screen">
+.weui-label {
+  width:200rpx;
+}
+</style>

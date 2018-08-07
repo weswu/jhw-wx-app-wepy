@@ -40,7 +40,7 @@ const messageDetail = (params) => http(params, host + 'message/detail' + (params
 const messageBind = (params) => http(params, host + 'message/bind/detail' + (params.data.enterpriseId ? '/' + params.data.enterpriseId : ''))
 // 设置
 const password = (params) => http(params, host + 'user/detail/password')
-const serviceFeedback = (params) => http(params, 'https://api.jihui88.net/crm_api/index.php/jihui/jihuifeedback')
+const feedback = (params) => http(params, 'https://api.jihui88.net/crm_api/index.php/jihui/jihuifeedback')
 // 相册
 const album = (params) => http(params, host + 'album/attr/list/' + params.id)
 const albumCategory = (params) => http(params, host + 'album/list?pageSize=100')
@@ -73,9 +73,11 @@ const order = (params) => http(params, host + 'order/list')
 const orderReview = (params) => http(params, host + 'productreview/list')
 const orderRefund = (params) => http(params, host + 'orderDispute/list')
 const orderRefundDetail = (params) => http(params, host + 'orderDispute/detail/' + params.id)
+const orderPay = (params) => http(params, host + 'paymentconfig/list')
+const orderPayDetail = (params) => http(params, host + 'paymentconfig/detail' + (params.id ? '/' + params.id : ''))
+
 const orderListDetail = (params) => http(params, host + 'order/listDetail/' + params.id)
 const orderDetail = (params) => http(params, host + 'order/detail/' + params.id)
-const orderExpress = (params) => http(params, host + 'order/express')
 const orderPrice = (params) => http(params, host + 'order/priceDetail')
 const orderUpdate = (params) => http(params, host + 'order/update')
 // 服务缴费
@@ -87,10 +89,8 @@ const progress = (params) => http(params, host + 'crm/feedback/list')
 const progressDetail = (params) => http(params, host + 'crm/feedback/detail/' + params.id)
 // 积分
 const point = (params) => http(params, host + 'integral_record/list')
-const pointRule = (params) => http(params, host + 'integral_rule/list?page=1&pageSize=99')
-const pointProduct = (params) => http(params, host + 'point_product/detail/' + params.id)
-const pointList = (params) => http(params, host + 'point/list')
-const pointRank = (params) => http(params, host + 'point/rank')
+const pointRule = (params) => http(params, host + 'integral_rule/list?page=1&pageSize=999&listType=0')
+const pointProduct = (params) => http(params, host + 'integral_product/list?page=1&pageSize=99')
 const signIn = (params) => http(params, host + 'integral_rule/daily')
 // 推广
 const spread = (params) => http(params, host + 'poster/list?pageSize=72')
@@ -113,7 +113,7 @@ module.exports = {
   message, messageDetail, messageBind,
   // 设置
   password,
-  serviceFeedback,
+  feedback,
   // 相册
   album, albumCategory,
   // 产品
@@ -131,13 +131,13 @@ module.exports = {
   // 会员
   member, memberDetail, memberRank,
   // 订单
-  orderRefund, orderRefundDetail, orderReview, order, orderListDetail, orderDetail, orderExpress, orderPrice, orderUpdate,
+  orderRefund, orderRefundDetail, orderReview, order, orderPay, orderPayDetail, orderListDetail, orderDetail, orderPrice, orderUpdate,
   // 服务缴费
   receiptList, receiptLog, journal,
   //服务进度
   progress, progressDetail,
   // 积分
-  point, pointProduct, pointRule, pointList, pointRank, signIn,
+  point, pointProduct, pointRule, signIn,
   // 推广
   spread, spreadRank, posters
 }

@@ -6,27 +6,17 @@
       <input slot="input" class="weui-input" placeholder="请输入主题" @input="input" id="fdbk_subject64" value="{{input.fdbk_subject64}}"/>
     </WInput>
     <!--单选-->
-    <view class="weui-cell weui-cells_after-title">
-      <view class="weui-cell__hd">
-        <view class="weui-label">反馈类型：</view>
-      </view>
-      <view class="weui-cell__bd">
-        <radio-group class="radio-group" @change="radio" id="fdbk_type">
-          <label class="radio" wx:for="{{list}}" wx:key="item.value">
-            <radio value="{{item.value}}" checked="{{input.fdbk_type == item.value}}"/>
-            {{item.text}}
-          </label>
-        </radio-group>
-      </view>
-    </view>
-    <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell">
-            <view class="weui-cell__bd">
-                <textarea class="weui-textarea" placeholder="请描述您的反馈内容，并附带上您的手机号码，我们好及时对接您提的反馈内容。"
-                @input="input" id="fdbk_intro1k" value="{{input.fdbk_intro1k}}" style="height: 80px"/>
-            </view>
-        </view>
-    </view>
+    <WInput>
+      <view slot="title" class="weui-label">反馈类型：</view>
+      <picker slot="input" @change="categoryPicker" id="fdbk_type" value="{{fdbk_typeIndex}}" range-key="text" range="{{category}}">
+          <view class="weui-select weui-select_in-select-after">{{category[fdbk_typeIndex].text}}</view>
+      </picker>
+    </WInput>
+    <WInput>
+      <view slot="title" class="weui-label">反馈内容：</view>
+      <textarea slot="input" class="weui-textarea" placeholder="请描述您的反馈内容，并附带上您的手机号码，我们好及时对接您提的反馈内容。"
+      @input="input" id="fdbk_intro1k" value="{{input.fdbk_intro1k}}" style="height: 80px;margin-top:10px;"/>
+    </WInput>
   </view>
 
   <view class="weui-btn-area">
@@ -57,7 +47,8 @@ export default class ServiceFeedback extends wepy.page {
     input: {
       fdbk_type: '5'
     },
-    list: [
+    fdbk_typeIndex: 1,
+    category: [
       { text: '表扬', value: '4' },
       { text: '建议', value: '5' },
       { text: '【页面修改】', value: '1506' },
@@ -68,7 +59,14 @@ export default class ServiceFeedback extends wepy.page {
 
   async onLoad () {}
 
-  methods = {}
+  methods = {
+    categoryPicker (e) {
+      var index = e.detail.value
+      this[e.currentTarget.id+'Index'] = index
+      this.input[e.currentTarget.id] = this.category[index].value
+    }
+  }
+
 
   validate() {
     const rules = [
@@ -96,11 +94,11 @@ export default class ServiceFeedback extends wepy.page {
       fdbk_intro1k: this.input.fdbk_intro1k,
       fdbk_type: this.input.fdbk_type
     }
-    const json = await api.serviceFeedback({
+    const res = await api.feedback({
       data: data,
       method: 'POST'
     })
-    if (json.success) {
+    if (res.success) {
       Tips.success("反馈成功");
     } else {
       Tips.error('未关联到机汇云')

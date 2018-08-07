@@ -99,13 +99,13 @@ export default class Tools extends wepy.page {
       {
         title: '商城管理',
         children: [
-          { url: '/pages/user/shop', text: '订单管理', icon: 'icon-dingdandaifukuan' },
-          { url: '/pages/user/shop_config', text: '商品相关配置', icon: 'icon-shangpin' },
-          { url: '/pages/user/shop_pay', text: '支付方式管理', icon: 'icon-zhifu' },
-          { url: '/pages/user/shop_delivery', text: '物流公司管理', icon: 'icon-gongsi1' },
-          { url: '/pages/user/shop_bill', text: '物流单据设置', icon: 'icon-wuliu' },
-          { url: '/pages/user/shop_refund', text: '商品退换货管理', icon: 'icon-tuihuanhuo' },
-          { url: '/pages/user/coupon', text: '营销管理', icon: 'icon-yingxiao' },
+          { url: '/pages/shop/shop', text: '订单管理', icon: 'icon-dingdandaifukuan' },
+          { url: '/pages/shop/config', text: '商品相关配置', icon: 'icon-shangpin' },
+          { url: '/pages/shop/pay', text: '支付方式管理', icon: 'icon-zhifu' },
+          { url: '/pages/shop/shop_delivery', text: '物流公司管理', icon: 'icon-gongsi1' },
+          { url: '/pages/shop/shop_bill', text: '物流单据设置', icon: 'icon-wuliu' },
+          { url: '/pages/shop/refund', text: '商品退换货管理', icon: 'icon-tuihuanhuo' },
+          { url: '/pages/shop/coupon', text: '营销管理', icon: 'icon-yingxiao' },
           { url: '', text: 'text', icon: 'icon-jia' }
         ]
       }

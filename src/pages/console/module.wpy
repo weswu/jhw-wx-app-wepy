@@ -13,8 +13,8 @@
         <label class="weui-cell weui-check__label">
             <checkbox class="weui-check" value="{{movableViewPosition.data.value}}" checked="{{movableViewPosition.data.checked}}"/>
             <view class="weui-cell__hd weui-check__hd_in-checkbox">
-                <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!movableViewPosition.data.checked}}"></icon>
-                <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{movableViewPosition.data.checked}}"></icon>
+                <icon class="weui-icon-checkbox_circle" type="circle" size="16" wx:if="{{!movableViewPosition.data.checked}}"></icon>
+                <icon class="weui-icon-checkbox_success" type="success" size="16" wx:if="{{movableViewPosition.data.checked}}"></icon>
             </view>
             <view class="weui-cell__bd">{{movableViewPosition.data.text}}</view>
             <view class="weui-cell__ft">
@@ -29,8 +29,8 @@
             <label class="weui-cell weui-check__label {{item.selectClass}}" wx:for="{{optionsListData}}" wx:key="*this">
                 <checkbox class="weui-check" value="{{item.value}}" checked="{{item.checked}}"/>
                 <view class="weui-cell__hd weui-check__hd_in-checkbox">
-                    <icon class="weui-icon-checkbox_circle" type="circle" size="18" wx:if="{{!item.checked}}"></icon>
-                    <icon class="weui-icon-checkbox_success" type="success" size="18" wx:if="{{item.checked}}"></icon>
+                    <icon class="weui-icon-checkbox_circle" type="circle" size="16" wx:if="{{!item.checked}}"></icon>
+                    <icon class="weui-icon-checkbox_success" type="success" size="16" wx:if="{{item.checked}}"></icon>
                 </view>
                 <view class="weui-cell__bd">{{item.text}}</view>
                 <view class="weui-cell__ft">
@@ -115,8 +115,8 @@ export default class Module extends wepy.page {
   }
 
   getOptionInfo (code) {
-    for(var i=0,j=this.data.optionsListData.length;i<j;i++){
-      var optionData= this.data.optionsListData[i];
+    for(var i=0,j=this.optionsListData.length;i<j;i++){
+      var optionData= this.optionsListData[i];
       if(optionData.value == code){
         optionData.selectIndex = i
         return optionData;
@@ -178,14 +178,14 @@ export default class Module extends wepy.page {
       console.log("event.changedTouches:",event.changedTouches);
       //movable-area滑块位置处理
       var movableX = 0;
-      var movableY = event.changedTouches[0].pageY-this.data.scrollPosition.top-this.data.scrollPosition.everyOptionCell/2;
+      var movableY = event.changedTouches[0].pageY-this.scrollPosition.top-this.scrollPosition.everyOptionCell/2;
 
 
       this.movableViewPosition = {
           x:movableX,
           y:movableY,
           className:"",
-          data:this.data.movableViewPosition.data
+          data:this.movableViewPosition.data
       }
 
       if(moveDistance - selectPosition > 0 && selectIndex < optionsListData.length - 1){
@@ -210,7 +210,7 @@ export default class Module extends wepy.page {
   }
   scrollTouchEnd (event) {
     console.log(event);
-    var optionsListData = this.optionsDataTranlate(this.data.optionsListData,"")
+    var optionsListData = this.optionsDataTranlate(this.optionsListData,"")
     this.scrollPosition.scrollY = true
     this.movableViewPosition.className = 'none'
     this.optionsListData = optionsListData
@@ -219,7 +219,7 @@ export default class Module extends wepy.page {
 
 
   checkboxChange (e) {
-    var checkboxItems = this.data.optionsListData, values = e.detail.value
+    var checkboxItems = this.optionsListData, values = e.detail.value
     for (var i = 0, lenI = checkboxItems.length; i < lenI; ++i) {
         checkboxItems[i].checked = false
         for (var j = 0, lenJ = values.length; j < lenJ; ++j) {
@@ -229,7 +229,7 @@ export default class Module extends wepy.page {
             }
         }
     }
-    this.checkboxItems = checkboxItems
+    this.optionsListData = checkboxItems
     this.$apply()
   }
 
@@ -241,8 +241,12 @@ page {
 }
 .weui-cell{
   &:before{
-    left: 42px
+    left: 40px
   }
+}
+.weui-icon-checkbox_circle,.weui-icon-checkbox_success {
+  margin-left:0;
+  margin-right:9px;
 }
 
 .touchView{z-index: 200; width: 100px;position: absolute;top: 0;left:275px; top: 0;}

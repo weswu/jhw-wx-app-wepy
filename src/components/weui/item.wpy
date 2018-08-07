@@ -12,7 +12,7 @@
           <view class="weui-media-box__info" wx:if="{{time}}">{{time}}</view>
       </view>
       <view class="weui-media-box__ft" wx:if="{{operation}}" @tap.stop="del({{id}})">
-          <i class="iconfont icon-lajixiang"></i>
+          <i class="iconfont icon-delete-fill" style="font-size:24px;color: #999"></i>
       </view>
   </navigator>
 </template>

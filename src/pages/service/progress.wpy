@@ -74,7 +74,7 @@ export default class Progress extends wepy.page {
     },
     submit () {
       wx.navigateTo({
-        url: '/pages/setting/serviceFeedback'
+        url: '/pages/user/feedback'
       })
     }
   }

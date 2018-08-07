@@ -1,4 +1,4 @@
-
+import Tips from '@/utils/Tips'
 
 /*
  * @author: wes
@@ -6,15 +6,16 @@
  * @desc: 删除单个数组
 */
 const del = (ctx, id, text) => {
-  ctx.list.forEach((item, index, arr) => {
+  ctx.list.forEach((item, index) => {
     if (item.id === id) {
-      arr.splice(index, 1)
+      ctx.list.splice(index, 1)
     }
   })
   ctx.count = ctx.count - 1
   text && wx.setNavigationBarTitle({
     title: text + '(' + ctx.count + ')'
   })
+  Tips.success('删除成功')
   ctx.$apply()
 };
 

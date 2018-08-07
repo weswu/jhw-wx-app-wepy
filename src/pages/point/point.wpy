@@ -47,7 +47,7 @@
           <view class="weui-flex" wx:for="{{rule}}" wx:key="*this">
               <view class="weui-flex__item">
                   {{item.name}}
-                  <navigator url="/pages/setting/serviceFeedback" style="color: #da4747;" wx:if="{{item.name === '改进意见'}}">马上发送</navigator>
+                  <navigator url="/pages/user/feedback" style="color: #da4747;" wx:if="{{item.name === '改进意见'}}">马上发送</navigator>
               </view>
               <view class="weui-flex__item">{{item.point}}积分</view>
           </view>
@@ -79,131 +79,16 @@ export default class Progress extends wepy.page {
   data = {
     tabs: ['积分列表', '积分兑换', '积分规则'],
     active: '0',
-    list: [
-      {
-        out: 0,
-        state: "init",
-        desc: "用户后台产品修改",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        productId: null,
-        memberId: null,
-        orderId: null,
-        addTime: 1531461265727,
-        integralRecordId: "Interalr_00000000000000000229621",
-        useable: 410,
-        updateTime: null,
-        interalRuleId: "Integralrule_0000000000000000041",
-        auditId: null,
-        income: 1,
-        integralRuleType: "productEditPoint"
-      },
-      {
-        out: 0,
-        state: "init",
-        desc: "用户后台产品修改",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        productId: null,
-        memberId: null,
-        orderId: null,
-        addTime: 1531372312208,
-        integralRecordId: "Interalr_00000000000000000229101",
-        useable: 409,
-        updateTime: null,
-        interalRuleId: "Integralrule_0000000000000000041",
-        auditId: null,
-        income: 1,
-        integralRuleType: "productEditPoint"
-      }
-    ],
+    list: [],
     params: {
       page: 1
     },
     count: 120,
     more: { loading: true },
     point: 18,
+    // 积分产品
     // 积分规则
-    rule: [
-      {
-      cate: "2",
-      condition: "0/1",
-      name: "新闻编辑",
-      count: 1,
-      state: 2,
-      point: 1
-      },
-      {
-      cate: "2",
-      condition: "0/1",
-      name: "静态发布",
-      count: 1,
-      state: 2,
-      point: 1
-      },
-      {
-      cate: "4",
-      condition: "无限制",
-      name: "推广注册",
-      count: 99999999,
-      state: 0,
-      point: 100},
-      {
-      cate: "1",
-      condition: "0/1",
-      name: "改进意见",
-      count: 1,
-      state: 2,
-      point: 100
-    },
-      {
-      cate: "3",
-      condition: "0/1",
-      name: "账号资料修改",
-      count: 1,
-      state: 2,
-      point: 10,
-      },
-      {
-      cate: "5",
-      condition: "无限制",
-      name: "每月操作15次",
-      count: 99999999,
-      state: 0,
-      point: 1,
-      desc: "每个月操作次数15次， 即可完成任务"
-      },
-      {
-      cate: "1",
-      condition: "0/6",
-      name: "普通微传单",
-      count: 6,
-      state: 2,
-      point: 10,
-      },
-      {
-      cate: "2",
-      condition: "0/1",
-      name: "新闻添加",
-      count: 1,
-      state: 2,
-      point: 5,
-    },
-      {
-      cate: "2",
-      condition: "0/1",
-      name: "产品添加",
-      count: 1,
-      state: 2,
-      point: 2,
-    },
-      {
-      cate: "2",
-      condition: "1/1",
-      name: "产品编辑",
-      count: 0,
-      state: 1,
-      point: 1,
-      }
-    ],
+    rule: [],
     integralCount: {}
   }
 
@@ -225,6 +110,7 @@ export default class Progress extends wepy.page {
   async getRule () {
     const res = await api.pointRule()
     this.rule = res.attributes.data
+    this.$apply()
   }
 
   async signIn () {

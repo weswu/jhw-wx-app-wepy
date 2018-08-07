@@ -124,14 +124,6 @@ export default class PcWebsite extends wepy.page {
     padding:10px 0;
   }
 }
-.j_tip{
-  color: #595959;
-  padding: 7px 15px;
-  border: 1px solid #ddd;
-  margin: 20px 0;
-  background: #f9f9f9;
-  line-height: 1.7;
-}
 .j_panel_box{
   padding: 7px 15px;
   border: 1px solid #ddd;

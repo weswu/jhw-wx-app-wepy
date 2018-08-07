@@ -1,5 +1,4 @@
 <template>
-  <Tips />
   <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">产品价格登录后可见：</view>
       <view class="weui-panel__bd">
@@ -145,16 +144,14 @@
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
-import FormTips from '@/components/weui/tips';
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
-export default class ServiceFeedback extends wepy.page {
+export default class ShopConfig extends wepy.page {
   config = {
     navigationBarTitleText: '商品相关配置'
   }
 
   components = {
-    Tips: FormTips,
     WInput
   }
 

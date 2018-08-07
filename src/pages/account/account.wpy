@@ -78,7 +78,7 @@ export default class Account extends wepy.page {
     let that = this
     if (this.$parent.globalData.accountInfo.headimg && this.$parent.globalData.user) {
       that.user = this.$parent.globalData.user
-      that.user.addTime = Utils.formatTime(that.user.addTime)
+      that.user.addTime = Utils.formatTime(this.$parent.globalData.user.addTime)
       that.logo = this.$parent.globalData.accountInfo.headimg || ''
       this.accountInfo = this.$parent.globalData.accountInfo
       this.$apply()
@@ -146,8 +146,10 @@ page{
     margin:0 auto;
     line-height:75px;
     padding-top:15rpx;
+    overflow:hidden;
+    border-radius: 75rpx;
     image {
-      width:150rpx;border-radius: 75rpx;
+      width:150rpx;;
     }
   }
   .icon-huiyuan1{

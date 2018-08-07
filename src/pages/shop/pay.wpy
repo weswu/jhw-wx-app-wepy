@@ -1,0 +1,102 @@
+<template>
+    <!--圆形点击框  -->
+  <view class="round-click">
+     <navigator url='payDetail'>添加</navigator>
+  </view>
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <Item :id="item.paymentId" :title="item.name" :content="'排序：' + item.sort" :url="'payDetail?id='+item.paymentId" :operation="operation" @del.user="del"/>
+  </repeat>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import Utils from '@/utils/Utils'
+import Item from '@/components/weui/item'
+import Loadmore from '@/components/weui/loadmore'
+export default class Order extends wepy.page {
+  config = {
+    navigationBarTitleText: '支付方式管理'
+  }
+  components = {
+    Item,
+    Loadmore
+  }
+
+  data = {
+    list: [],
+    params: {
+      page: 1
+    },
+    count: 0,
+    more: { loading: true },
+    operation: true
+  }
+
+
+  onLoad () {
+    this.get()
+  }
+
+  onShow () {
+    var value = wx.getStorageSync('orderPayDetail')
+    if (value) {
+      value.id = value.paymentId
+    	this.list.splice(0, 0, value)
+      wx.setStorageSync('orderPayDetail', '')
+    }
+  }
+
+  async get () {
+    const res = await api.orderPay({
+      data: this.params
+    })
+    if (res.success) {
+      res.attributes.data.forEach(item => {
+        item.id = item.paymentId
+      })
+      await Utils.scrollList(this, res, '支付方式管理')
+    }
+  }
+
+  methods = {
+    // 删除
+    async del (e) {
+      await Tips.confirm('确认删除吗？')
+      Tips.loading()
+      const res = await api.orderPayDetail({
+        method: 'DELETE',
+        id: e
+      })
+      Tips.loaded()
+      if (res.success) {
+        await Utils.del(this, e, '支付方式管理')
+      }
+    }
+  }
+
+  // 下拉刷新
+  async onPullDownRefresh () {
+    this.params.page = 1
+    this.list = []
+    this.more.loading = true
+    await this.get()
+    wepy.stopPullDownRefresh()
+  }
+
+  // 加载更多
+  async onReachBottom () {
+    if (this.more.loading) { return false }
+    this.more.loading = true
+    this.params.page += 1
+    this.get()
+  }
+
+}
+</script>
+<style lang="less">
+</style>

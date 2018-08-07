@@ -97,7 +97,7 @@ export default class ServiceFeedback extends wepy.page {
     }
     this.sf.fdbk_intro1k = '姓名:' + this.input.name + '\n公司:' + this.input.company + '\n电话:' + this.input.phone +
     '\n推荐人:' + this.input.referee + '\n说明:' + this.input.content
-    const json = await api.serviceFeedback({
+    const json = await api.feedback({
       data: this.sf,
       method: 'POST'
     })
