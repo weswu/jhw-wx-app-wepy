@@ -56,7 +56,7 @@ import Utils from '@/utils/Utils'
 import Upload from '@/components/common/upload'
 export default class Account extends wepy.page {
   config = {
-    navigationBarTitleText: '安全设置'
+    navigationBarTitleText: '账号信息'
   }
 
   components = {

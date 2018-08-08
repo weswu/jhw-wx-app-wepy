@@ -1,0 +1,84 @@
+<template>
+  <!--搜索-->
+  <SearchBar placeholder="请输入配送名称" @input.user="input" :type.sync="type"/>
+  <!--列表-->
+  <repeat for="{{list}}" key="index" index="index" item="item">
+    <view class="weui-panel">
+        <view class="weui-panel__hd">{{item.name}}</view>
+    </view>
+  </repeat>
+  <!-- 加载提示 -->
+  <Loadmore :more.sync="more"/>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '@/api/api'
+  import Tips from '@/utils/Tips'
+  import Utils from '@/utils/Utils'
+  import SearchBar from '@/components/weui/search_bar'
+  import Loadmore from '@/components/weui/loadmore'
+  export default class OrderReview extends wepy.page {
+    config = {
+      navigationBarTitleText: '物流公司管理'
+    }
+    components = {
+      SearchBar,
+      Loadmore
+    }
+
+    data = {
+      list: [],
+      params: {
+        page: 1,
+        pageSize: 16
+      },
+      count: 0,
+      more: { loading: true },
+      type: 'deliverycorp'
+    }
+
+    onLoad () {
+      this.get()
+    }
+
+    async get () {
+      const res = await api.orderDelivery({
+        data: this.params
+      })
+      if (res.success) {
+        await Utils.scrollList(this, res, '物流公司管理')
+      }
+    }
+
+    methods = {
+      // 搜索
+      async input (val) {
+        this.list = []
+        this.params.page = 1
+        this.params.name = val
+        this.get()
+      }
+    }
+
+    // 下拉刷新
+    async onPullDownRefresh () {
+      this.params.page = 1
+      this.list = []
+      this.more.loading = true
+      await this.get()
+      wepy.stopPullDownRefresh()
+    }
+
+    // 加载更多
+    async onReachBottom () {
+      if (this.more.loading) { return false }
+      this.more.loading = true
+      this.params.page += 1
+      this.get()
+    }
+
+  }
+</script>
+<style lang="less">
+</style>

@@ -75,6 +75,7 @@ const orderRefund = (params) => http(params, host + 'orderDispute/list')
 const orderRefundDetail = (params) => http(params, host + 'orderDispute/detail/' + params.id)
 const orderPay = (params) => http(params, host + 'paymentconfig/list')
 const orderPayDetail = (params) => http(params, host + 'paymentconfig/detail' + (params.id ? '/' + params.id : ''))
+const orderDelivery = (params) => http(params, host + 'deliverycorp/list')
 
 const orderListDetail = (params) => http(params, host + 'order/listDetail/' + params.id)
 const orderDetail = (params) => http(params, host + 'order/detail/' + params.id)
@@ -131,7 +132,7 @@ module.exports = {
   // 会员
   member, memberDetail, memberRank,
   // 订单
-  orderRefund, orderRefundDetail, orderReview, order, orderPay, orderPayDetail, orderListDetail, orderDetail, orderPrice, orderUpdate,
+  orderRefund, orderRefundDetail, orderReview, order, orderPay, orderPayDetail, orderListDetail, orderDetail, orderPrice, orderUpdate, orderDelivery,
   // 服务缴费
   receiptList, receiptLog, journal,
   //服务进度
