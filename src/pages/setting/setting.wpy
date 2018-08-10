@@ -1,22 +1,15 @@
 <template>
   <view class="weui-cells weui-cells_in-small-appmsg">
-    <navigator url="/pages/user/enterprise" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">公司信息</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-    <navigator url="feedback" class="weui-cell weui-cell_access">
+    <navigator url="/pages/user/feedback" class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">服务反馈</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-  </view>
-
-  <view class="weui-cells">
-    <navigator url="sale" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">促销活动</view>
+    <navigator url="/pages/service/service" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">咨询与建议</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
-    <navigator url="/pages/service/service" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">服务中心</view>
+    <navigator url="sale" class="weui-cell weui-cell_access">
+      <view class="weui-cell__bd">安全设置</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
   </view>
@@ -32,7 +25,6 @@ export default class Setting extends wepy.page {
   config = {
     navigationBarTitleText: '设置'
   }
-  components = {}
 
   data = {}
 

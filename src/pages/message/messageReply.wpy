@@ -1,0 +1,142 @@
+<template>
+  <Tips />
+  <WInput>
+    <view slot="title" class="weui-label">发送给：</view>
+    <picker slot="input" @change="picker" id="type" value="{{picker.type}}" data-list="category" range-key="text" range="{{category}}">
+      <view class="weui-select weui-select_in-select-after">{{category[picker.type].text}}</view>
+    </picker>
+  </WInput>
+  <WInput wx:if="{{input.type !== 'admin'}}">
+    <view slot="title" class="weui-label">收信人：</view>
+    <input slot="input" class="weui-input" placeholder="请输入收信人" @input="input" id="username" value="{{input.username}}"/>
+  </WInput>
+  <WInput>
+    <view slot="title" class="weui-label">反馈类型：</view>
+    <picker slot="input" @change="picker" id="fdbkType" value="{{picker.fdbkType}}" data-list="fdbkList" range-key="text" range="{{fdbkList}}">
+      <view class="weui-select weui-select_in-select-after">{{fdbkList[picker.fdbkType].text}}</view>
+    </picker>
+  </WInput>
+  <WInput>
+    <view slot="title" class="weui-label">标题：</view>
+    <input slot="input" class="weui-input" placeholder="请输入标题" @input="input" id="title" value="{{input.title}}"/>
+  </WInput>
+  <WInput>
+    <view slot="title" class="weui-label">内容：</view>
+    <textarea slot="input" class="weui-textarea" placeholder="请输入留言内容" @input="input" id="content" value="{{input.content}}"/>
+  </WInput>
+  <WInput>
+    <view slot="title" class="weui-label">验证码：</view>
+    <input slot="input" class="weui-input" placeholder="请输入留言内容" @input="input" id="randCode" value="{{input.randCode}}"/>
+    <image slot="footer" class="weui-vcode-img" src="https://www.jihui88.com/veriImg{{time}}" @tap="refreshCode" style="width: 80px"></image>
+  </WInput>
+
+  <button class="fixed" type="primary" @tap="submit">回复</button>
+</template>
+
+<script>
+import wepy from 'wepy'
+import api from '@/api/api'
+import Tips from '@/utils/Tips'
+import input from '@/mixins/input'
+import WInput from '@/components/weui/input'
+import FormTips from '@/components/weui/tips'
+export default class MessageBind extends wepy.page {
+  config = {
+    navigationBarTitleText: '消息回复'
+  }
+
+  components = {
+    Tips: FormTips,
+    WInput
+  }
+
+  mixins = [input]
+
+  data = {
+    input: {
+      sendState: '01',
+      recvState: '00',
+      crm: '01',
+      type: 'user',
+      fdbkType: '0'
+    },
+    time: '',
+    picker: {
+      type: 0,
+      fdbkType: 0
+    },
+    category: [
+      { text: '同级会员', value: 'user' },
+      { text: '子会员', value: 'member' },
+      { text: '系统管理员', value: 'admin' }
+    ],
+    fdbkList: [
+      {value: '0', text: '其它'},
+      {value: '1', text: '购买'},
+      {value: '2', text: '服务'},
+      {value: '3', text: '投诉'},
+      {value: '4', text: '表扬'},
+      {value: '5', text: '建议'}
+    ]
+  }
+
+  onLoad ({addUser, addEnt}) {
+    this.input.recvUser = addUser // 接收人用户ID
+    this.input.recvEnt = addEnt
+    this.$apply()
+  }
+
+  methods = {
+    refreshCode () {
+      this.time = '?time=' + new Date().getTime()
+      this.$apply()
+    }
+  }
+
+  validate() {
+    const rules = [
+      {
+        value: this.input.title,
+        method: 'required',
+        message: '标题不能为空'
+      },
+      {
+        value: this.input.content,
+        method: 'required',
+        message: '内容不能为空'
+      },
+      {
+        value: this.input.randCode,
+        method: 'required',
+        message: '验证码不能为空'
+      }
+    ];
+    return this.check(rules);
+  }
+
+  async submit () {
+    if (!this.validate()) {
+      return;
+    }
+    if (this.input.type === 'admin') {
+      this.input.username = 'jihui88'
+    }
+    this.input.fromName = this.$parent.globalData.user.nickName
+    this.input.fromEmail = this.$parent.globalData.user.email
+    this.input.fromPhone = this.$parent.globalData.user.cellphone
+    let data = {
+      model: JSON.stringify(this.input)
+    }
+    const res = await api.messageDetail({
+      data: data,
+      method: 'POST'
+    })
+    if (res.success) {
+      Tips.success('回复成功')
+    } else {
+      Tips.error(res.msg)
+    }
+  }
+
+}
+</script>

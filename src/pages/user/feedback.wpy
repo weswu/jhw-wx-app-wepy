@@ -33,7 +33,7 @@ import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 export default class ServiceFeedback extends wepy.page {
   config = {
-    navigationBarTitleText: '我的服务反馈'
+    navigationBarTitleText: '服务反馈'
   }
 
   components = {

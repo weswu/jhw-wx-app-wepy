@@ -2,7 +2,7 @@
   <view class="header">
     <view class="logo">
       <Upload @change.user="change">
-        <image slot="content" mode="widthFix" src="http://img.jihui88.com/{{logo}}" @error="error"/>
+        <image slot="content" src="http://img.jihui88.com/{{logo}}" @error="error"/>
       </Upload>
     </view>
   </view>
@@ -21,31 +21,6 @@
       <view class="weui-cell__bd">注册时间</view>
       <view class="weui-cell__ft">{{user.addTime}}</view>
     </view>
-  </view>
-
-  <view class="weui-cells">
-    <navigator url="password" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">登录密码</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
-    <view class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">备用邮箱</view>
-      <view class="weui-cell__ft">{{user.email}}</view>
-    </view>
-    <repeat for="{{oauth}}" key="index" index="index" item="item">
-      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'weixin'}}">
-        <view class="weui-cell__bd">微信</view>
-        <view class="weui-cell__ft">{{item.nickname}}</view>
-      </view>
-      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'qq'}}">
-        <view class="weui-cell__bd">QQ</view>
-        <view class="weui-cell__ft">{{item.nickname}}</view>
-      </view>
-      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'cellphone'}}">
-        <view class="weui-cell__bd">手机</view>
-        <view class="weui-cell__ft">{{item.nickname}}</view>
-      </view>
-    </repeat>
   </view>
 </template>
 <script>
@@ -66,12 +41,7 @@ export default class Account extends wepy.page {
   data = {
     user: {},
     accountInfo: {},
-    logo: '',
-    oauth: [
-      {nickname: '未绑定', type: 'weixin'},
-      {nickname: '未绑定', type: 'qq'},
-      {nickname: '未绑定', type: 'cellphone'}
-    ]
+    logo: ''
   }
 
   async onLoad() {
@@ -92,15 +62,6 @@ export default class Account extends wepy.page {
         that.$apply()
       })
     }
-    this.get()
-  }
-
-  async get () {
-    let res = await api.accountOauth()
-    if (res.success) {
-      this.oauth = res.attributes.data
-    }
-    this.$apply()
   }
 
   methods = {
@@ -141,15 +102,18 @@ page{
     text-align: center;height:200rpx;
   }
   .logo{
+    padding-top:15rpx;
+  }
+  .j_upload{
     width:150rpx;
     height:150rpx;
     margin:0 auto;
     line-height:75px;
-    padding-top:15rpx;
-    overflow:hidden;
-    border-radius: 75rpx;
     image {
-      width:150rpx;;
+      max-width:150rpx;
+      max-height: 150rpx;
+      vertical-align:middle;
+      border-radius: 75rpx;
     }
   }
   .icon-huiyuan1{

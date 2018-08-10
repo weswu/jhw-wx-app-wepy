@@ -12,14 +12,16 @@ export default class extends wepy.app {
   config = {
     pages: [
     'pages/user/login',
+    'pages/index/my', 'pages/index/index',
+    'pages/album/album',
+    'pages/message/messageReply',
+    'pages/shop/config',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
     'pages/shop/delivery',
     'pages/user/feedback', 'pages/setting/sale',
-    'pages/shop/pay', 'pages/shop/payDetail', 'pages/shop/shop', 'pages/shop/config', 'pages/shop/review', 'pages/shop/refund', 'pages/shop/refundDetail',
-    'pages/index/my', 'pages/index/index',
+    'pages/shop/pay', 'pages/shop/payDetail', 'pages/shop/shop', 'pages/shop/review', 'pages/shop/refund', 'pages/shop/refundDetail',
     'pages/setting/setting',
-    'pages/message/messageList', 'pages/message/message', 'pages/message/messageDetail',
-    'pages/album/album',
+    'pages/message/message', 'pages/message/messageList', 'pages/message/messageDetail',
     'pages/pc/miniProgram', 'pages/pc/add', 'pages/pc/website',
     'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
     'pages/point/point',
@@ -28,7 +30,6 @@ export default class extends wepy.app {
     'pages/cost/detail', 'pages/cost/order',
       // 其它
       'pages/point/ranking', 'pages/point/exchange', 'pages/point/pointDetail', 'pages/point/rule',
-      'pages/message/messageBind',
       'pages/member/member', 'pages/member/memberDetail',
       'pages/service/video', 'pages/service/cnzz','pages/service/seoHelp',
       'pages/servicepay/pay', 'pages/servicepay/mypay',

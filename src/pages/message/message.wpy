@@ -1,7 +1,7 @@
 <template>
   <view class="weui-cells weui-cells_after-title">
       <navigator url="messageList?type={{item.type}}&title={{item.name}}" class="weui-cell" wx:for="{{list}}" wx:key="*this">
-          <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+          <view class="weui-cell__hd" style="position: relative;margin-right: 20rpx;">
             <view class="icon" style="background:#{{item.color}}"><i class="iconfont {{item.icon}}"></i></view>
             <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{item.count !== 0}}">{{item.count}}</view>
           </view>
@@ -71,36 +71,45 @@ export default class Message extends wepy.page {
   }
 }
 </script>
-<style>
+<style lang="less">
+.weui-cell{
+  padding: 0 18rpx;
+  height: 146rpx;
+  &:before {
+    left: 110rpx
+  }
+  .icon{
+    width: 76rpx; height: 76rpx;
+    text-align: center;
+    line-height: 76rpx;
+    border-radius: 13rpx;
+    .iconfont{
+      font-size: 50rpx;
+      color: #fff;
+      margin-right:0px;
+    }
+  }
   .weui-cell__ft{
-    position: absolute;right:15px;
+    position: absolute;
+    right:15px;
     top:11px;
   }
+
   .title{
+    color: #4e4e4e;
     font-size: 13px;
   }
   .content{
-    color: #888888;
+    color: #9b9ca5;
+    font-size: 12px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap;width:75%;
   }
-  .icon{
-    width: 40px; height: 40px;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 13rpx
-  }
-  .weui-cell__hd .icon .iconfont{
-    font-size: 26px;
-    color: #fff;margin-right:0px;
-  }
+}
   .weui-badge{
     background: #f44236;min-width:10px;
     border-radius:8px;
-  }
-  .weui-cell:before {
-    left: 60px
   }
   .weui-cells:last-child:after{
      border-bottom: 1px solid #e5e5e5;

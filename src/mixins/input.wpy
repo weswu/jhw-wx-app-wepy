@@ -67,6 +67,13 @@
       radio(e) {
         const fieldName = e.currentTarget.id;
         this.input[fieldName] = e.detail.value;
+      },
+      picker(e) {
+        const index = e.detail.value
+        const fieldName = e.currentTarget.id
+        const list = e.currentTarget.dataset.list
+        this.picker[fieldName] = index
+        this.input[fieldName] = this[list][index].value
       }
     };
   }

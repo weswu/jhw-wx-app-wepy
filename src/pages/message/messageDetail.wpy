@@ -69,7 +69,7 @@ export default class MessageDetail extends wepy.page {
       Tips.modal('收信人不存在')
     } else {
       wx.navigateTo({
-        url: 'messageBind'
+        url: 'messageReply?addUser=' + this.detail.addUser + '?addEnt=' + this.detail.addEnt
       })
     }
   }

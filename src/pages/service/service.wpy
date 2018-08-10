@@ -12,10 +12,6 @@
       <view class="weui-cell__bd">咨询QQ</view>
       <view class="weui-cell__ft weui-cell__ft_in-access">2594969476</view>
     </view>
-    <navigator url="/pages/user/feedback" class="weui-cell weui-cell_access">
-      <view class="weui-cell__bd">服务反馈</view>
-      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-    </navigator>
   </view>
 </template>
 <script>
@@ -23,7 +19,7 @@ import wepy from 'wepy'
 import api from '@/api/api'
 export default class Service extends wepy.page {
   config = {
-    navigationBarTitleText: '服务中心'
+    navigationBarTitleText: '咨询与建议'
   }
   components = {}
 
