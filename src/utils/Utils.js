@@ -51,9 +51,9 @@ const scrollList = (ctx, res, text) => {
       } else {
         ctx.more.empty = false
       }
-      text && wx.setNavigationBarTitle({
-        title: text + '(' + ctx.count + ')'
-      })
+      if (text) {
+        this.title = text + '(' + ctx.count + ')'
+      }
     }
     let pageSize = ctx.params.pageSize
     if (res.attributes.data.length < pageSize) { ctx.more.reachBottom = true } else { ctx.more.reachBottom = false }

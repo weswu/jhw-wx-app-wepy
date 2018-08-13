@@ -102,6 +102,11 @@ import FormTips from '@/components/weui/tips'
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 import Upload from '@/components/common/upload'
+import Header from '@/components/common/header'
+export default class Setting extends wepy.page {
+  components = {
+    Header
+  }
 export default class Enterprise extends wepy.page {
   config = {
     navigationBarTitleText: '基本资料'
@@ -110,7 +115,8 @@ export default class Enterprise extends wepy.page {
   components = {
     Tips: FormTips,
     WInput,
-    Upload
+    Upload,
+    Header
   }
 
   mixins = [input]

@@ -1,0 +1,63 @@
+<template>
+  <view class="j_header">
+    <view class="j_header_bg"></view>
+    <view class="wrapper" wx:if="{{title}}">
+      <i class="iconfont icon-xiangzuo" @tap="backNav" wx:if="{{back}}"></i>
+      <text class="title">{{title}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class Header extends wepy.component {
+    props = {
+      title: {},
+      back: {
+        default: true
+      }
+    }
+    methods = {
+      backNav () {
+        wx.navigateBack()
+      }
+    }
+  }
+</script>
+
+<style lang="less">
+.j_header{
+  height: 150rpx;
+  .j_header_bg{
+    background: #373d40;
+    position:fixed;
+    width:100%;
+    z-index:100;
+    height: 50rpx;
+    top: 0;
+  }
+  .wrapper{
+    background: #373d40;
+    position:fixed;
+    width:100%;
+    z-index:100;
+    top: 50rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:flex;
+    box-sizing:border-box;
+    color: #fff;
+    .title{
+      font-size: 14px;
+      margin:0 auto;
+    }
+    .icon-xiangzuo{
+      font-size: 24px;
+      padding: 0 10rpx;
+      position:absolute;
+    }
+  }
+}
+</style>

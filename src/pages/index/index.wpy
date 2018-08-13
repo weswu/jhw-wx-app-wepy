@@ -1,7 +1,8 @@
 <template>
   <!-- 导航 -->
   <view class="searchFixed">
-    <view class="search" style="background:#22252a">
+    <view class="searchFixed_bg"></view>
+    <view class="search">
       <i class="iconfont icon-saoyisao" @tap="saoyisao"></i>
       <navigator url="/pages/product/product" class="search-btn" style="background: #fff;">
         <view style="background: rgba(34,37,42,0.8);width:100%;height:100%">
@@ -253,8 +254,9 @@
 </script>
 <style lang="less">
 /* 搜索 */
-.searchFixed{height: 41px;z-index:11;position:relative;}
-.search{padding:10px 0 15rpx 12rpx;overflow:hidden;position: fixed;left:0;top:0;width:750rpx;line-height: 54rpx;}
+.searchFixed{height: 232rpx;z-index:11;position:relative;}
+.searchFixed_bg{position: fixed;left:0;top:0rpx;width:750rpx;background:#22252a;height: 150rpx;}
+.search{padding:16rpx 0 15rpx 16rpx;overflow:hidden;position: fixed;left:0;top:150rpx;width:750rpx;line-height: 54rpx;height: 54rpx;background:#22252a}
 .search .search-btn{color:#fff;font-size:12px;height:54rpx;line-height:54rpx;width:540rpx;float: left;border-radius: 3rpx}
 .search .search-btn .iconfont{margin-left: 18rpx}
 .search .iconfont{color:#fff;}

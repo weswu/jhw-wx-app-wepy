@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title" :back="back"/>
   <view class="weui-cells weui-cells_after-title">
       <navigator url="messageList?type={{item.type}}&title={{item.name}}" class="weui-cell" wx:for="{{list}}" wx:key="*this">
           <view class="weui-cell__hd" style="position: relative;margin-right: 20rpx;">
@@ -18,12 +19,15 @@
 import wepy from 'wepy'
 import api from '@/api/api'
 import Utils from '@/utils/Utils'
+import Header from '@/components/common/header'
 export default class Message extends wepy.page {
-  config = {
-    navigationBarTitleText: '消息'
+  components = {
+    Header
   }
 
   data = {
+    title: '消息',
+    back: false,
     list: [
       { name: '客户消息', count: 0, icon: 'icon-kehu', color: '59b5f9', content: '', time: '', type: '03' },
       { name: '产品消息', count: 0, icon: 'icon-product', color: 'a3d253', content: '', time: '', type: '10' },

@@ -9,7 +9,6 @@
     </view>
     <text class="weak mt20 lg">加载中</text>
   </view>
-
 </template>
 
 <script>
@@ -17,7 +16,7 @@
   export default class Loading extends wepy.component {
     props = {
       init: {}
-    };
+    }
   }
 </script>
 

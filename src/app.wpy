@@ -11,12 +11,12 @@ import api from './api/api'
 export default class extends wepy.app {
   config = {
     pages: [
-    'pages/user/login',
-    'pages/index/my', 'pages/index/index',
     'pages/album/album',
+    'pages/console/console', 'pages/console/tools', 'pages/console/module',
+    'pages/index/index', 'pages/index/my',
+    'pages/user/login',
     'pages/message/messageReply',
     'pages/shop/config',
-    'pages/console/console', 'pages/console/tools', 'pages/console/module',
     'pages/shop/delivery',
     'pages/user/feedback', 'pages/setting/sale',
     'pages/shop/pay', 'pages/shop/payDetail', 'pages/shop/shop', 'pages/shop/review', 'pages/shop/refund', 'pages/shop/refundDetail',
@@ -51,7 +51,8 @@ export default class extends wepy.app {
       navigationBarBackgroundColor: '#373d40',
       navigationBarTitleText: '全网营销云',
       navigationBarTextStyle: 'white',
-      enablePullDownRefresh: true
+      enablePullDownRefresh: true,
+      navigationStyle: 'custom'
     },
     "tabBar": {
       "color": "#9f9f9f",
@@ -118,8 +119,8 @@ export default class extends wepy.app {
     console.log('启动');
     //用户信息
     const login = await wepy.login()
-    if (login.code) {
-    // if (login.code && false) {
+    // if (login.code) {
+    if (login.code && false) {
       let u = await wepy.getUserInfo()
       const resp =  await api.wxapplogin({
         data: {

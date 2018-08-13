@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view class="weui-cells weui-cells_in-small-appmsg">
     <navigator url="/pages/account/password" class="weui-cell weui-cell_access">
       <view class="weui-cell__bd">登录密码</view>
@@ -13,10 +14,6 @@
         <view class="weui-cell__bd">微信</view>
         <view class="weui-cell__ft">{{item.nickname}}</view>
       </view>
-      <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'qq'}}">
-        <view class="weui-cell__bd">QQ</view>
-        <view class="weui-cell__ft">{{item.nickname}}</view>
-      </view>
       <view class="weui-cell weui-cell_access" wx:if="{{item.type === 'cellphone'}}">
         <view class="weui-cell__bd">手机</view>
         <view class="weui-cell__ft">{{item.nickname}}</view>
@@ -27,12 +24,14 @@
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
-export default class Setting extends wepy.page {
-  config = {
-    navigationBarTitleText: '安全设置'
+import Header from '@/components/common/header'
+export default class Sale extends wepy.page {
+  components = {
+    Header
   }
 
   data = {
+    title: '安全设置',
     user: {},
     oauth: [
       {nickname: '未绑定', type: 'weixin'},

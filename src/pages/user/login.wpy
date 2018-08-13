@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title" :back="back"/>
   <Tips />
   <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" hidden>获取用户信息</button>
   <view class="logo"><image src="http://www.jihui88.com/member/static/images/f-logo.png" alt=""></view>
@@ -23,18 +24,18 @@ import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import FormTips from '@/components/weui/tips'
 import input from '@/mixins/input'
+import Header from '@/components/common/header'
 export default class Login extends wepy.page {
-  config = {
-    navigationBarTitleText: '机汇网会员登录'
-  }
-
   components = {
-    Tips: FormTips
+    Tips: FormTips,
+    Header
   }
 
   mixins = [input]
 
   data = {
+    title: '机汇网会员登录',
+    back: false,
     input: {},
     time: ''
   }

@@ -16,7 +16,7 @@
           </view>
       </view>
 
-      <navigator url="/pages/message/message" style='position: absolute;top: 0px;right: 15px;color:#fff'>
+      <navigator url="/pages/message/message" style='position: absolute;top: 150rpx;right: 15px;color:#fff'>
         <i class="iconfont icon-mail" style="color:#fff;font-size:20px"></i>
         <view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;" wx:if="{{userInfo.noReaderMsg > 0}}">{{userInfo.noReaderMsg}}</view>
       </navigator>
@@ -142,7 +142,7 @@ page{
 }
   .j_my{
     .weui-media-box{
-      padding: 36px 22px 24px 22px;
+      padding: 200rpx 22px 24px 22px;
     }
     .weui-media-box_appmsg{
       background:#373d40;color:#fff;

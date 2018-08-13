@@ -1,21 +1,19 @@
 <template>
+  <Header :title.sync="title"/>
   <!-- 搜索 -->
   <view class="weui-search-bar">
-    <navigator url="/pages/category/categoryList?type={{type}}" wx:if="{{type}}" class="weui-search-bar__category"><i class="iconfont icon-category"></i></navigator>
+    <i class="iconfont icon-folder-add"></i>
+    <i class="iconfont icon-paixu"></i>
     <view class="weui-search-bar__form">
       <view class="weui-search-bar__box">
-        <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-        <input type="text" class="weui-search-bar__input" placeholder="{{placeholder}}" value="{{inputVal}}" focus="{{inputShowed}}" @input="inputTyping"/>
-        <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" @tap="clearInput">
+        <icon class="weui-icon-search_in-box" type="search" size="12"></icon>
+        <input type="text" class="weui-search-bar__input" value="{{name}}" @input="input"/>
+        <view class="weui-icon-clear" @tap="clearInput">
           <icon type="clear" size="14"></icon>
         </view>
       </view>
-      <label class="weui-search-bar__label" hidden="{{inputShowed}}" @tap="showInput">
-        <icon class="weui-icon-search" type="search" size="14"></icon>
-        <view class="weui-search-bar__text">{{placeholder}}</view>
-      </label>
     </view>
-    <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" @tap="hideInput">{{hideText}}</view>
+    <i class="iconfont icon-upload"></i>
   </view>
   <view class="search-placeholder"></view>
   <!--列表-->
@@ -31,13 +29,17 @@ import wepy from 'wepy'
 import api from '@/api/api'
 import tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
+import Header from '@/components/common/header'
 export default class Album extends wepy.page {
-  config = {
-    navigationBarTitleText: '相册管理'
+  components = {
+    Header
   }
 
   data = {
-    list: []
+    title: '相册管理',
+    list: [],
+    name: '',
+    list2: []
   }
 
   onLoad () {
@@ -48,11 +50,16 @@ export default class Album extends wepy.page {
     const res = await api.albumCategory()
     if (res.success) {
       this.list = res.attributes.data
+      this.list2 = res.attributes.data
       this.$apply()
     }
   }
 
-  methods = {}
+  methods = {
+    input () {
+      debugger
+    }
+  }
 
   // 下拉刷新
   async onPullDownRefresh () {
@@ -64,4 +71,38 @@ export default class Album extends wepy.page {
 </script>
 
 <style lang="less">
+  .weui-search-bar{
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    top: 150rpx;
+    padding:26rpx 0 21rpx 0;
+    display:-webkit-box;
+    display:-webkit-flex;
+    display:flex;
+    box-sizing:border-box;
+    background-color:#fff;
+    border-top: none;
+    border-bottom:1rpx solid #e4e4e4;
+    .iconfont{
+      font-size: 20px;
+      cursor: #4e4e4e;
+    }
+    .weui-search-bar__form{
+      background: #f6f6f6
+    }
+    .icon-folder-add{
+      padding: 0 20rpx 0 30rpx;
+    }
+    .icon-paixu{
+      padding: 0 30rpx 0 20rpx;
+    }
+    .icon-upload{
+      padding: 0 30rpx;
+    }
+  }
+  .search-placeholder{
+    height: 99rpx;
+    width: 100%;
+  }
 </style>

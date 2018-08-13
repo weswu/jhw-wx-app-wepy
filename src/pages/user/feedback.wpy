@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
     <WInput>
@@ -31,19 +32,18 @@ import Tips from '@/utils/Tips'
 import FormTips from '@/components/weui/tips';
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
-export default class ServiceFeedback extends wepy.page {
-  config = {
-    navigationBarTitleText: '服务反馈'
-  }
-
+import Header from '@/components/common/header'
+export default class Feedback extends wepy.page {
   components = {
     Tips: FormTips,
-    WInput
+    WInput,
+    Header
   }
 
   mixins = [input]
 
   data = {
+    title: '服务反馈',
     input: {
       fdbk_type: '5'
     },

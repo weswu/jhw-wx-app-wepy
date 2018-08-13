@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <!-- 选择 -->
   <Select :list="select" :active.sync="active" :placeholder="placeholder" @change.user="change"/>
   <view style="height: 43px"/>
@@ -37,14 +38,17 @@ import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Select from '@/components/weui/select'
 import Loadmore from '@/components/weui/loadmore'
+import Header from '@/components/common/header'
 export default class Message extends wepy.page {
   config = {}
   components = {
     Select,
-    Loadmore
+    Loadmore,
+    Header
   }
 
   data = {
+    title: '消息',
     placeholder: '全部消息',
     select: [
       { text: '全部消息', value: '' },
@@ -58,7 +62,6 @@ export default class Message extends wepy.page {
       recvState: '',
       type: ''
     },
-    title: '消息',
     count: 0,
     more: { loading: true },
     operation: true
@@ -78,7 +81,7 @@ export default class Message extends wepy.page {
       res.attributes.data.forEach(item => {
         item.addTime = Utils.formatTime(item.addTime)
       })
-      await Utils.scrollList(this, res, this.title)
+      await Utils.scrollList(this, res)
     }
   }
 
