@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view class="weui-tab">
     <!--TAB-->
     <Tab :tabs.sync="tabs" @change.user="switchTab"/>
@@ -81,15 +82,15 @@
 <script>
 import wepy from 'wepy'
 import Tab from '@/components/weui/tab'
+import Header from '@/components/common/header'
 export default class PcWebsite extends wepy.page {
-  config = {
-    navigationBarTitleText: '小程序界面管理'
-  }
   components = {
-    Tab
+    Tab,
+    Header
   }
 
   data = {
+    title: '小程序界面管理',
     tabs: ["基础版", "高级版"],
     activeIndex: 0,
     state: '00',

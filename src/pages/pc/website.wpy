@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
     <!--圆形点击框  -->
   <view class="round-click origin">
      <navigator url='/pages/pc/add'>创建网站</navigator>
@@ -49,15 +50,15 @@ import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import Utils from '@/utils/Utils'
 import Loadmore from '@/components/weui/loadmore'
+import Header from '@/components/common/header'
 export default class PcWebsite extends wepy.page {
-  config = {
-    navigationBarTitleText: '我的网站'
-  }
   components = {
-    Loadmore
+    Loadmore,
+    Header
   }
 
   data = {
+    title: '我的网站',
     list: [],
     params: {
       page: 1,

@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view class="weui-panel weui-panel_access">
       <view class="weui-panel__hd">产品价格登录后可见：</view>
       <view class="weui-panel__bd">
@@ -145,18 +146,17 @@ import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
+import Header from '@/components/common/header'
 export default class ShopConfig extends wepy.page {
-  config = {
-    navigationBarTitleText: '商品相关配置'
-  }
-
   components = {
-    WInput
+    WInput,
+    Header
   }
 
   mixins = [input]
 
   data = {
+    title: '商品相关配置',
     input: {},
     typelist: [
       { text: '启用', value: '01' },

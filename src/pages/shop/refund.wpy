@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <!--列表-->
   <repeat for="{{list}}" key="index" index="index" item="item">
     <view class="weui-panel">
@@ -37,16 +38,19 @@
   import Utils from '@/utils/Utils'
   import Item from '@/components/weui/item'
   import Loadmore from '@/components/weui/loadmore'
-  export default class OrderReview extends wepy.page {
+  import Header from '@/components/common/header'
+  export default class ShopReview extends wepy.page {
     config = {
       navigationBarTitleText: '商品退货管理'
     }
     components = {
       Item,
-      Loadmore
+      Loadmore,
+      Header
     }
 
     data = {
+      title: '商品退货管理',
       listText: [],
       list: [
         {

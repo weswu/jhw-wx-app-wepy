@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <Tips />
   <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell">
@@ -60,16 +61,16 @@
   import input from '@/mixins/input'
   import WInput from '@/components/weui/input'
   import Upload from '@/components/common/upload'
-  export default class newsDetail extends wepy.page {
-    config = {
-      navigationBarTitleText: '退货处理'
-    }
+  import Header from '@/components/common/header'
+  export default class RefundDetail extends wepy.page {
     components = {
       Tips: FormTips,
       WInput,
-      Upload
+      Upload,
+      Header
     }
     data = {
+      title: '退货处理',
       id:'',
       input: {
         mobile: '15168352892',

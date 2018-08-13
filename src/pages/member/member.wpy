@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view wx:if="{{grade === '07'}}">
     <!--搜索-->
     <SearchBar placeholder="请输入用户名" @input.user="input"/>
@@ -10,7 +11,7 @@
       <Item :id="item.id" :dx="index+1" :title="item.name || item.username" :content="item.addTime" :url="'memberDetail?id='+item.id"/>
     </repeat>
     <!-- 加载提示 -->
-    <Loadmore :more.sync="more"/>  
+    <Loadmore :more.sync="more"/>
   </view>
 
   <view class="chaxun" wx:if="{{grade === '01'}}">
@@ -29,18 +30,23 @@ import Utils from '@/utils/Utils'
 import SearchBar from '@/components/weui/search_bar'
 import Item from '@/components/weui/item'
 import Loadmore from '@/components/weui/loadmore'
-export default class Mmber extends wepy.page {
-  config = {}
+import Header from '@/components/common/header'
+export default class Member extends wepy.page {
   components = {
     SearchBar,
     Item,
-    Loadmore
+    Loadmore,
+    Header
   }
 
   data = {
+    title: '会员管理',
     list: [],
-    page: 1,
-    name: '',
+    params: {
+      page: 1,
+      pageSize: 16,
+      name: '',
+    },
     count: 0,
     more: { loading: true },
     grade: '00'
@@ -60,19 +66,16 @@ export default class Mmber extends wepy.page {
   methods = {
     // 搜索
     async input (val) {
-      this.page = 1
+      this.params.page= 1
       this.list = []
-      this.name = val
+      this.params.name = val
       this.get()
     }
   }
 
   async get () {
     const json = await api.member({
-      data: {
-        page: this.page,
-        name: this.name
-      }
+      data: this.params
     })
     if (json.success) {
       await Utils.scrollList(this, json, '会员管理')
@@ -87,7 +90,7 @@ export default class Mmber extends wepy.page {
 
   // 下拉刷新
   async onPullDownRefresh () {
-    this.page = 1
+    this.params.page= 1
     this.list = []
     this.more.loading = true
     await this.get()
@@ -98,7 +101,7 @@ export default class Mmber extends wepy.page {
   async onReachBottom () {
     if (this.more.loading) { return false }
     this.more.loading = true
-    this.page += 1
+    this.params.page+= 1
     this.get()
   }
 

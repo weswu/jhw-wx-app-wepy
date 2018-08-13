@@ -11,10 +11,10 @@ import api from './api/api'
 export default class extends wepy.app {
   config = {
     pages: [
+    'pages/user/login',
+    'pages/index/index', 'pages/index/my',
     'pages/album/album',
     'pages/console/console', 'pages/console/tools', 'pages/console/module',
-    'pages/index/index', 'pages/index/my',
-    'pages/user/login',
     'pages/message/messageReply',
     'pages/shop/config',
     'pages/shop/delivery',
@@ -23,7 +23,6 @@ export default class extends wepy.app {
     'pages/setting/setting',
     'pages/message/message', 'pages/message/messageList', 'pages/message/messageDetail',
     'pages/pc/miniProgram', 'pages/pc/add', 'pages/pc/website',
-    'pages/order/order', 'pages/order/price', 'pages/order/send', 'pages/order/orderDetail',
     'pages/point/point',
     'pages/user/enterprise',
     'pages/account/account', 'pages/account/password',
@@ -119,8 +118,8 @@ export default class extends wepy.app {
     console.log('启动');
     //用户信息
     const login = await wepy.login()
-    // if (login.code) {
-    if (login.code && false) {
+    if (login.code) {
+    // if (login.code && false) {
       let u = await wepy.getUserInfo()
       const resp =  await api.wxapplogin({
         data: {
@@ -190,7 +189,7 @@ export default class extends wepy.app {
           let content = JSON.parse(data.content)
           if (!content.mobileLink) {
             content.mobileLink = [
-              {url: '/pages/order/order', text: '订单管理', icon: 'icon-dingdandaifukuan'},
+              {url: '/pages/shop/shop', text: '订单管理', icon: 'icon-dingdandaifukuan'},
               {url: '/pages/member/member', text: '会员管理', icon: 'icon-Group'}
             ]
           }

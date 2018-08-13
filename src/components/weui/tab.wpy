@@ -49,3 +49,9 @@
     }
   }
 </script>
+
+<style>
+  .weui-navbar{
+    top: 150rpx;
+  }
+</style>

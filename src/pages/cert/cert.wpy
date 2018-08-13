@@ -34,8 +34,11 @@ export default class Cert extends wepy.page {
 
   data = {
     list: [],
-    page: 1,
-    name: '',
+    params: {
+      page: 1,
+      pageSize: 16,
+      name: ''
+    },
     count: 0,
     more: { loading: true },
     operation: true
@@ -47,10 +50,7 @@ export default class Cert extends wepy.page {
 
   async get () {
     const json = await api.cert({
-      data: {
-        page: this.page,
-        name: this.name
-      }
+      data: this.params
     })
     if (json.success) {
       await Utils.scrollList(this, json, '证书管理')
@@ -74,16 +74,16 @@ export default class Cert extends wepy.page {
     },
     // 搜索
     async input (val) {
-      this.page = 1
+      this.params.page= 1
       this.list = []
-      this.name = val
+      this.params.name = val
       this.get()
     }
   }
 
   // 下拉刷新
   async onPullDownRefresh () {
-    this.page = 1
+    this.params.page= 1
     this.list = []
     this.more.loading = true
     await this.get()
@@ -94,7 +94,7 @@ export default class Cert extends wepy.page {
   async onReachBottom () {
     if (this.more.loading) { return false }
     this.more.loading = true
-    this.page += 1
+    this.params.page+= 1
     this.get()
   }
 }

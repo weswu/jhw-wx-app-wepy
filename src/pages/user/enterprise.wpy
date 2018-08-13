@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <Tips />
   <view class="weui-cells weui-cells_in-small-appmsg">
     <view class="j_title">基本信息：</view>
@@ -103,15 +104,7 @@ import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 import Upload from '@/components/common/upload'
 import Header from '@/components/common/header'
-export default class Setting extends wepy.page {
-  components = {
-    Header
-  }
 export default class Enterprise extends wepy.page {
-  config = {
-    navigationBarTitleText: '基本资料'
-  }
-
   components = {
     Tips: FormTips,
     WInput,
@@ -122,6 +115,7 @@ export default class Enterprise extends wepy.page {
   mixins = [input]
 
   data = {
+    title: '基本资料',
     animationAddressMenu: {},
     input: {
       enterprise: {}

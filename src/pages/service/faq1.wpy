@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view class="weui-article sale">
       <view class="weui-article__section">
           <view class="weui-article__section">
@@ -17,12 +18,14 @@
 </template>
 <script>
 import wepy from 'wepy'
+import Header from '@/components/common/header'
 export default class Faq1 extends wepy.page {
-  config = {
-    navigationBarTitleText: '7步启动全网营销系统'
+  components = {
+    Header
   }
-  components = {}
 
-  data = {}
+  data = {
+    title: '7步启动全网营销系统'
+  }
 }
 </script>

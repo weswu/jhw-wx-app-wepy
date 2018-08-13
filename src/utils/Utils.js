@@ -52,7 +52,7 @@ const scrollList = (ctx, res, text) => {
         ctx.more.empty = false
       }
       if (text) {
-        this.title = text + '(' + ctx.count + ')'
+        ctx.title = text + '(' + ctx.count + ')'
       }
     }
     let pageSize = ctx.params.pageSize

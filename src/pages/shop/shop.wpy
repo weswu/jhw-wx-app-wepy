@@ -1,4 +1,5 @@
 <template>
+  <Header :title.sync="title"/>
   <view class="weui-tab order">
     <!--TAB-->
     <Tab :tabs.sync="tabs" :activeIndex.sync="activeIndex" @change.user="switchTab"/>
@@ -28,19 +29,24 @@ import Utils from '@/utils/Utils'
 import Tab from '@/components/weui/tab'
 import Item from '@/components/order/orderItem'
 import Loadmore from '@/components/weui/loadmore'
+import Header from '@/components/common/header'
 export default class Order extends wepy.page {
-  config = {}
   components = {
     Tab,
     Item,
-    Loadmore
+    Loadmore,
+    Header
   }
 
   data = {
+    title: '订单管理',
     tabs: ['全部', '未收款', '待发货', '待收货'],
     activeIndex: 0,
     list: [],
-    page: 1,
+    params: {
+      page: 1,
+      pageSize: 16
+    },
     count: 0,
     grade: '00',
     pic: [],
@@ -64,7 +70,7 @@ export default class Order extends wepy.page {
     switchTab (e) {
       this.activeIndex = parseInt(e)
       if (this.grade === '07') {
-        this.page = 1
+        this.params.page= 1
         this.list = []
         this.pic = []
         this.more.loading = true
@@ -74,11 +80,9 @@ export default class Order extends wepy.page {
   }
 
   async get () {
+    this.params.flag = this.activeIndex - 1
     const json = await api.order({
-      data: {
-        page: this.page,
-        flag: this.activeIndex - 1
-      }
+      data: this.params
     })
     if (json.success) {
       json.attributes.pic.forEach(item => {
@@ -96,7 +100,7 @@ export default class Order extends wepy.page {
 
   // 下拉刷新
   async onPullDownRefresh () {
-    this.page = 1
+    this.params.page= 1
     this.list = []
     this.pic = []
     this.more.loading = true
@@ -108,7 +112,7 @@ export default class Order extends wepy.page {
   async onReachBottom () {
     if (this.more.loading) { return false }
     this.more.loading = true
-    this.page += 1
+    this.params.page+= 1
     this.get()
   }
 
