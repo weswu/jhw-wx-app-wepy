@@ -1,6 +1,12 @@
 <template>
+  <Header :title.sync="title">
+    <view slot="btn">
+      <i class="iconfont icon-xiangzuo" @tap="back" wx:if="{{isBack}}"></i>
+      <text @tap="save" wx:if="{{!isBack}}">完成</text>
+    </view>
+  </Header>
   <view class="j_save">
-    按住拖动排序<text class="info" @tap="save">完成</text>
+    按住拖动排序
   </view>
   <view style="position: relative; z-index: 199;">
   	<view class="touchView" style="height:{{scrollPosition.scrollViewHeight}}px;" catchtouchstart="scrollTouchStart"
@@ -46,14 +52,18 @@
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import Header from '@/components/common/header'
 export default class Module extends wepy.page {
   config = {
-    navigationBarTitleText: '所有模块',
     enablePullDownRefresh: false
   }
-  components = {}
+  components = {
+    Header
+  }
 
   data = {
+    title: '所有模块',
+    isBack: true,
     scrollPosition:{
       everyOptionCell:43,
       top:33,
@@ -87,6 +97,10 @@ export default class Module extends wepy.page {
     this.$apply()
   }
 
+  back () {
+    wx.navigateBack()
+  }
+    
   async save () {
     let data = []
     this.optionsListData.forEach(item => {
@@ -105,7 +119,6 @@ export default class Module extends wepy.page {
       wx.navigateBack()
     }
   }
-
 
   optionsDataTranlate (optionsList,selectClass) {
     for(var i=0,j=optionsList.length;i<j;i++){
@@ -214,6 +227,7 @@ export default class Module extends wepy.page {
     this.scrollPosition.scrollY = true
     this.movableViewPosition.className = 'none'
     this.optionsListData = optionsListData
+    this.isBack = false
     this.$apply()
   }
 
@@ -230,6 +244,7 @@ export default class Module extends wepy.page {
         }
     }
     this.optionsListData = checkboxItems
+    this.isBack = false
     this.$apply()
   }
 

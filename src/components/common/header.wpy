@@ -2,7 +2,9 @@
   <view class="j_header">
     <view class="j_header_bg"></view>
     <view class="wrapper" wx:if="{{title}}">
-      <i class="iconfont icon-xiangzuo" @tap="backNav" wx:if="{{back}}"></i>
+      <slot name="btn">
+        <i class="iconfont icon-xiangzuo" @tap="backNav" wx:if="{{back}}"></i>
+      </slot>
       <text class="title">{{title}}</text>
     </view>
   </view>
@@ -53,10 +55,18 @@
       font-size: 14px;
       margin:0 auto;
     }
-    .icon-xiangzuo{
-      font-size: 24px;
-      padding: 0 10rpx;
+    view{
       position:absolute;
+      left: 10rpx;
+      .icon-xiangzuo{
+        font-size: 24px;
+      }
+      text{
+        font-size: 14px;
+        padding: 0 0 0 20rpx;
+        display: inline-block;
+        vertical-align:top;
+      }
     }
   }
 }

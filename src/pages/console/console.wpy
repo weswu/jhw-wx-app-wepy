@@ -103,9 +103,6 @@ import api from '@/api/api'
 import Tips from '@/utils/Tips'
 import Header from '@/components/common/header'
 export default class Console extends wepy.page {
-  config = {
-    navigationBarTitleText: '控制台'
-  }
   components = {
     Header
   }

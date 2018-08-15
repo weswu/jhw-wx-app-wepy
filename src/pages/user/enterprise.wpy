@@ -1,121 +1,138 @@
 <template>
   <Header :title.sync="title"/>
   <Tips />
-  <view class="weui-cells weui-cells_in-small-appmsg">
-    <view class="j_title">基本信息：</view>
-    <WInput>
-      <view slot="title" class="weui-label">公司LOGO</view>
-      <view slot="input" style="width: 300rpx;padding: 8px">
-        <Upload :src.sync="logo" @change.user="image"/>
+  <!-- 搜索 -->
+  <Search :lan="lan" :search="search"/>
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">基本信息：</view>
+      <wepyCropper :params.sync="clipParams"></wepyCropper>
+      <view class="weui-panel__bd">
+        <WInput>
+          <view slot="title" class="weui-label">公司LOGO</view>
+          <view slot="input" style="width: 300rpx;padding: 8px">
+            <Upload :src.sync="logo" :cropper="cropper" @change.user="image"/>
+          </view>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">公司名称<text class="red">*</text></view>
+          <input slot="input" class="weui-input" placeholder="请输入公司名称" @input="input" id="enterprise.name" value="{{input.enterprise.name}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">法人代表<text class="red">*</text></view>
+          <input slot="input" class="weui-input" placeholder="请输入法人代表" @input="input" id="enterprise.legalPre" value="{{input.enterprise.legalPre}}"/>
+        </WInput>
       </view>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">公司名称<text class="red">*</text></view>
-      <input slot="input" class="weui-input" placeholder="请输入公司名称" @input="input" id="enterprise.name" value="{{input.enterprise.name}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">法人代表<text class="red">*</text></view>
-      <input slot="input" class="weui-input" placeholder="请输入法人代表" @input="input" id="enterprise.legalPre" value="{{input.enterprise.legalPre}}"/>
-    </WInput>
-
-    <view class="j_title">联系信息：</view>
-    <view class="picker-view" animation="{{animationAddressMenu}}" style="display:none;visibility:{{addressMenuIsShow ? 'visible':'hidden'}}">
-      <view style="height:10% ;width:95%;margin-top:10rpx">
-        <text catchtap="cityCancel">取消</text>
-        <text style="float: right" catchtap="citySure">确定</text>
-      </view>
-      <picker-view style="width: 100%; height: 300px;" bindchange="cityChange" value="{{input.enterprise.address}}" wx:key="">
-        <picker-view-column>
-          <view wx:for="{{provinces}}" class="picker-item" wx:key="*this">{{item.name}}</view>
-        </picker-view-column>
-        <picker-view-column>
-          <view wx:for="{{citys}}" class="picker-item" wx:key="*this">{{item.name}}</view>
-        </picker-view-column>
-        <picker-view-column>
-          <view wx:for="{{areas}}" class="picker-item" wx:key="*this">{{item.name}}</view>
-        </picker-view-column>
-      </picker-view>
-    </view>
-    <WInput>
-      <view slot="title" class="weui-label">详细地址<text class="red">*</text></view>
-      <input slot="input" class="weui-input" placeholder="请输入详细地址" @input="input" id="address" value="{{input.address}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">联系电话</view>
-      <input slot="input" class="weui-input" placeholder="请输入联系电话" @input="input" id="phone" value="{{input.phone}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">法人手机</view>
-      <input slot="input" class="weui-input" placeholder="请输入法人手机" @input="input" id="enterprise.legalPersonCellphone" value="{{input.enterprise.legalPersonCellphone}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">传真</view>
-      <input slot="input" class="weui-input" placeholder="请输入传真" @input="input" id="fax" value="{{input.fax}}"/>
-    </WInput>
-
-    <view class="j_title">业务联系人信息：</view>
-    <WInput>
-      <view slot="title" class="weui-label">姓名<text class="red">*</text></view>
-      <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">手机</view>
-      <input slot="input" class="weui-input" placeholder="请输入手机" @input="input" id="cellphone" value="{{input.cellphone}}"/>
-    </WInput>
-    <WInput>
-      <view slot="title" class="weui-label">Email</view>
-      <input slot="input" class="weui-input" placeholder="请输入Email" @input="input" id="email" value="{{input.email}}"/>
-    </WInput>
-    <!--单选-->
-    <view class="weui-cell weui-cells_after-title">
-      <view class="weui-cell__hd">
-        <view class="weui-label">性别</view>
-      </view>
-      <view class="weui-cell__bd">
-        <radio-group class="radio-group row" @change="radio" id="sex">
-          <label class="radio row">
-            <radio value="00" checked="{{input.sex == '00'}}"/>
-            先生
-          </label>
-          <label class="radio row">
-            <radio value="01" checked="{{input.sex == '01'}}"/>
-            女士
-          </label>
-        </radio-group>
-      </view>
-    </view>
-    <WInput>
-      <view slot="title" class="weui-label">职务</view>
-      <input slot="input" class="weui-input" placeholder="请输入职务" @input="input" id="position" value="{{input.position}}"/>
-    </WInput>
   </view>
-
-  <view class="weui-btn-area">
-      <button class="weui-btn" type="primary" @tap="submit">提交</button>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__hd">联系信息：</view>
+      <view class="weui-panel__bd">
+        <view class="picker-view" animation="{{animationAddressMenu}}" style="display:none;visibility:{{addressMenuIsShow ? 'visible':'hidden'}}">
+          <view style="height:10% ;width:95%;margin-top:10rpx">
+            <text catchtap="cityCancel">取消</text>
+            <text style="float: right" catchtap="citySure">确定</text>
+          </view>
+          <picker-view style="width: 100%; height: 300px;" bindchange="cityChange" value="{{input.enterprise.address}}" wx:key="">
+            <picker-view-column>
+              <view wx:for="{{provinces}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+            </picker-view-column>
+            <picker-view-column>
+              <view wx:for="{{citys}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+            </picker-view-column>
+            <picker-view-column>
+              <view wx:for="{{areas}}" class="picker-item" wx:key="*this">{{item.name}}</view>
+            </picker-view-column>
+          </picker-view>
+        </view>
+        <WInput>
+          <view slot="title" class="weui-label">详细地址<text class="red">*</text></view>
+          <input slot="input" class="weui-input" placeholder="请输入详细地址" @input="input" id="address" value="{{input.address}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">联系电话</view>
+          <input slot="input" class="weui-input" placeholder="请输入联系电话" @input="input" id="phone" value="{{input.phone}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">法人手机</view>
+          <input slot="input" class="weui-input" placeholder="请输入法人手机" @input="input" id="enterprise.legalPersonCellphone" value="{{input.enterprise.legalPersonCellphone}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">传真</view>
+          <input slot="input" class="weui-input" placeholder="请输入传真" @input="input" id="fax" value="{{input.fax}}"/>
+        </WInput>
+      </view>
   </view>
+  <view class="hr"/>
+  <view class="weui-panel weui-panel_access" style="padding-bottom:100rpx">
+      <view class="weui-panel__hd">业务联系人信息：</view>
+      <view class="weui-panel__bd">
+        <WInput>
+          <view slot="title" class="weui-label">姓名<text class="red">*</text></view>
+          <input slot="input" class="weui-input" placeholder="请输入姓名" @input="input" id="name" value="{{input.name}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">手机</view>
+          <input slot="input" class="weui-input" placeholder="请输入手机" @input="input" id="cellphone" value="{{input.cellphone}}"/>
+        </WInput>
+        <WInput>
+          <view slot="title" class="weui-label">Email</view>
+          <input slot="input" class="weui-input" placeholder="请输入Email" @input="input" id="email" value="{{input.email}}"/>
+        </WInput>
+        <!--单选-->
+        <view class="weui-cell weui-cells_after-title">
+          <view class="weui-cell__hd">
+            <view class="weui-label">性别</view>
+          </view>
+          <view class="weui-cell__bd">
+            <radio-group class="radio-group row" @change="radio" id="sex">
+              <label class="radio row">
+                <radio value="00" checked="{{input.sex == '00'}}"/>
+                先生
+              </label>
+              <label class="radio row">
+                <radio value="01" checked="{{input.sex == '01'}}"/>
+                女士
+              </label>
+            </radio-group>
+          </view>
+        </view>
+        <WInput>
+          <view slot="title" class="weui-label">职务</view>
+          <input slot="input" class="weui-input" placeholder="请输入职务" @input="input" id="position" value="{{input.position}}"/>
+        </WInput>
+      </view>
+  </view>
+  <button class="fixed" type="primary" @tap="submit">提交</button>
 </template>
 
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import wepyCropper from 'wepy-cropper'
 import FormTips from '@/components/weui/tips'
 import WInput from '@/components/weui/input'
 import input from '@/mixins/input'
 import Upload from '@/components/common/upload'
 import Header from '@/components/common/header'
+import Search from '@/components/common/search'
 export default class Enterprise extends wepy.page {
   components = {
     Tips: FormTips,
     WInput,
     Upload,
-    Header
+    Header,
+    wepyCropper,
+    Search
   }
 
   mixins = [input]
 
   data = {
     title: '基本资料',
+    // 头部
+    lan: true,
+    search: false,
     animationAddressMenu: {},
     input: {
       enterprise: {}
@@ -123,7 +140,18 @@ export default class Enterprise extends wepy.page {
     logo: '',
     provinces: [],
     citys: [],
-    areas: []
+    areas: [],
+    clipParams: {
+      src:'', //字符串, 图片path 必填
+      mode:"rectangle", //选填,默认rectangle
+      /* 两种模式
+      通过的mode设定
+      mode:'rectangle' 返回图片
+      mode:'quadrangle' 并不返回图片，只返回在图片中的四个点，用于perspective correction（可以查找OpenCV相关资料）
+      */
+      sizeType:["compressed"],//数组,选填 ['original', 'compressed'], 默认original
+      visable:false
+    }
   }
 
   async onReady () {
@@ -173,6 +201,26 @@ export default class Enterprise extends wepy.page {
   methods = {
     image (text) {
       this.input.logo = text.data
+    },
+    wepyCropperBegin () {
+      let chooseImage=new Promise((resolve,reject)=>{
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success(res) {
+            resolve(res.tempFilePaths[0]);
+          }
+        })
+      })
+      chooseImage.then((path)=>{
+        this.clipParams.src=path;
+        this.clipParams.visable=true;
+        this.$apply();
+      })
+    },
+    wepyCropperFinsh(path){
+      debugger
     }
   }
 
@@ -250,8 +298,7 @@ export default class Enterprise extends wepy.page {
 }
 </script>
 
-<style media="screen">
-
+<style>
   .j_title{
     background: #f1f1f1;
     padding:10px 15px;

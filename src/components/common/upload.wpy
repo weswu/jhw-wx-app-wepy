@@ -10,7 +10,8 @@
   import wepy from 'wepy'
   export default class Upload extends wepy.component {
     props = {
-      src: String
+      src: String,
+      cropper: {}
     }
     methods = {
       chooseImage () {

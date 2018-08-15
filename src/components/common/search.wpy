@@ -1,0 +1,45 @@
+<template>
+  <!-- 搜索1 -->
+  <view class="weui-search-bar" wx:if="{{search}}">
+    <i class="iconfont icon-folder-add"></i>
+    <i class="iconfont icon-paixu"></i>
+    <view class="weui-search-bar__form">
+      <view class="weui-search-bar__box">
+        <icon class="weui-icon-search_in-box" type="search" size="12"></icon>
+        <input type="text" class="weui-search-bar__input" value="{{name}}" @input="input"/>
+        <view class="weui-icon-clear" @tap="clearInput">
+          <icon type="clear" size="14"></icon>
+        </view>
+      </view>
+    </view>
+    <i class="iconfont icon-upload"></i>
+  </view>
+  <view class="search-placeholder"></view>
+  <!-- 搜索2 -->
+</template>
+
+<style lang="less">
+</style>
+
+<script>
+  import wepy from 'wepy'
+  export default class Search extends wepy.component {
+    props = {
+      name: {},
+      search: {
+        default: true
+      }
+    }
+    methods = {
+      clearInput: function () {
+        this.name = ''
+        this.$emit('input', '')
+      },
+      input: function (e) {
+        const input = e.detail.value
+        this.name = input
+        this.$emit('input', input)
+      }
+    }
+  }
+</script>

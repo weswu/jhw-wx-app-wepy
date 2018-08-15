@@ -1,8 +1,11 @@
 <template>
-  <view class="j_save" @tap="submit">
-    <text class="info">完成</text>
-  </view>
-  <checkbox-group bindchange="checkboxChange">
+  <Header :title.sync="title">
+    <view slot="btn">
+      <i class="iconfont icon-xiangzuo" @tap="back" wx:if="{{isBack}}"></i>
+      <text @tap="submit" wx:if="{{!isBack}}">完成</text>
+    </view>
+  </Header>
+  <checkbox-group @change="checkboxChange">
     <view wx:for="{{list}}" wx:key="*this" wx:for-item="row">
       <view class="weui-panel">
         <view class="weui-cell weui-cell_access">
@@ -22,21 +25,21 @@
       </view>
     </view>
   </checkbox-group>
-
-
-
 </template>
 
 <script>
 import wepy from 'wepy'
 import api from '@/api/api'
 import Tips from '@/utils/Tips'
+import Header from '@/components/common/header'
 export default class Tools extends wepy.page {
-  config = {
-    navigationBarTitleText: '所有工具'
+  components = {
+    Header
   }
 
   data = {
+    title: '所有工具',
+    isBack: true,
     list: [
       {
         title: '站点管理',
@@ -125,8 +128,10 @@ export default class Tools extends wepy.page {
     })
   }
 
-
   methods = {
+    back () {
+      wx.navigateBack()
+    },
     checkboxChange (e) {
       let values = e.detail.value
       this.list.forEach(row => {
@@ -139,6 +144,8 @@ export default class Tools extends wepy.page {
           })
         })
       })
+      this.isBack = false
+      this.$apply()
     }
   }
 
