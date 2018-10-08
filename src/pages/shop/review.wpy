@@ -69,7 +69,7 @@
     onLoad () {
       this.get()
     }
-
+    
     async get () {
       const json = await api.orderReview({
         data: this.params

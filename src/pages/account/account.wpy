@@ -97,26 +97,26 @@ export default class Account extends wepy.page {
 page{
   background: #f1f1f1;
 }
-  .header{
-    background: #373d40;
-    text-align: center;height:200rpx;
+.header{
+  background: #373d40;
+  text-align: center;height:200rpx;
+}
+.logo{
+  padding-top:15rpx;
+}
+.j_upload{
+  width:150rpx;
+  height:150rpx;
+  margin:0 auto;
+  line-height:75px;
+  image {
+    max-width:150rpx;
+    max-height: 150rpx;
+    vertical-align:middle;
+    border-radius: 75rpx;
   }
-  .logo{
-    padding-top:15rpx;
-  }
-  .j_upload{
-    width:150rpx;
-    height:150rpx;
-    margin:0 auto;
-    line-height:75px;
-    image {
-      max-width:150rpx;
-      max-height: 150rpx;
-      vertical-align:middle;
-      border-radius: 75rpx;
-    }
-  }
-  .icon-huiyuan1{
-    background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
-  }
+}
+.icon-huiyuan1{
+  background: #ff6700;color: #fff;font-size:32px;padding:15px;border-radius:50%;
+}
 </style>

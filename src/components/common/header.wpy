@@ -1,4 +1,6 @@
 <template>
+  <view></view>
+  <!--
   <view class="j_header">
     <view class="j_header_bg"></view>
     <view class="wrapper" wx:if="{{title}}">
@@ -8,6 +10,7 @@
       <text class="title">{{title}}</text>
     </view>
   </view>
+  -->
 </template>
 
 <script>
