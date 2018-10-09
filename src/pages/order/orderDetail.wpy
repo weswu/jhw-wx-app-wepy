@@ -52,7 +52,7 @@
               </view>
               <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
                   <view class="weui-media-box__title">{{item.name}}</view>
-                  <view class="weui-media-box__desc" style="display:block;">{{item.productAttr}}</view>
+                  <view class="weui-media-box__desc" style="display:block;">{{item.productAttr || ''}}</view>
                   <view class="weui-media-box__info"><text>{{item.price}}</text> ×{{item.productQuantity}}</view>
               </view>
           </view>
@@ -103,6 +103,7 @@
 
     onLoad ({id}) {
       this.id = id
+      this.$apply()
       this.get()
     }
 
@@ -110,100 +111,7 @@
       const json = await api.orderListDetail({
         id: this.id || 'ff8081815156ec210151674174c801b9'
       })
-      if (json.success) {}
-      var res =  {
-        date: 0,
-        dayHour: -1,
-        totalAmount: 600007.02,
-        product: [
-        {
-        deliverycorpId: "0.00999999978",
-        name: "手机测试",
-        com: "upload/g/g2/ggggfj/picture/2015/03/29/c64b8086-ba12-4f70-ac0f-44362d7cdb82.png",
-        orderId: "ff8081815156ec2101516741752a01ba",
-        productQuantity: 1,
-        productId: "Product_000000000000000000340400",
-        price: 0.01,
-        productAttr: "字母属性: a; 日期属性: 2015-04-15; 单选项属性: 选项1; 多选项项属性: 多选2; 文本属性: 革工; 数字属性: 1",
-        time: null,
-        username: null,
-        quantity: null,
-        amount: null,
-        memberId: null,
-        id: null,
-        enterpriseId: null
-        },
-        {
-        deliverycorpId: "0.00999999978",
-        name: "秒杀产品1",
-        com: "upload/g/g2/ggggfj/picture/2015/03/16/b64ad738-2e6d-495b-8caf-0e986407a5d5.png",
-        orderId: "ff8081815156ec2101516741755c01bb",
-        productQuantity: 1,
-        productId: "Product_000000000000000000341045",
-        price: 0.01,
-        productAttr: "日期属性: 2015-05-05; 数字属性: 111; 文本属性: 123; 多选项项属性: 多选1; 单选项属性: 选项1; 字母属性: ass",
-        time: null,
-        username: null,
-        quantity: null,
-        amount: null,
-        memberId: null,
-        id: null,
-        enterpriseId: null
-        }
-        ],
-        data: {
-        orderId: "ff8081815156ec210151674174c801b9",
-        addTime: "2015-12-03 17:52:01",
-        orderSn: "102550",
-        all: null,
-        proName: null,
-        orderStatusInt: 2,
-        paymentStatusInt: 2,
-        shippingStatusInt: 2,
-        orderStatus: "completed",
-        paymentStatus: "paid",
-        shippingStatus: "shipped",
-        invoiceName: null,
-        invoiceAmount: null,
-        deliveryTypeName: "圆通",
-        paymentConfigName: null,
-        productTotalPrice: 0.02,
-        deliveryFee: 600007,
-        paymentFee: 0,
-        totalAmount: 600007.02,
-        paidAmount: 600007.02,
-        productWeight: 500.001007,
-        productWeightUnit: "kg",
-        productTotalQuantity: 2,
-        shipName: "王永进",
-        shipArea: "浙江省杭州市西湖区",
-        shipAreaPath: "402881882ba8753a012ba8da48e000b0,402881882ba8753a012ba8da7d2f00b1,402881e44da29af5014da35e04900331",
-        shipAddress: "文三路",
-        shipZipCode: "310000",
-        shipPhone: "",
-        shipMobile: "13588506961",
-        memo: "",
-        memberId: null,
-        deliveryType: null,
-        paymentConfig: null,
-        paytype: "pc",
-        enterpriseId: "Enterp_0000000000000000000000039",
-        orderStatusTxt: "已完成",
-        deliverytypeId: "ff8081814dc9717e014dd21bc7f3000e",
-        productName: null,
-        com: null,
-        deliverySn: null,
-        deliveryCorpName: null,
-        startDate: null,
-        endDate: null,
-        sorting: null,
-        id: "ff8081815156ec210151674174c801b9"
-        },
-        oId: "ff8081815156ec210151674174c801b9",
-        shippingTime: "2015-12-03 17:55:37",
-        paymentTime: "2015-12-03 17:52:34"
-      }
-      this.input = res
+      this.input = json.attributes
       if (this.input.data.orderStatus === 'completed') {
         this.input.data.orderStatus = '已完成'
         if (this.input.data.paymentStatus === 'paid' && this.input.data.shippingStatus === 'shipped') {

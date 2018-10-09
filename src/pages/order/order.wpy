@@ -56,8 +56,8 @@ export default class Order extends wepy.page {
       this.get()
     } else {
       this.grade = '01'
-      this.$apply()
     }
+    this.$apply()
   }
 
   methods = {

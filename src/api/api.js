@@ -1,4 +1,4 @@
-import { http } from '@/utils/Http'
+import { http } from '@/utils/http'
 
 const host = 'https://app.jihui88.com'
 

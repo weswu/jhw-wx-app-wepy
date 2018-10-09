@@ -64,11 +64,7 @@
         </view>
       </view>
       <view class="weui-tab__content" hidden="{{activeIndex != 1}}" style="padding: 10px">
-        <rich-text nodes="{{input.proddesc}}" wx:if="{{!proddesc}}" @tap="editorTip"/>
         <textarea wx:if="{{proddesc}}" @input="input" id="proddesc" value="{{input.proddesc}}" style="height: 600rpx" placeholder="请输入新闻内容" />
-        <view wx:if="{{proddesc}}" class="weui-btn-area">
-            <button class="weui-btn" type="primary" @tap="submit">提交</button>
-        </view>
       </view>
       <view class="weui-tab__content" hidden="{{activeIndex != 2}}">
         <WInput>
